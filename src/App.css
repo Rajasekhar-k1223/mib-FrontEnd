@@ -1,0 +1,682 @@
+.container {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+}
+
+.myId {
+  margin-right: 5rem;
+  border-radius: 5px;
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  padding: 2rem;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.call-button {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.video-containercall {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-content: center;
+  margin-top: 10rem;
+  margin-left: 10rem;
+}
+
+.caller {
+  text-align: center;
+  color: #fff;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+/* iframe {
+  pointer-events: none;
+} */
+.Modal {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background-color: papayawhip;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rebeccapurple;
+}
+.Submunu {
+  display: none;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px #000;
+  border-radius: 0.2rem;
+  margin-top: 5px;
+}
+.Submunu div {
+  font-size: smaller;
+  text-align: left;
+  padding-left: 1rem;
+  height: 30px;
+  line-height: 30px;
+}
+.Submunu div:hover {
+  background-color: #61dafb;
+  color: #000;
+  cursor: pointer;
+}
+.usermenu:hover .Submunu {
+  display: block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.loginForm {
+  width: 300px;
+  /* height: 450px; */
+  margin-top: 5rem !important;
+  padding-top: 2rem !important;
+  text-align: center;
+  margin: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 5px #000;
+  padding: 1rem;
+  background: #ffffff7a;
+  position: relative;
+}
+.App-link {
+  color: #61dafb;
+}
+header {
+  height: 60px !important;
+  width: 100%;
+  background-color: #61dafb;
+  /* cursor: all-scroll; */
+  position: fixed;
+  z-index: 1299;
+}
+header > .headerTitle {
+  padding: 0.5rem;
+  height: 50px;
+  width: 15%;
+  text-align: center;
+  font-size: xx-large;
+  font-family: monospace;
+  line-height: 45px;
+  text-shadow: 0 0 2.1px black;
+  float: left;
+}
+header > .headerNavBar {
+  width: 82%;
+  height: 50px;
+  float: left;
+  padding: 0.5rem;
+  text-align: center;
+  line-height: 38px;
+}
+.clear {
+  clear: both;
+}
+.menu {
+  width: 70%;
+  float: left;
+  text-align: right;
+}
+.usermenu {
+  width: 15%;
+  float: left;
+}
+.headerNavBar > .menu svg {
+  /* padding: 0.5rem; */
+  cursor: pointer;
+  margin-left: 1rem;
+}
+.MainSection {
+  width: 100%;
+  margin: auto;
+  min-height: 100px;
+}
+.FeedsSections {
+  width: 83%;
+  float: left;
+  padding-left: 1rem;
+  max-height: 700px;
+  position: absolute;
+  top: 5rem;
+  z-index: 998;
+  /* overflow-y: auto; */
+}
+.passwordShoworHide {
+  width: 20px;
+  position: absolute;
+  right: 2rem;
+  bottom: 0.8rem;
+  cursor: pointer;
+}
+.friendsListSection {
+  width: 15%;
+  float: left;
+  padding-left: 0.5rem;
+  height: 100vh;
+  overflow: inherit;
+  position: fixed;
+  right: 0;
+  top: 3.5rem;
+  z-index: 1300;
+  border-left: 3px double #61dafb;
+  padding-top: 1rem;
+}
+.feedCard:hover {
+  box-shadow: 0px 0px 5px #000;
+}
+.chatemojibackGround {
+  background: #12111100;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  display: none;
+}
+.CallingUserNameICon {
+  color: #000;
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  font-size: 2rem;
+  border-radius: 3rem;
+  line-height: 6rem;
+  text-align: center;
+  margin: auto;
+  margin-top: 40vh;
+  box-shadow: 0 0 5 #fff;
+  animation: pulse 2s infinite;
+}
+.CallingControlsICons {
+  width: 40%;
+  height: 75px;
+  position: fixed;
+  bottom: 1rem;
+  margin: 0vw 30vw;
+  text-align: center;
+}
+.acceptCall {
+  width: 70px;
+  border-radius: 3rem;
+  float: left;
+}
+.rejectedCall {
+  width: 70px;
+  margin-bottom: 12vh;
+  border-radius: 3rem;
+  float: right;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 50px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 50px rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+.EmailsideMenu > ul {
+  padding-left: 0rem;
+}
+.EmailsideMenu > ul > li {
+  list-style-type: none;
+  padding: 0.5rem 0rem;
+  padding-left: 0.6rem;
+}
+.EmailsideMenu > ul > li:hover {
+  background-color: rebeccapurple;
+  color: #fff;
+  border-right: 3px solid #fff;
+  cursor: pointer;
+}
+.EmailListBody > ul {
+  padding-left: 0rem;
+  margin-top: 0;
+}
+.EmailListBody > ul > li {
+  list-style-type: none;
+  padding: 0.5rem 0rem;
+  padding-left: 0.6rem;
+  box-shadow: 0px 0px 1px #000;
+  margin: 0.2rem 0rem;
+}
+.EmailListBody > ul > li:hover {
+  background-color: #dfdde12e;
+  color: #000;
+  border-right: 3px solid #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+.emailbodyView {
+  padding: 0.5rem;
+}
+.emailbodyTitle {
+  font-size: large;
+  font-weight: 600;
+  padding: 0.5em;
+}
+.emailbodyContent {
+  padding: 1rem;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  /* background: #f1f1f1; */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  /* background: #888; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.heart {
+  font-size: 150px;
+  color: #e00;
+  animation: beat 0.25s infinite alternate;
+  transform-origin: center;
+}
+.unlikeheart {
+  font-size: 150px;
+  color: #000;
+  /* animation: beat 0.25s infinite alternate;
+  transform-origin: center; */
+}
+.chatbox {
+  position: fixed;
+  width: 230px;
+  height: 300px;
+  z-index: 100;
+  background: rgb(0 0 0 / 57%);
+  margin-right: 20px;
+  bottom: 0px;
+  box-shadow: 0px 0px 5px;
+  border-radius: 5px 5px 0px 0px;
+}
+.chat-Header {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(177deg, #6197fb, #61dffb);
+  border-radius: 5px 5px 0px 0px;
+  /* border-bottom: 1px dashed darkblue; */
+}
+.chat-body {
+  width: 100%;
+  height: 215px;
+  background-color: #fff;
+  border-bottom: 1px dashed darkblue;
+  overflow-y: auto;
+}
+.chat-text {
+  width: 100%;
+  height: 43px;
+  background-color: #fff;
+}
+.close {
+  width: 20px;
+  float: right;
+  margin: 0.3rem;
+  cursor: pointer;
+}
+.chat-Header-title {
+  width: 60%;
+  float: left;
+  margin: 0.5rem;
+}
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  /* For Firefox */
+}
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+.sender {
+  background-color: bisque;
+  width: fit-content;
+  float: right;
+  margin-right: 0.1rem;
+  padding: 5px;
+  border-radius: 20px 20px 0px 20px;
+  margin: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  max-width: 75%;
+  min-width: 35%;
+  position: relative;
+}
+.receiver {
+  background-color: #61dafb;
+  width: fit-content;
+  float: left;
+  margin-left: 0.1rem;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  max-width: 75%;
+  min-width: 35%;
+  position: relative;
+}
+.clear {
+  clear: both;
+}
+
+/* Heart beat animation */
+@keyframes beat {
+  to {
+    transform: scale(1.4);
+  }
+}
+
+/****** profile ******/
+
+.userDetailsLink {
+  margin: 1rem;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  font-size: smaller;
+  font-style: oblique;
+  text-decoration: underline;
+}
+.userDetailsLink:hover {
+  color: yellow;
+}
+
+.userInfoData > div > div > .infoHeader {
+  font-size: large;
+  font-weight: bold;
+  font-style: italic;
+  background-color: rgb(238, 238, 238);
+  padding: 0.5rem;
+  margin: 1rem;
+  border-radius: 0.3rem;
+  width: 93%;
+}
+.infoHeader:hover {
+  box-shadow: 0px 0px 5px #555;
+}
+.personalInfo {
+  margin: 0rem 2rem;
+}
+.personalInfo > p {
+  margin: 1rem 1rem;
+}
+.userProInfo {
+  padding-left: 0.5rem;
+  color: #fff;
+  font-size: small;
+  font-style: italic;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+.userProInfo:hover {
+  background-color: #fff;
+  color: darkslategrey;
+  border-right: 1px solid darkslategrey;
+  font-weight: bold;
+}
+
+/******* APPS Page *******/
+.appnew {
+  width: 85px;
+  height: 110px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 1px dimgrey;
+  float: left;
+  margin: 0.15rem;
+}
+.newapp {
+  background: dimgray;
+  color: #fff;
+  font-size: x-large;
+  padding: 2rem;
+  cursor: pointer;
+}
+.ModelViewTotal {
+  width: 100%;
+  height: 100vh;
+  background: #04040485;
+  position: fixed;
+  z-index: 9999999999;
+  top: 0;
+}
+.newappCreate {
+  margin: auto;
+  position: relative;
+  top: 5rem;
+  background: rgb(255, 255, 255);
+  border-radius: 0.5rem;
+}
+.applinkView:hover {
+  color: rebeccapurple;
+  text-decoration: underline;
+}
+
+.newwFeedClassBox
+  > .react-emoji
+  > .react-input-emoji--container
+  > .react-input-emoji--wrapper
+  > .react-input-emoji--input {
+  min-height: 100px;
+}
+.newwFeedClassBox
+  > .react-emoji
+  > .react-input-emoji--container
+  > .react-input-emoji--wrapper
+  > .react-input-emoji--placeholder {
+  bottom: auto;
+  top: 1rem;
+}
+.newwFeedClassBox
+  > .react-emoji
+  > .react-input-emoji--container
+  > .react-input-emoji--wrapper {
+  bottom: unset;
+  right: 2rem;
+}
+.picker-container {
+  position: relative;
+  width: 400px;
+  float: right;
+  margin-right: 3rem;
+  bottom: 7rem;
+}
+
+.emoji-icon {
+  cursor: pointer;
+  /* position: absolute;
+  top: 8px;
+  right: 5px; */
+  margin-top: 0.3rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.input-style {
+  padding: 7px 30px 7px 10px;
+  /* width: calc(100% - 40px); */
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #999;
+  margin-bottom: 10px;
+}
+.picker-container > aside.emoji-picker-react {
+  position: absolute;
+  z-index: 9;
+  height: 20rem;
+  overflow: auto;
+}
+.newwFeedClassBox > .react-emoji > .react-input-emoji--button {
+  top: 2.5rem;
+}
+.newwFeedClassBox > .react-emoji > .react-input-emoji--button > svg {
+  width: 15px;
+  height: 15px;
+}
+.animationemojisList > div:nth-child(1) > div {
+  position: absolute;
+  bottom: -44px;
+  right: 7.2rem;
+}
+.animationemojisList > div:nth-child(2) > div {
+  position: absolute;
+  bottom: -44px;
+  right: 5.1rem;
+}
+.animationemojisList > div:nth-child(3) > div {
+  position: absolute;
+  bottom: -44px;
+  right: 2.9rem;
+}
+.animationemojisList > div:nth-child(4) > div {
+  position: absolute;
+  bottom: -44px;
+  right: 0.8rem;
+}
+.animationemojisList > div:nth-child(5) > div {
+  position: absolute;
+  bottom: -44px;
+  right: -1.4rem;
+}
+.newwFeedClassBox > div > div > div > textarea {
+  font-size: small;
+}
+.addsmileAction > div {
+  position: relative;
+  right: 3rem;
+  bottom: 3rem;
+}
+.file-item-full-container-container .file-item-icon-container {
+  height: 80px !important;
+  width: 80px !important;
+}
+.file-item-full-container-container .file-item-name {
+  width: 80px !important;
+  font-size: 0.5rem !important;
+}
+.file-item-list-container.file-item-list-grid {
+  margin-top: 131px !important;
+}
+.uploadItemRemove {
+  position: relative;
+  top: -3.25rem;
+  left: 5.2rem;
+  z-index: 9;
+  height: 11px;
+  width: 7px;
+  font-size: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  background: #ffffff69;
+  padding: 0rem;
+  text-align: center;
+}
+.dz-ui-header,
+.dropzone-ui .dz-ui-label,
+.dz-ui-footer,
+.dz-ui-footer {
+  display: none !important;
+}
+.dropzone-ui.clickable {
+  min-height: 20px;
+  max-height: 27px;
+  padding-top: 0rem;
+  position: relative;
+  max-width: 20px;
+  top: -1.5rem;
+  opacity: 0;
+}
+.error {
+  color: #e00;
+  font-size: small;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background: azure;
+  padding: 2%;
+  border-radius: 5px;
+}
