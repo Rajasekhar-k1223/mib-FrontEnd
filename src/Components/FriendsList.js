@@ -9,6 +9,8 @@ import { IoIosVideocam, IoMdCall } from "react-icons/io";
 import { config } from "../Config";
 import axios from "axios";
 import ChatBoxComponent from "./ChatBoxComponent";
+import Peer from "simple-peer";
+import io from "socket.io-client";
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 // const client = new W3CWebSocket("ws://192.168.10.60:8000/laravel-websockets");
 export default function FriendsList() {
@@ -30,7 +32,7 @@ export default function FriendsList() {
   const [PopupChatBoxByUser, setPopupChatBoxByUser] = useState([]);
   const [isLoaded, setisLoaded] = useState(false);
   const [ChatcontentView, setChatcontentView] = useState("");
-
+  const [socketUsersList, setsocketUsersList] = useState([]);
   const [defaultValues, setdefaultValues] = useState("");
 
   const userToken = localStorage.getItem("token");
@@ -52,15 +54,7 @@ export default function FriendsList() {
   //   );
   //   console.log(ChatcontentView);
   // };
-
-  const friends = [
-    { userName: "Rajasekhar", userId: 2, pickerView: false },
-    { userName: "Raja1", userId: 4, pickerView: false },
-    { userName: "Raja2", userId: 8, pickerView: false },
-    { userName: "Raja3", userId: 10, pickerView: false },
-    { userName: "Raja4", userId: 20, pickerView: false },
-  ];
-
+  const socket = io.connect("http://localhost:3006");
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =
@@ -72,7 +66,9 @@ export default function FriendsList() {
     //   tonesStyle: "bullet",
     // });
     // window.jQuery = jQuery;
-    setfriendsCount(friends);
+
+    checkingFriendsList();
+    //setfriendsCount(friends);
     // showEmojiContainer(0);
     //document.addEventListener("click", showEmojiContainer(0));
     //  document.addEventListener("click", checkingemojiClose, true);
@@ -80,6 +76,73 @@ export default function FriendsList() {
     //   document.removeEventListener("click", showEmojiContainer(0), true);
     // };
   }, []);
+  const checkingFriendsList = async () => {
+    console.log("object");
+    socket.on("LoginUserList", (users) => {
+      users.map((item) => {
+        socketUsersList.push(item);
+      });
+      //setsocketUsersList(users);
+    });
+
+    const AccessDetails = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        // "Content-Type": "application/json",
+      },
+      params: {
+        from: userId,
+      },
+    };
+    const r = await axios
+      .get(
+        `http://${config.ip}:${config.port}/api/getFriendsList`,
+        AccessDetails
+      )
+      .then((res) => {
+        const friends = [];
+        res.data.data[0].friends_list.map(async (item) => {
+          console.log(item);
+          const AccessDetailsUser = {
+            headers: {
+              Authorization: "Bearer " + userToken,
+              // "Content-Type": "application/json",
+            },
+            params: {
+              from: item,
+            },
+          };
+          await axios
+            .get(
+              `http://${config.ip}:${config.port}/api/getFriendDetails`,
+              AccessDetailsUser
+            )
+            .then((res) => {
+              // setfriendsCount([...friendsCount, res.data.data[0]]);
+              friendsCount.push(res.data.data[0]);
+              //console.log(res.data.data[0]);
+              // res.data.data[0].friends_list.map((item) => {
+              //   console.log(item);
+            });
+          console.log(friendsCount);
+          //     const friend = {
+          //       userName: res.data.data[0].userName,
+          //       userId: res.data.data[0].userId,
+          //       pickerView: false,
+          //     };
+          //     //friends.push(friend);
+          //     setfriendsCount([...friendsCount, friend]);
+          //     //console.log(socketUsersList);
+          //     //console.log(res.data.data[0].userName);
+          //   });
+        });
+        // console.log(friendsCount);
+        // setfriendsCount(friends);
+      });
+
+    // console.log(friends);
+  };
+
   const checkingemojiClose = () => {
     console.log("first");
   };

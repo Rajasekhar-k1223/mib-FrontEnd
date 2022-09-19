@@ -229,7 +229,7 @@ export default function ChatBoxComponent(props) {
 
   const handleOnEnter = (text, fridId) => {
     //console.log(messageList);
-    let ip_address = "192.168.10.60";
+    let ip_address = "localhost";
     let socket_port = "3006";
     let socket = io(ip_address + ":" + socket_port);
     socket.emit("sendChatToServer", text);
@@ -264,7 +264,7 @@ export default function ChatBoxComponent(props) {
     // setVideoCalling(true);
     // return <Video data={username} />;
 
-    navigation("/VideoCalling");
+    navigation("/VideoCalling", { state: { userData: username } });
   };
   return (
     <>
@@ -287,7 +287,7 @@ export default function ChatBoxComponent(props) {
             }}
           >
             <IoIosVideocam
-              onClick={() => VideoCall(item.data.userName)}
+              onClick={() => VideoCall(item.data.userId)}
               size={15}
             />
           </div>

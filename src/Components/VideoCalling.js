@@ -18,12 +18,16 @@ import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { useLocation } from "react-router-dom";
 // import Peer, { config } from "simple-peer";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import { config } from "../Config";
 const socket = io.connect("http://localhost:" + config.socket + "");
 export default function VideoCalling() {
+  const location = useLocation();
+  const { userData } = location.state;
+
   const navigation = useNavigate();
   const [CallingSysten, setCallingSysten] = useState(true);
   const [AcceptCall, setAcceptCall] = useState(false);
@@ -50,9 +54,10 @@ export default function VideoCalling() {
         myVideo.current.srcObject = stream;
       });
 
-    socket.on("RequestUser", (id) => {
-      setMe(id);
-    });
+    // socket.on("RequestUser", (id) => {
+    //   setMe(id);
+    // });
+    callfriend(userData);
 
     socket.on("callUser", (data) => {
       setReceivingCall(true);
@@ -61,8 +66,19 @@ export default function VideoCalling() {
       setCallerSignal(data.signal);
     });
   }, []);
-
+  const callfriend = (id) => {
+    //let socket = io(ip_address + ":" + socket_port);
+    // socket.emit("sendChatToServer", text);
+    // console.log(text);
+    // console.log(socket);
+    // console.log(socket.id);
+    console.log(id);
+    socket.emit("JoinServer", id);
+    console.log(socket);
+    callUser(socket.id);
+  };
   const callUser = (id) => {
+    console.log(id);
     const peer = new Peer({
       initiator: true,
       trickle: false,
