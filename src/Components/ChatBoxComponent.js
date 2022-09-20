@@ -229,8 +229,8 @@ export default function ChatBoxComponent(props) {
 
   const handleOnEnter = (text, fridId) => {
     //console.log(messageList);
-    let ip_address = "localhost";
-    let socket_port = "3006";
+    let ip_address = config.socketIp;
+    let socket_port = config.socket;
     let socket = io(ip_address + ":" + socket_port);
     socket.emit("sendChatToServer", text);
     console.log(text);

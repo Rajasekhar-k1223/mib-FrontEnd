@@ -54,7 +54,7 @@ export default function FriendsList() {
   //   );
   //   console.log(ChatcontentView);
   // };
-  const socket = io.connect("http://localhost:3006");
+  const socket = io.connect("http://" + config.socketIp + ":" + config.socket);
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =

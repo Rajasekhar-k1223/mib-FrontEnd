@@ -23,7 +23,9 @@ import { useLocation } from "react-router-dom";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import { config } from "../Config";
-const socket = io.connect("http://localhost:" + config.socket + "");
+const socket = io.connect(
+  "http://" + config.socketIp + ":" + config.socket + ""
+);
 export default function VideoCalling() {
   const location = useLocation();
   const { userData } = location.state;
