@@ -43,7 +43,7 @@ export default function FeedView({ props }) {
     // childRef.current.childFunction2();
     //   const messageto = await axios
     //     .post(
-    //       `http://${config.ip}:${config.port}/api/SendMessageToFriend`,
+    //       `${config.url}/api/SendMessageToFriend`,
     //       AccessDetails,
     //       {
     //         headers: {

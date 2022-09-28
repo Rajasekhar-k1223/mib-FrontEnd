@@ -39,7 +39,7 @@ export const MessagesList = forwardRef((props, ref) => {
   }, []);
   const getMsgs = async (FrdId) => {
     const r = await axios.get(
-      `http://${config.ip}:${config.port}/api/GetMessagesFromFriends`,
+      `${config.url}/api/GetMessagesFromFriends`,
       AccessDetails
     );
     console.log("r.data", r);

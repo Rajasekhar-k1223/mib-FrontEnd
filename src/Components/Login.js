@@ -35,7 +35,7 @@ export default function Login() {
       password: password,
     };
     axios
-      .post("http://" + config.ip + ":" + config.port + "/api/login", userInfo)
+      .post(config.url + "/api/login", userInfo)
       .then((response) => {
         // this.setState({ articleId: response.data.id })
         // console.log(response);

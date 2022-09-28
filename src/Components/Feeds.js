@@ -236,15 +236,11 @@ export default function Feeds() {
       emojismileAdd: action,
       feedId: id,
     };
-    await axios.post(
-      `http://${config.ip}:${config.port}/api/emojismileAdd`,
-      AccessDetails,
-      {
-        headers: {
-          Authorization: "Bearer " + userToken,
-        },
-      }
-    );
+    await axios.post(`${config.url}/api/emojismileAdd`, AccessDetails, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
 
     setAllFeeds(resp_with_like);
   };
@@ -263,7 +259,7 @@ export default function Feeds() {
     // childRef.current.childFunction2();
     //   const messageto = await axios
     //     .post(
-    //       `http://${config.ip}:${config.port}/api/SendMessageToFriend`,
+    //       `${config.url}/api/SendMessageToFriend`,
     //       AccessDetails,
     //       {
     //         headers: {
@@ -295,7 +291,7 @@ export default function Feeds() {
       SetLimit: limitRecords,
     };
     await axios
-      .post(`http://${config.ip}:${config.port}/api/feeds`, AccessDetails, {
+      .post(`${config.url}/api/feeds`, AccessDetails, {
         headers: {
           Authorization: "Bearer " + userToken,
         },
@@ -394,15 +390,11 @@ export default function Feeds() {
       UserID: userId,
     };
     await axios
-      .post(
-        `http://${config.ip}:${config.port}/api/CheckdisLikes`,
-        AccessDetails,
-        {
-          headers: {
-            Authorization: "Bearer " + userToken,
-          },
-        }
-      )
+      .post(`${config.url}/api/CheckdisLikes`, AccessDetails, {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      })
       .then((response) => {
         console.log(response);
         alert(response.data.data);
@@ -436,15 +428,11 @@ export default function Feeds() {
       UserID: userId,
     };
     await axios
-      .post(
-        `http://${config.ip}:${config.port}/api/CheckLikes`,
-        AccessDetails,
-        {
-          headers: {
-            Authorization: "Bearer " + userToken,
-          },
-        }
-      )
+      .post(`${config.url}/api/CheckLikes`, AccessDetails, {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      })
       .then((response) => {
         console.log(response);
 

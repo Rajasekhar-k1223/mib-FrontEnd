@@ -93,7 +93,7 @@ export default function About() {
   const fetchFeedsList = async (AccessDetails, name) => {
     //  console.log(AccessDetails);
     await axios
-      .post(`http://${config.ip}:${config.port}/api/feeds`, AccessDetails, {
+      .post(`${config.url}/api/feeds`, AccessDetails, {
         headers: {
           Authorization: "Bearer " + userToken,
         },

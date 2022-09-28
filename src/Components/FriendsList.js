@@ -95,10 +95,7 @@ export default function FriendsList() {
       },
     };
     const r = await axios
-      .get(
-        `http://${config.ip}:${config.port}/api/getFriendsList`,
-        AccessDetails
-      )
+      .get(`${config.url}/api/getFriendsList`, AccessDetails)
       .then((res) => {
         const friends = [];
         res.data.data[0].friends_list.map(async (item) => {
@@ -113,10 +110,7 @@ export default function FriendsList() {
             },
           };
           await axios
-            .get(
-              `http://${config.ip}:${config.port}/api/getFriendDetails`,
-              AccessDetailsUser
-            )
+            .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
             .then((res) => {
               // setfriendsCount([...friendsCount, res.data.data[0]]);
               friendsCount.push(res.data.data[0]);
@@ -259,7 +253,7 @@ export default function FriendsList() {
 
     // axios
     //   .get(
-    //     `http://${config.ip}:${config.port}/api/GetMessagesFromFriends`,
+    //     `${config.url}/api/GetMessagesFromFriends`,
     //     AccessDetails
     //   )
     //   .then((response) => {
@@ -273,7 +267,7 @@ export default function FriendsList() {
     //     });
 
     const r = await axios.get(
-      `http://${config.ip}:${config.port}/api/GetMessagesFromFriends`,
+      `${config.url}/api/GetMessagesFromFriends`,
       AccessDetails
     );
     console.log("r.data", r);
@@ -384,7 +378,7 @@ export default function FriendsList() {
   //   // });
   //   const messageto = await axios
   //     .post(
-  //       `http://${config.ip}:${config.port}/api/SendMessageToFriend`,
+  //       `${config.url}/api/SendMessageToFriend`,
   //       AccessDetails,
   //       {
   //         headers: {

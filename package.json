@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3006",
+  "proxy": "http://3.19.139.189:3006",
   "dependencies": {
     "@chakra-ui/react": "1.6.5",
     "@dropzone-ui/react": "^6.7.10",

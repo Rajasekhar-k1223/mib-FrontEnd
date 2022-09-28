@@ -71,7 +71,7 @@ const MessagesList = forwardRef((props, ref) => {
   }, []);
   const getMsgs = async (FrdId) => {
     const r = await axios.get(
-      `http://${config.ip}:${config.port}/api/GetMessagesFromFriends`,
+      `${config.url}/api/GetMessagesFromFriends`,
       AccessDetails
     );
     console.log("r.data", r);
@@ -242,7 +242,7 @@ export default function ChatBoxComponent(props) {
     // childRef.current.childFunction2();
     //   const messageto = await axios
     //     .post(
-    //       `http://${config.ip}:${config.port}/api/SendMessageToFriend`,
+    //       `${config.url}/api/SendMessageToFriend`,
     //       AccessDetails,
     //       {
     //         headers: {
