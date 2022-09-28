@@ -16,15 +16,7 @@ export default function FeedView({ props }) {
       var filetype = "jpg";
     }
     const images = {
-      url:
-        "http://" +
-        config.ip +
-        ":" +
-        config.port +
-        "/storage/images/" +
-        item.uri +
-        "." +
-        filetype,
+      url: config.url + "/storage/images/" + item.uri + "." + filetype,
     };
     return images;
   });

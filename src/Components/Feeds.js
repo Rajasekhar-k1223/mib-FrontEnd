@@ -565,7 +565,7 @@ export default function Feeds() {
     //   },
     // );
     await axios({
-      url: "http://" + config.ip + ":" + config.port + "/api/NewFeed",
+      url: config.url + "/api/NewFeed",
       method: "POST",
       data: formData,
       headers: {
@@ -750,10 +750,7 @@ export default function Feeds() {
                             }}
                           >
                             {convertImgToBase64(
-                              "http://" +
-                                config.ip +
-                                ":" +
-                                config.port +
+                              config.url +
                                 "/storage/images/" +
                                 imgItem.uri +
                                 "." +
@@ -766,10 +763,7 @@ export default function Feeds() {
                               <video style={{ width: "100%" }} controls>
                                 <source
                                   src={
-                                    "http://" +
-                                    config.ip +
-                                    ":" +
-                                    config.port +
+                                    config.url +
                                     "/storage/images/" +
                                     imgItem.uri +
                                     "." +
@@ -781,10 +775,7 @@ export default function Feeds() {
                             ) : (
                               <img
                                 src={
-                                  "http://" +
-                                  config.ip +
-                                  ":" +
-                                  config.port +
+                                  config.url +
                                   "/storage/images/" +
                                   imgItem.uri +
                                   "." +
@@ -827,10 +818,7 @@ export default function Feeds() {
                             }}
                           >
                             {convertImgToBase64(
-                              "http://" +
-                                config.ip +
-                                ":" +
-                                config.port +
+                              config.url +
                                 "/storage/images/" +
                                 imgItem.uri +
                                 "." +
@@ -843,10 +831,7 @@ export default function Feeds() {
                               <video style={{ width: "100%" }} controls>
                                 <source
                                   src={
-                                    "http://" +
-                                    config.ip +
-                                    ":" +
-                                    config.port +
+                                    config.url +
                                     "/storage/images/" +
                                     imgItem.uri +
                                     "." +
@@ -858,10 +843,7 @@ export default function Feeds() {
                             ) : (
                               <img
                                 src={
-                                  "http://" +
-                                  config.ip +
-                                  ":" +
-                                  config.port +
+                                  config.url +
                                   "/storage/images/" +
                                   imgItem.uri +
                                   "." +
@@ -908,10 +890,7 @@ export default function Feeds() {
                             <video style={{ width: "100%" }} controls>
                               <source
                                 src={
-                                  "http://" +
-                                  config.ip +
-                                  ":" +
-                                  config.port +
+                                  config.url +
                                   "/storage/images/" +
                                   imgItem.uri +
                                   "." +
@@ -923,10 +902,7 @@ export default function Feeds() {
                           ) : (
                             <img
                               src={
-                                "http://" +
-                                config.ip +
-                                ":" +
-                                config.port +
+                                config.url +
                                 "/storage/images/" +
                                 imgItem.uri +
                                 "." +
@@ -972,10 +948,7 @@ export default function Feeds() {
                             <video style={{ width: "100%" }} controls>
                               <source
                                 src={
-                                  "http://" +
-                                  config.ip +
-                                  ":" +
-                                  config.port +
+                                  config.url +
                                   "/storage/images/" +
                                   imgItem.uri +
                                   "." +
@@ -987,10 +960,7 @@ export default function Feeds() {
                           ) : (
                             <img
                               src={
-                                "http://" +
-                                config.ip +
-                                ":" +
-                                config.port +
+                                config.url +
                                 "/storage/images/" +
                                 imgItem.uri +
                                 "." +
