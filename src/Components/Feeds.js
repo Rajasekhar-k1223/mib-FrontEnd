@@ -44,17 +44,34 @@ import FeedView from "./FeedView";
 import Modal from "@mui/material/Modal";
 import { Love, Hate, Fear, Happy, CryingFace } from "animated-emojis";
 import { alpha, styled } from "@mui/material/styles";
-import { Dropzone, FileItem } from "@dropzone-ui/react";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import {
+  Dropzone,
+  FileItem,
+  FullScreenPreview,
+  VideoPreview,
+} from "@dropzone-ui/react";
 import ReactDOM from "react-dom";
 import { isEmpty } from "lodash";
 import { useFilePicker } from "use-file-picker";
 import { FaShareSquare } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
 import ReactPlayer from "react-player";
+import { PlusOutlined } from "@ant-design/icons";
+import { Upload } from "antd";
 var FormData = require("form-data");
 // var fs = require("fs");
 // var encode = require("encode-uri");
 // var createObjectURL = require("create-object-url");
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = (error) => reject(error);
+  });
 export default function Feeds() {
   const navigation = useNavigate();
   const [AllFeeds, setAllFeeds] = useState([]);
@@ -88,6 +105,12 @@ export default function Feeds() {
   const [submitFeedValue, setsubmitFeedValue] = useState(false);
   const [offsetWidth, setoffsetWidth] = useState();
   const [offsetHeight, setoffsetHeight] = useState(0);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [imageSrc, setImageSrc] = useState(undefined);
+  const [videoSrc, setVideoSrc] = useState(undefined);
   const screenArray = [0];
   const titleRef = useRef();
   const cancelFileUpload = useRef(null);
@@ -159,7 +182,7 @@ export default function Feeds() {
           name: incommingFiles[index].file.name,
         };
         //   console.log(element);
-        Files.push(element);
+        Files.push(incommingFiles[index].file);
         // files.push(event.target.files[index].name);
         settotalFiles([...totalFiles, element]);
         //   console.log(files);
@@ -174,7 +197,7 @@ export default function Feeds() {
           name: incommingFiles[index].file.name,
         };
         // console.log(element);
-        Files.push(element);
+        Files.push(incommingFiles[index].file);
         //files.push(event.target.files[index].name);
         settotalFiles([...totalFiles, element]);
         //console.log(files);
@@ -212,7 +235,6 @@ export default function Feeds() {
     //console.log(uniqueChars);
   };
   const checkingaction = async (action, id) => {
-    //alert(action);
     // setemojismileAdd(action);
     const resp_with_like = AllFeeds.map((item, key) => {
       if (item.feedId === id) {
@@ -302,12 +324,25 @@ export default function Feeds() {
           // console.log(response);
           const resp = JSON.parse(JSON.stringify(response.data.data));
           const resp_with_like = resp.map((el) => {
-            const y = {
-              ...el,
-              like: false,
-              EmojiAction: false,
-            };
-            return y;
+            //  console.log(el);
+            const ceckfinf =
+              el.users !== undefined ? findObject(el.users) : null;
+            //    console.log("first", ceckfinf);
+            const yy =
+              ceckfinf === null
+                ? {
+                    ...el,
+                    like: false,
+                    EmojiAction: false,
+                    checkingLike: false,
+                  }
+                : {
+                    ...el,
+                    like: false,
+                    EmojiAction: false,
+                    checkingLike: ceckfinf,
+                  };
+            return yy;
           });
           // var getallFeeds = (AllFeeds) => {
           //   AllFeeds, resp_with_like;
@@ -321,10 +356,10 @@ export default function Feeds() {
 
           if (AllFeeds.length == 0) {
             //console.log(AllFeeds.length);
-            setAllFeeds((AllFeeds) => [...AllFeeds, ...resp]);
+            setAllFeeds((AllFeeds) => [...AllFeeds, ...resp_with_like]);
             //fetchImages();
           } else {
-            setAllFeeds((AllFeeds) => [...AllFeeds, ...resp]);
+            setAllFeeds((AllFeeds) => [...AllFeeds, ...resp_with_like]);
           }
 
           // AllFeeds.length > 0
@@ -342,7 +377,7 @@ export default function Feeds() {
           }
 
           //setAllFeeds(getallFeeds);
-          //console.log(AllFeeds);
+          console.log(AllFeeds);
           //setStatePageNumber();
         } else {
           countoffeedsLenghth = response.data.data.length;
@@ -375,16 +410,6 @@ export default function Feeds() {
 
   // };
   const dislikenewFeed = async (id) => {
-    // const resp_with_like = AllFeeds.map((item, key) => {
-    //   if (item.feedId === id) {
-    //     const y = item.like
-    //       ? { ...item, like: false }
-    //       : { ...item, like: true };
-    //     return y;
-    //   } else {
-    //     return item;
-    //   }
-    // });
     const AccessDetails = {
       feedId: id,
       UserID: userId,
@@ -396,33 +421,22 @@ export default function Feeds() {
         },
       })
       .then((response) => {
-        console.log(response);
-        alert(response.data.data);
         const resp_with_like = AllFeeds.map((item, key) => {
           if (item.feedId === id) {
-            const y = item.like
-              ? { ...item, likes: response.data.data, like: false }
-              : { ...item, likes: response.data.data, like: true };
+            const y = item.checkingLike
+              ? { ...item, likes: response.data.data, checkingLike: false }
+              : { ...item, likes: response.data.data, checkingLike: true };
             return y;
           } else {
             return item;
           }
         });
-        console.log(resp_with_like);
-        setAllFeeds(resp_with_like);
+        setTimeout(() => {
+          setAllFeeds(resp_with_like);
+        }, 1000);
       });
   };
   const likenewFeed = async (id) => {
-    // const resp_with_like = AllFeeds.map((item, key) => {
-    //   if (item.feedId === id) {
-    //     const y = item.like
-    //       ? { ...item, like: false }
-    //       : { ...item, like: true };
-    //     return y;
-    //   } else {
-    //     return item;
-    //   }
-    // });
     const AccessDetails = {
       feedId: id,
       UserID: userId,
@@ -438,16 +452,22 @@ export default function Feeds() {
 
         const resp_with_like = AllFeeds.map((item, key) => {
           if (item.feedId === id) {
-            const y = item.like
-              ? { ...item, likes: response.data.data, like: false }
-              : { ...item, likes: response.data.data, like: true };
+            console.log(item.checkingLike);
+            const y = item.checkingLike
+              ? { ...item, likes: response.data.data, checkingLike: false }
+              : { ...item, likes: response.data.data, checkingLike: true };
             console.log(y);
             return y;
           } else {
             return item;
           }
         });
-        setAllFeeds(resp_with_like);
+        console.log(resp_with_like);
+        setTimeout(() => {
+          setAllFeeds(resp_with_like);
+        }, 1000);
+
+        console.log(AllFeeds);
       });
 
     console.log(AllFeeds);
@@ -526,7 +546,7 @@ export default function Feeds() {
     // return false;
     // console.log(files);
     // console.log(formData);
-    //console.log(Files);
+    console.log(Files.file);
     Files.forEach((image, i) => {
       //console.log(image);
       //console.log(Platform.OS);
@@ -564,6 +584,7 @@ export default function Feeds() {
     //     },
     //   },
     // );
+    //  console.log(object);
     await axios({
       url: config.url + "/api/NewFeed",
       method: "POST",
@@ -693,15 +714,24 @@ export default function Feeds() {
     };
     img.src = url;
   };
+  const findObject = (arr, value) => {
+    const element = arr.find((value) => {
+      return value === parseInt(userId);
+    });
+    return typeof element === "undefined" ? false : true;
+  };
+  {
+    console.log(AllFeeds);
+  }
+  const feedStatusView = (id) => {
+    console.log(id);
+  };
   const feedslist = AllFeeds.map((item, key) => {
-    const checkingLike =
-      item.users !== undefined
-        ? item.users.find((id) => {
-            return id === parseInt(userId);
-          })
-        : null;
-    const chekcinglike2 = parseInt(userId) === checkingLike ? "like" : "unlike";
-    console.log(chekcinglike2);
+    // const checkingLike =
+    //   item.users !== undefined ? findObject(item.users) : null;
+    //console.log(checkingLike);
+    //const chekcinglike2 = parseInt(userId) === checkingLike ? "like" : "unlike";
+    //  console.log(chekcinglike2);
     // console.log(AllFeeds.length);
     return (
       <Card
@@ -711,7 +741,7 @@ export default function Feeds() {
       >
         {item.uploadImage.length > 0 ? (
           <CardMedia style={{ height: 150, position: "relative" }}>
-            {console.log(item.uploadImage.sort((a, b) => b.height - a.height))}
+            {/* {console.log(item.uploadImage.sort((a, b) => b.height - a.height))} */}
             {item.uploadImage.map((imgItem, index) => {
               // return <div>{imgItem.uri}</div>;
               var filetype;
@@ -781,6 +811,7 @@ export default function Feeds() {
                                   "." +
                                   filetype
                                 }
+                                //src={imgItem.path}
                                 onLoad={({ target: img }) => {
                                   const { offsetHeight, offsetWidth } = img;
                                   console.log(offsetHeight, offsetWidth);
@@ -837,6 +868,7 @@ export default function Feeds() {
                                     "." +
                                     filetype
                                   }
+                                  // src={imgItem.path}
                                   type="video/mp4"
                                 />
                               </video>
@@ -849,6 +881,7 @@ export default function Feeds() {
                                   "." +
                                   filetype
                                 }
+                                //src={imgItem.path}
                                 onLoad={({ target: img }) => {
                                   const { offsetHeight, offsetWidth } = img;
                                   console.log(offsetHeight, offsetWidth);
@@ -896,6 +929,7 @@ export default function Feeds() {
                                   "." +
                                   filetype
                                 }
+                                //src={imgItem.path}
                                 type="video/mp4"
                               />
                             </video>
@@ -908,6 +942,7 @@ export default function Feeds() {
                                 "." +
                                 filetype
                               }
+                              // src={imgItem.path}
                               onLoad={({ target: img }) => {
                                 const { offsetHeight, offsetWidth } = img;
                                 console.log(offsetHeight, offsetWidth);
@@ -954,6 +989,7 @@ export default function Feeds() {
                                   "." +
                                   filetype
                                 }
+                                //src={imgItem.path}
                                 type="video/mp4"
                               />
                             </video>
@@ -966,9 +1002,10 @@ export default function Feeds() {
                                 "." +
                                 filetype
                               }
+                              //src={imgItem.path}
                               onLoad={({ target: img }) => {
                                 const { offsetHeight, offsetWidth } = img;
-                                console.log(offsetHeight, offsetWidth);
+                                //  console.log(offsetHeight, offsetWidth);
                                 setoffsetWidth(offsetWidth);
                                 setoffsetHeight(offsetHeight);
                               }}
@@ -1043,7 +1080,17 @@ export default function Feeds() {
               float: "left",
             }}
           />
-          <div style={{ float: "left", paddingLeft: 5 }}>Rajsekhar posted </div>
+          <div style={{ float: "left", paddingLeft: 5, fontSize: 14 }}>
+            Rajsekhar posted{" "}
+          </div>
+          {/* <div style={{ float: "right", paddingLeft: 5 }}>:</div> */}
+          <BiDotsVerticalRounded
+            size={18}
+            style={{ float: "right", cursor: "pointer" }}
+            onClick={() => {
+              feedStatusView(item.feedId);
+            }}
+          />
           <div style={{ clear: "both" }}></div>
         </CardContent>
         <CardContent
@@ -1054,6 +1101,7 @@ export default function Feeds() {
             fontSize: 14,
             textAlign: "justify",
             textIndent: 30,
+            padding: "0.1rem 0.5rem",
           }}
         >
           {item.description}
@@ -1065,11 +1113,9 @@ export default function Feeds() {
           <AiFillHeart
             size={12}
             style={{ marginLeft: 5 }}
-            className={
-              checkingLike === parseInt(userId) ? "heart" : "unlikeheart"
-            }
+            className={item.checkingLike ? "heart" : "unlikeheart"}
             onClick={() => {
-              item.like
+              item.checkingLike
                 ? dislikenewFeed(item.feedId)
                 : likenewFeed(item.feedId);
             }}
@@ -1109,7 +1155,7 @@ export default function Feeds() {
               <Fear size={1.5} />
             ) : item.emojismileAdd === "happy" ? (
               <Happy size={1.5} />
-            ) : item.emojismileAdd === "cryingface" ? (
+            ) : item.emojismileAdd === "crying" ? (
               <CryingFace size={1.5} />
             ) : (
               <BsEmojiSmile
@@ -1224,6 +1270,46 @@ export default function Feeds() {
         return "<BsEmojiSmile size='20'>";
     }
   };
+  const handleCancel = () => setPreviewOpen(false);
+  const handleDelete = (id) => {
+    setFiles(files.filter((x) => x.id !== id));
+  };
+  const handleSee = (imageSource) => {
+    setImageSrc(imageSource);
+  };
+  const handleWatch = (vidSrc) => {
+    console.log("handleWatch", vidSrc);
+    setVideoSrc(vidSrc);
+  };
+  const handleClean = (files) => {
+    console.log("list cleaned", files);
+  };
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
+  };
+
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
   const project = () => {
     alert(emojismileAdd);
     switch (emojismileAdd) {
@@ -1237,7 +1323,6 @@ export default function Feeds() {
         return <Happy />;
       case "crying":
         return <CryingFace />;
-
       default:
         return (
           <div>
@@ -1741,7 +1826,7 @@ export default function Feeds() {
                         }}
                       />
                       <MdOutlineFileUpload size={20} />
-                      {/* <Dropzone
+                      <Dropzone
                         onChange={updateFiles}
                         value={files}
                         style={{
@@ -1749,7 +1834,7 @@ export default function Feeds() {
                           maxHeight: "35px",
                           paddingTop: "2rem",
                         }}
-                      ></Dropzone> */}
+                      ></Dropzone>
                     </div>
                     {/* <div>
                     <button onClick={() => openFileSelector()}>
@@ -1766,22 +1851,44 @@ export default function Feeds() {
                         minHeight: 0,
                       }}
                     >
+                      {/* <Upload
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        listType="picture-card"
+                        fileList={files}
+                        onPreview={handlePreview}
+                        onChange={handleChange}
+                      >
+                        {files.length >= 8 ? null : uploadButton}
+                      </Upload> */}
+                      {/* {Files.map((file) => {
+                        console.log(file.name);
+                      })} */}
                       {files.map((file) => (
                         <>
-                          {/* <span
-                          className="uploadItemRemove"
-                          onClick={() => {
-                            //alert(file);
-                            console.log(file);
-                          }}
-                        >
-                          X
-                        </span> */}
-                          {console.log(file)}
                           <FileItem
                             {...file}
                             preview
                             style={{ width: "80px", float: "left" }}
+                            onDelete={handleDelete}
+                            onSee={handleSee}
+                            //localization={"ES-es"}
+                            resultOnTooltip
+                            onWatch={handleWatch}
+                            preview
+                            info
+                            hd
+                          />
+                          <FullScreenPreview
+                            imgSource={imageSrc}
+                            openImage={imageSrc}
+                            onClose={(e) => handleSee(undefined)}
+                          />
+                          <VideoPreview
+                            videoSrc={videoSrc}
+                            openVideo={videoSrc}
+                            onClose={(e) => handleWatch(undefined)}
+                            controls
+                            autoplay
                           />
                         </>
                       ))}

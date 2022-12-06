@@ -16,6 +16,8 @@ import BlogViewPage from "./Components/BlogViewPage";
 import AppViewPage from "./Components/AppViewPage";
 import UserNew from "./Components/UserNew";
 import PasswordForgot from "./Components/PasswordForgot";
+import Friend from "./Components/Friend";
+import ChatList from "./Components/ChatList";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
@@ -40,13 +42,15 @@ function App() {
         <Route exact path="/email" element={<EmailSystem />} />
         <Route exact path="/settings" element={<Settings />} />
         <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/chatList" element={<ChatList />} />
         <Route exact path="/friendsView" element={<FriendsView />} />
         <Route exact path="/newgrid" element={<NewGridView />} />
         <Route exact path="/videoCalling" element={<VideoCalling />} />
         <Route exact path="/passwordForgot" element={<PasswordForgot />} />
-        <Route exact path="/userNew" element={<UserNew />} />
+        <Route exact path="/signup" element={<UserNew />} />
         <Route exact path="/blog:appName" element={<BlogViewPage />} />
         <Route exact path="/page:appName" element={<AppViewPage />} />
+        <Route exact path="/friend:friendName" element={<Friend />} />
       </Routes>
     </Router>
   );

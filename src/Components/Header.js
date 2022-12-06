@@ -13,11 +13,23 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { FaHome } from "react-icons/fa";
+import { config } from "../Config";
+import { Base64 } from "js-base64";
+import { IoIosNotifications } from "react-icons/io";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import axios from "axios";
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
   const [inputWith, setinputWith] = useState(0);
+  const [searchValue, setsearchValue] = useState("");
+  const [listofusers, setlistofusers] = useState([]);
+  const [NotificationList, setNotificationList] = useState([]);
+  const [showNotifications, setshowNotifications] = useState(false);
   const open = Boolean(anchorEl);
+  const userToken = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,11 +38,34 @@ export default function Header() {
     // alert(url);
     navigation("/" + url);
   };
+  const showNotificationList = async () => {
+    const AccessDetailsUserCheck = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        // "Content-Type": "application/json",
+      },
+      params: {
+        from: userId,
+        status: "accept",
+      },
+    };
+    await axios
+      .get(`${config.url}/api/CheckListNotification`, AccessDetailsUserCheck)
+      .then((res) => {
+        console.log(res.data.data);
+        setNotificationList(res.data.data);
+      });
+  };
   const navigation = useNavigate();
   const LogOut = () => {
     localStorage.setItem("token", "");
     localStorage.setItem("userId", "");
     navigation("/");
+  };
+  const selectFriendView = (name) => {
+    const appName = Base64.encodeURI(Base64.encodeURI(name));
+    //navigation("/" + type + ":?name=" + appName);
+    navigation("/friend:?name=" + appName);
   };
   const checkinguri = (url) => {
     console.log(url);
@@ -47,6 +82,41 @@ export default function Header() {
     // console.log(i);
     // alert(i);
   };
+  const viewProfile = (name) => {
+    const appName = Base64.encodeURI(Base64.encodeURI(name));
+    navigation("/friend:?name=" + appName);
+  };
+  const checkingFriendsList = async (e) => {
+    setsearchValue(e.target.value);
+    console.log(searchValue);
+    const AccessDetailsUser = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        // "Content-Type": "application/json",
+      },
+      params: {
+        searchName: e.target.value,
+        sessionId: userId,
+      },
+    };
+    await axios
+      .get(`${config.url}/api/findFriendOrPage`, AccessDetailsUser)
+      .then((response) => {
+        // console.log(response.data.data);
+        // const userList = response.data.data.map((userItem) => {
+        //   console.log(Number(userItem.userId));
+        //   console.log(userId);
+        //   if (userItem.userId != userId) {
+        //     return userItem;
+        //   }
+        // });
+        const userList = response.data.data.filter(function (person) {
+          return person.userId !== parseInt(userId);
+        });
+        console.log(userList);
+        setlistofusers(userList);
+      });
+  };
   return (
     <header>
       <div className="headerTitle">MIBook</div>
@@ -61,46 +131,138 @@ export default function Header() {
               eight: "30px",
               borderRadius: "5px",
               height: 30,
+              padding: "0.5rem",
             }}
+            // value={searchValue}
+            // onKeyDown={(e) => {
+            //   setsearchValue(e.target.value);
+            //   console.log(e);
+            // }}
+            value={searchValue}
+            // onChange={(e) => {
+            //   setsearchValue(e.target.value);
+            //   console.log(searchValue);
+            // }}
+            onChange={checkingFriendsList}
           />
-          <RiSearchLine
-            size={20}
-            onClick={() => {
-              showSearchBar();
-            }}
-          />
-          <FaHome
-            size={20}
-            onClick={() => {
-              handleClose("userpage");
-            }}
-          />
-          <RiSettings2Line size={20} />
-          <RiMailLine
-            size={20}
-            onClick={() => {
-              handleClose("email");
-            }}
-          />
-          <BsFillChatDotsFill
-            size={20}
-            // style={{ padding: "0.5rem 0rem" }}
-            onClick={() => {
-              handleClose("chatboxView");
-            }}
-          />
-          <BsFillGrid3X3GapFill
-            size={20}
-            onClick={() => {
-              handleClose("newgrid");
-            }}
-          />
-          <MdGroups
-            size={20}
-            onClick={() => {
-              handleClose("friendsView");
-            }}
-          />
+
+          <div className="searchFriednsList">
+            {listofusers.map((user, index) => {
+              return (
+                <div
+                  style={{
+                    margin: "0.2rem 0.5rem",
+                    padding: "0rem 0.5rem",
+                    border: "1px solid rgb(0 0 0 / 9%)",
+                    borderRadius: 3,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    // boxShadow: "0px 0px 1px rgb(0 0 0 / 9%)",
+                  }}
+                  className="friendsListView"
+                  onClick={() => {
+                    viewProfile(user.userId);
+                  }}
+                >
+                  {user.userName}
+                  <Button style={{ float: "right" }} className="bg-primary">
+                    Add
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ float: "right" }}>
+            <RiSearchLine
+              size={20}
+              onClick={() => {
+                showSearchBar();
+              }}
+            />
+            <FaHome
+              size={20}
+              onClick={() => {
+                handleClose("userpage");
+              }}
+            />
+            <RiSettings2Line size={20} />
+            <RiMailLine
+              size={20}
+              onClick={() => {
+                handleClose("email");
+              }}
+            />
+            <BsFillChatDotsFill
+              size={20}
+              // style={{ padding: "0.5rem 0rem" }}
+              onClick={() => {
+                handleClose("chatList");
+              }}
+            />
+            <BsFillGrid3X3GapFill
+              size={20}
+              onClick={() => {
+                handleClose("newgrid");
+              }}
+            />
+            <MdGroups
+              size={20}
+              onClick={() => {
+                handleClose("friendsView");
+              }}
+            />
+            <IoIosNotifications
+              size={20}
+              onMouseEnter={() => {
+                setshowNotifications(true);
+                showNotificationList();
+              }}
+              // onMouseUp={() => {
+              //   alert("hello");
+              //   setshowNotifications(false);
+              // }}
+              className="notificationIcon"
+              onMouseLeave={() => {
+                setTimeout(() => {
+                  setshowNotifications(false);
+                }, 99);
+              }}
+            />
+
+            {showNotifications ? (
+              <div
+                className="notificationView"
+                onMouseLeave={() => {
+                  setshowNotifications(false);
+                }}
+                onMouseEnter={() => {
+                  clearInterval();
+                  setTimeout(() => {
+                    setshowNotifications(true);
+                  }, 100);
+                }}
+              >
+                {NotificationList.length > 0 ? (
+                  NotificationList.map((user, index) => {
+                    return (
+                      <div key={index} className="notificationAlertView">
+                        {user.to}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <Box sx={{ width: "100%" }}>
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                  </Box>
+                )}
+              </div>
+            ) : null}
+          </div>
         </div>
         <div className="usermenu">
           {/* <Button

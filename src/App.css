@@ -1,3 +1,5 @@
+/* @import url("./assets/fonts/PT_Sans/PTSans-Bold.ttf"); */
+
 .container {
   display: grid;
   grid-template-columns: 7fr 3fr;
@@ -98,7 +100,33 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+/* On screens that are 992px wide or less, go from four columns to two columns */
+@media screen and (max-width: 900px) and (min-width: 600px) {
+  .column {
+    width: 100%;
+  }
+  .mainbannerLoginpage {
+    display: none !important;
+  }
+  .loginForm {
+    width: 100%;
+    overflow: hidden;
+  }
+}
 
+/* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) and (min-width: 300px) {
+  .column {
+    width: 100% !important;
+  }
+  .mainbannerLoginpage {
+    display: none !important;
+  }
+  .loginForm {
+    width: 100% !important;
+    overflow: hidden;
+  }
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -109,18 +137,59 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.mainbannerLoginpage {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 75%;
+  height: 100vh;
+  top: 0;
+  float: left;
+  background: #deeaee;
+  display: block;
+}
 .loginForm {
-  width: 300px;
-  /* height: 450px; */
-  margin-top: 5rem !important;
-  padding-top: 2rem !important;
+  width: 24.99%;
+  height: 100vh;
+  padding-bottom: 3rem;
+  margin-left: 0.2rem;
+  /* margin-top: 5rem !important; */
+  padding-top: 5rem !important;
   text-align: center;
   margin: auto;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
   box-shadow: 0px 0px 5px #000;
-  padding: 1rem;
+  padding: 0rem;
   background: #ffffff7a;
   position: relative;
+  float: left;
+}
+.signupBtn {
+  float: right;
+  font-size: small;
+  margin: 0.3rem;
+  margin-right: 2.2rem;
+  cursor: pointer;
+  font-family: sans-serif;
+  padding: 0.5rem;
+}
+.forgotBtn {
+  float: left;
+  font-size: small;
+  margin: 0.3rem;
+  margin-left: 2.1rem;
+  cursor: pointer;
+  font-family: sans-serif;
+  padding: 0.5rem;
+}
+.forgotBtn:hover {
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px grey;
+  font-weight: 600;
+}
+.signupBtn:hover {
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px grey;
+  font-weight: 600;
 }
 .App-link {
   color: #61dafb;
@@ -159,6 +228,8 @@ header > .headerNavBar {
   width: 70%;
   float: left;
   text-align: right;
+  top: 10px;
+  position: relative;
 }
 .usermenu {
   width: 15%;
@@ -187,7 +258,7 @@ header > .headerNavBar {
 .passwordShoworHide {
   width: 20px;
   position: absolute;
-  right: 2rem;
+  right: 2.5rem;
   bottom: 0.8rem;
   cursor: pointer;
 }
@@ -679,4 +750,155 @@ header > .headerNavBar {
   background: azure;
   padding: 2%;
   border-radius: 5px;
+}
+.searchFriednsList {
+  background: #fff;
+  text-align: left;
+  float: left;
+  width: 390px;
+  margin-left: 0.36rem;
+  box-shadow: 0px 0px 2px rgb(0 0 0);
+  border-radius: 0px 0px 3px 3px;
+  max-height: 275px;
+  overflow-y: auto;
+  min-height: 0px;
+  position: absolute;
+  top: 30px;
+}
+.friendsListView:hover {
+  box-shadow: 0px 0px 2px rgb(0 0 0);
+}
+.FriendBanner {
+  width: 100%;
+  height: 250px;
+  /* border-bottom: 2px double #61dafb; */
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+  position: relative;
+
+  /* background-size: cover; */
+}
+.FriendBannerHeader {
+}
+/* .FriendBannerHeaderBackground {
+  width: 100%;
+  height: 100%;
+  background: url("./assets/images/avatarbanner.jpg") no-repeat;
+  background-size: contain;
+  background-position: center center;
+} */
+.nowrap {
+  white-space: nowrap;
+}
+.FriendsAbout {
+  width: 16%;
+  height: 100%;
+  text-align: center;
+  float: left;
+  cursor: pointer;
+}
+.FriendsAbout:hover {
+  background: linear-gradient(45deg, black, transparent);
+}
+.active {
+  background: linear-gradient(45deg, black, transparent);
+}
+.followingButton {
+  width: 170px;
+  height: 40px;
+  background: linear-gradient(181deg, #61dafb, #59bdd9, #61dafb);
+  position: absolute;
+  /* top: 0px; */
+  right: 21px;
+  bottom: 20px;
+  /* left: 0px; */
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: 0px 0px 5px #00000069;
+  cursor: pointer;
+  text-align: center;
+}
+.followingButton:hover {
+  background: linear-gradient(45deg, black, transparent);
+}
+.notificationAlertView {
+  width: 100%;
+  height: 40px;
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: 0px 0px 1px;
+  padding: 0.1rem 0.5rem;
+}
+.notificationAlertView:hover {
+  box-shadow: 0px 0px 5px;
+}
+.notificationView {
+  width: 100%;
+  max-height: 200px;
+  min-height: 200px;
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px;
+  overflow-y: auto;
+  /* display: none; */
+}
+/* .notificationIcon:hover + .notificationView {
+  display: block;
+} */
+.friendListView {
+  padding: 0.5rem;
+  padding-right: 0rem;
+  margin-top: 0.3rem;
+}
+.friendListView:hover {
+  box-shadow: 0px 0px 5px gainsboro;
+  border-right: 0.2rem solid #000;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.recived {
+  clear: both;
+  padding: 0.1rem;
+  float: left;
+  /* border: 1px solid #6197fb; */
+  margin: 0.5rem;
+  border-radius: 5px 10px;
+  padding-right: 0.2rem;
+  max-width: 30rem;
+}
+.replay {
+  clear: both;
+  padding: 0.1rem;
+  float: right;
+  /* border: 1px solid #555; */
+  margin: 0.5rem;
+  border-radius: 10px 5px;
+  max-width: 30rem;
+  padding-left: 0.2rem;
+}
+.recived > p {
+  position: relative;
+  left: 2rem;
+  /* text-align: justify; */
+  width: 100%;
+  top: -1rem;
+  padding: 0.6rem;
+  background: #61dafb;
+  font-size: 1vw;
+  border-radius: 0.5rem;
+}
+.replay > p {
+  position: relative;
+  left: 1rem;
+  /* text-align: justify; */
+  width: 100%;
+  top: -0.5rem;
+  padding: 0.2rem;
+  background: #61dafb;
+  font-size: 1vw;
+  border-radius: 0.5rem;
 }

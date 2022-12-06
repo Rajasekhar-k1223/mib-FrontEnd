@@ -28,6 +28,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import styled from "styled-components";
+import { config } from "../../Config";
 
 const maxHeight = "calc(100vh - 87px)";
 
@@ -183,7 +184,7 @@ function PageBuilder({ initialData = null, props }) {
     const ful = "fullscreen";
     const prv = "preview";
     const projectID = 1;
-    const projectEndpoint = `http://192.168.10.60:8000/api/projects/${projectID}`;
+    const projectEndpoint = `${config.url}/api/projects/${projectID}`;
     if (!editor) {
       const config = {
         // Get the content for the canvas directly from the element
@@ -196,26 +197,42 @@ function PageBuilder({ initialData = null, props }) {
         height: "100%",
         width: "100%",
         // Disable the storage manager for the moment
-        storageManager: { autoload: 1 },
+        // storageManager: { autoload: 1 },
         storageManager: {
-          type: "remote",
-          stepsBeforeSave: 3,
-          options: {
-            remote: {
-              urlLoad: projectEndpoint,
-              urlStore: projectEndpoint,
-              // The `remote` storage uses the POST method when stores data but
-              // the json-server API requires PATCH.
-              fetchOptions: (opts) =>
-                opts.method === "POST" ? { method: "PATCH" } : {},
-              // As the API stores projects in this format `{id: 1, data: projectData }`,
-              // we have to properly update the body before the store and extract the
-              // project data from the response result.
-              onStore: (data) => ({ id: projectID, data }),
-              onLoad: (result) => result.data,
-            },
-          },
+          type: "local", // Storage type. Available: local | remote
+          autosave: true, // Store data automatically
+          autoload: true, // Autoload stored data on init
+          stepsBeforeSave: 1, // If autosave is enabled, indicates how many changes are necessary before the store method is triggered
+          // ...
+          // Default storage options
+          // options: {
+          //   local: {
+          //     /* ... */
+          //   },
+          //   // remote: {
+          //   //   /* ... */
+          //   // },
+          // },
         },
+        // storageManager: {
+        //   type: "",
+        //   stepsBeforeSave: 3,
+        //   options: {
+        //     remote: {
+        //       urlLoad: projectEndpoint,
+        //       urlStore: projectEndpoint,
+        //       // The `remote` storage uses the POST method when stores data but
+        //       // the json-server API requires PATCH.
+        //       fetchOptions: (opts) =>
+        //         opts.method === "POST" ? { method: "PATCH" } : {},
+        //       // As the API stores projects in this format `{id: 1, data: projectData }`,
+        //       // we have to properly update the body before the store and extract the
+        //       // project data from the response result.
+        //       onStore: (data) => ({ id: projectID, data }),
+        //       onLoad: (result) => result.data,
+        //     },
+        //   },
+        // },
         // Avoid any default panel
         blockManager: {
           appendTo: bm.current,

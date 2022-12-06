@@ -29,6 +29,7 @@ export default function FriendsList() {
   const [pickerView, setpickerView] = useState(false);
   const [showEmojiContainers, setshowEmojiContainers] = useState(false);
   const [friendsCount, setfriendsCount] = useState([]);
+  const [friends, setfriends] = useState([]);
   const [PopupChatBoxByUser, setPopupChatBoxByUser] = useState([]);
   const [isLoaded, setisLoaded] = useState(false);
   const [ChatcontentView, setChatcontentView] = useState("");
@@ -54,7 +55,7 @@ export default function FriendsList() {
   //   );
   //   console.log(ChatcontentView);
   // };
-  const socket = io.connect("http://" + config.socketIp + ":" + config.socket);
+  const socket = io.connect("http://apilistelsea.co.in:" + config.socket);
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =
@@ -79,10 +80,11 @@ export default function FriendsList() {
   const checkingFriendsList = async () => {
     console.log("object");
     socket.on("LoginUserList", (users) => {
+      console.log(users);
       users.map((item) => {
         socketUsersList.push(item);
       });
-      //setsocketUsersList(users);
+      setsocketUsersList(users);
     });
 
     const AccessDetails = {
@@ -109,16 +111,25 @@ export default function FriendsList() {
               from: item,
             },
           };
+          console.log(AccessDetailsUser);
           await axios
             .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
             .then((res) => {
-              // setfriendsCount([...friendsCount, res.data.data[0]]);
-              friendsCount.push(res.data.data[0]);
+              console.log(res.data.data[0]);
+              setfriendsCount((friendsCount) => [
+                ...friendsCount,
+                res.data.data[0],
+              ]);
+              //  setfriendsCount([...friendsCount, res.data.data[0]]);
+              friends.push(res.data.data[0]);
               //console.log(res.data.data[0]);
               // res.data.data[0].friends_list.map((item) => {
               //   console.log(item);
+              //   console.log(friendsCount);
             });
-          console.log(friendsCount);
+          //setfriendsCount(friends);
+          //   console.log(friendsCount);
+
           //     const friend = {
           //       userName: res.data.data[0].userName,
           //       userId: res.data.data[0].userId,
@@ -407,61 +418,63 @@ export default function FriendsList() {
         setListIndex(undefined);
       }}
     >
+      {/* {console.log(friendsCount)}
+      {alert(friendsCount.length)} */}
+      {/* {friendsCount.length > 0 ? <div>Empty</div> : console.log(friendsCount)} */}
+      {/* <div>{friendsCount.length}</div> */}
       {friendsCount.map((item, index) => {
         return (
-          <>
-            <div
-              style={{ position: "relative" }}
+          // <div key={index}>{item.userName}</div>
+          <div
+            style={{ position: "relative" }}
+            key={index}
+            onMouseOut={() => {
+              setListIndex(undefined);
+            }}
+          >
+            {console.log(item.userName)}
+            <Card
+              className="feedCard"
+              style={{ marginBottom: 2 }}
               key={index}
-              onMouseOut={() => {
-                setListIndex(undefined);
+              // onMouseOver={() =>
+              //   listIndex === index
+              //     ? setListIndex(undefined)
+              //     : setListIndex(index)
+              // }
+              // onMouseOut={() => {
+              //   setListIndex(undefined);
+              // }}
+              onClick={() => {
+                showChatBox(item, index);
               }}
             >
-              <Card
-                className="feedCard"
-                style={{ marginBottom: 2 }}
-                key={index}
-                // onMouseOver={() =>
-                //   listIndex === index
-                //     ? setListIndex(undefined)
-                //     : setListIndex(index)
-                // }
-                // onMouseOut={() => {
-                //   setListIndex(undefined);
-                // }}
-                onClick={() => {
-                  showChatBox(item, index);
+              <CardContent style={{ padding: 10 }}>{item.userName}</CardContent>
+            </Card>
+            {index === listIndex ? (
+              // {userVisible ? (
+              <div
+                style={{
+                  position: "absolute",
+                  width: "300px",
+                  height: "100px",
+                  right: "210px",
+                  background: "#fff",
+                  borderRadius: 15,
+                  padding: "1rem",
+                  boxShadow: "0px 0px 5px #000",
+                  top: 0,
+                }}
+                onMouseOver={() => {
+                  setListIndex(index);
                 }}
               >
-                <CardContent style={{ padding: 10 }}>
-                  {item.userName}
-                </CardContent>
-              </Card>
-              {index === listIndex ? (
-                // {userVisible ? (
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "300px",
-                    height: "100px",
-                    right: "210px",
-                    background: "#fff",
-                    borderRadius: 15,
-                    padding: "1rem",
-                    boxShadow: "0px 0px 5px #000",
-                    top: 0,
-                  }}
-                  onMouseOver={() => {
-                    setListIndex(index);
-                  }}
-                >
-                  {item.userName}
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-          </>
+                {item.userName}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         );
       })}
       <div>

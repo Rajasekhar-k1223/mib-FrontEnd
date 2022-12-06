@@ -2,23 +2,31 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mibook.in",
   "proxy": "http://3.19.139.189:3006",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@chakra-ui/react": "1.6.5",
     "@dropzone-ui/react": "^6.7.10",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@firebase/analytics": "^0.8.0",
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
+    "@mui/styles": "^5.10.14",
+    "@mui/x-date-pickers": "^5.0.8",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/material-ui": "^0.21.12",
     "add": "^2.0.6",
     "animated-emojis": "^1.0.1",
+    "antd": "^4.23.4",
     "axios": "^0.27.2",
+    "css-font-family": "^1.0.7",
+    "dragscroll": "0.0.8",
     "emoji-picker-react": "^3.6.2",
     "framer-motion": "4.1.17",
     "grapesjs": "0.19.5",
@@ -33,6 +41,7 @@
     "react-audio-player": "^0.17.0",
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.1",
+    "react-dragscroll": "^2.0.1",
     "react-icons": "^4.4.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-input-emoji": "4.1.0",
@@ -74,6 +83,10 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^7.0.3"
+    "node-sass": "^7.0.3",
+    "react-error-overlay": "^6.0.9"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

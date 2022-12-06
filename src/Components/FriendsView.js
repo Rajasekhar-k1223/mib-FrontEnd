@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function FriendsView() {
-  return <div>FriendsView</div>;
+  return (
+    <div>
+      <div className="FriendBanner"></div>
+    </div>
+  );
 }

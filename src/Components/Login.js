@@ -14,6 +14,11 @@ import { AiTwotoneAlert } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
 import { style } from "@mui/system";
+//import gifsrc from "../assets/images/martina-woman-asking-a-support-worker-a-question.gif";
+import social from "../assets/images/5551.jpg";
+import mails from "../assets/images/64666.jpg";
+import gifsrc1 from "../assets/images/transistor-fast-delivery-1.gif";
+import gifsrc2 from "../assets/images/dazzle-team-celebrating-success-of-a-work-project.gif";
 import CircularProgress from "@mui/material/CircularProgress";
 const axios = require("axios").default;
 
@@ -65,17 +70,11 @@ export default function Login() {
   };
   return (
     <div>
-      <div
-        style={{
-          backgroundImage: "url(" + background + ")",
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-          width: "100%",
-          height: "100vh",
-          position: "absolute",
-          top: 0,
-        }}
-      ></div>
+      <div className="mainbannerLoginpage">
+        {/* <img src={gifsrc} style={{ width: "21%" }} /> */}
+        <img src={social} style={{ width: "100%" }} />
+        {/* <img src={gifsrc2} /> */}
+      </div>
 
       <Box
         component="form"
@@ -170,32 +169,20 @@ export default function Login() {
           {errorhide ? <div className="error">{error}</div> : null}
           <div style={{ width: "100%", height: "35px" }}>
             <span
-              style={{
-                float: "left",
-                fontSize: "small",
-                margin: "0.3rem",
-                marginLeft: "1.6rem",
-                cursor: "pointer",
-              }}
               onClick={() => {
                 navigation("/passwordForgot");
               }}
+              className="forgotBtn"
             >
               Forgot Password
             </span>
             <span
-              style={{
-                float: "right",
-                fontSize: "small",
-                margin: "0.3rem",
-                marginRight: "1.6rem",
-                cursor: "pointer",
-              }}
+              className="signupBtn"
               onClick={() => {
-                navigation("/userNew");
+                navigation("/signup");
               }}
             >
-              New User
+              SignUp
             </span>
             <div>{submitData}</div>
           </div>
@@ -220,6 +207,16 @@ export default function Login() {
               </Button>
             )}
           </Stack>
+          <img
+            src={mails}
+            style={{
+              width: "100%",
+              position: "relative",
+              top: "2.5rem",
+              boxShadow: "0px 0px 9px grey",
+              // borderRadius: "5px",
+            }}
+          />
           {/* </Link> */}
         </div>
       </Box>
