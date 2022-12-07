@@ -2,13 +2,14 @@ import React from "react";
 import FriendsList from "./FriendsList";
 import Header from "./Header";
 import image from "../assets/images/avatar.png";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 export default function ChatList() {
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <Header />
       <div
         style={{
-          width: "18%",
+          width: "3%",
           minHeight: "92.3vh",
           maxHeight: "92.3vh",
           overflowY: "auto",
@@ -16,6 +17,19 @@ export default function ChatList() {
           position: "absolute",
           top: "3rem",
           paddingTop: "0.7rem",
+        }}
+      ></div>
+      <div
+        style={{
+          width: "17%",
+          minHeight: "92.3vh",
+          maxHeight: "92.3vh",
+          overflowY: "auto",
+          borderRight: "1px solid #000",
+          position: "absolute",
+          top: "3rem",
+          paddingTop: "0.7rem",
+          left: "3%",
         }}
       >
         <div className="friendListView">Rajasekhar</div>
@@ -84,7 +98,7 @@ export default function ChatList() {
       </div>
       <div
         style={{
-          width: "82%",
+          width: "80%",
           right: 0,
           minHeight: "92.3vh",
           maxHeight: "92.3vh",
@@ -99,94 +113,25 @@ export default function ChatList() {
         <div
           style={{
             width: "100%",
-            minHeight: "82.3vh",
-            maxHeight: "82.3vh",
+            minHeight: "78.3vh",
+            maxHeight: "78.3vh",
             overflowY: "auto",
+            paddingBottom: "1rem",
           }}
         >
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
           <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
-          </div>
-          <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <span style={{ position: "relative", top: "2px" }}>
-              <img src={image} style={{ width: "16px", height: "16px" }} />{" "}
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
             </span>
-            <p
-              style={{
-                position: "relative",
-                left: "1rem",
-                textAlign: "justify",
-                width: "90%",
-              }}
-            >
+            <p>
+              <icon>
+                <BiDotsVerticalRounded
+                  className="minicon"
+                  size={16}
+                  onClick={() => {}}
+                />
+              </icon>
+              <h6>06-12-2022 4pm</h6>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
@@ -200,32 +145,105 @@ export default function ChatList() {
             </p>
           </div>
           <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
+            </span>
+            <p>
+              <icon>
+                <BiDotsVerticalRounded
+                  className="minicon"
+                  size={16}
+                  onClick={() => {}}
+                />
+              </icon>
+              <h6>06-12-2022 4pm</h6>
+              Lorem Ipsum
+            </p>
           </div>
           <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
-          </div>
-          <div className="recived">
-            <img src={image} style={{ width: "16px", height: "16px" }} /> hello{" "}
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
+            </span>
+            <p>
+              <icon>
+                <BiDotsVerticalRounded
+                  className="minicon"
+                  size={16}
+                  onClick={() => {}}
+                />
+              </icon>
+              <h6>06-12-2022 4pm</h6>
+              hi
+            </p>
           </div>
           <div className="replay">
-            welcome{" "}
-            <img src={image} style={{ width: "16px", height: "16px" }} />
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
+            </span>
+            <p>
+              <icon>
+                <BiDotsVerticalRounded className="minicon" size={16} />
+              </icon>
+              <h6>06-12-2022 4pm</h6>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.{" "}
+            </p>
+          </div>
+          <div className="replay">
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
+            </span>
+            <p>
+              <icon>
+                <BiDotsVerticalRounded className="minicon" size={16} />
+              </icon>
+              <h6>06-12-2022 4pm</h6>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.{" "}
+            </p>
+          </div>
+          <div className="recived">
+            <span>
+              <img src={image} style={{ width: "25px", height: "25px" }} />{" "}
+            </span>
+            <p>
+              <h6>06-12-2022 4pm</h6>
+              <icon>
+                <BiDotsVerticalRounded className="minicon" size={16} />
+              </icon>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.{" "}
+            </p>
           </div>
         </div>
         <div
-          style={{
-            width: "80%",
-            height: "3rem",
-            border: "1px solid #000",
-            position: "fixed",
-            bottom: 0,
-          }}
+          className="messageBox"
+          contentEditable="true"
+          placeholder="Type something..."
         ></div>
       </div>
     </div>
