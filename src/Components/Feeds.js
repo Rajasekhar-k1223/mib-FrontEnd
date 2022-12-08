@@ -108,6 +108,8 @@ export default function Feeds() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
+  const [ShareFeed, setShareFeed] = useState(false);
+  const [bluroption, setbluroption] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [imageSrc, setImageSrc] = useState(undefined);
   const [videoSrc, setVideoSrc] = useState(undefined);
@@ -172,6 +174,27 @@ export default function Feeds() {
   const handleClose = () => {
     setOpen(false);
     setNewFeedPage(false);
+  };
+  const shareopen = (id) => {
+    const resp_with_like = AllFeeds.map((item, key) => {
+      if (item.feedId === id) {
+        const y =
+          item.sharefeedcheck === true
+            ? { ...item, sharefeedcheck: false }
+            : { ...item, sharefeedcheck: true };
+        return y;
+      } else {
+        const y =
+          item.sharefeedcheck === true
+            ? { ...item, sharefeedcheck: false }
+            : { ...item, sharefeedcheck: false };
+        return y;
+      }
+    });
+    console.log("first", id);
+    setShareFeed(true);
+    setAllFeeds(resp_with_like);
+    setbluroption(true);
   };
   const updateFiles = (incommingFiles) => {
     if (Files.length > 0) {
@@ -335,12 +358,14 @@ export default function Feeds() {
                     like: false,
                     EmojiAction: false,
                     checkingLike: false,
+                    sharefeedcheck: false,
                   }
                 : {
                     ...el,
                     like: false,
                     EmojiAction: false,
                     checkingLike: ceckfinf,
+                    sharefeedcheck: false,
                   };
             return yy;
           });
@@ -1222,22 +1247,39 @@ export default function Feeds() {
             size={14}
             style={{ marginLeft: 30 }}
             onClick={() => {
-              // console.log(item);
-              //openTotalViewofFeed(item);
               handleOpen();
               setfeedDetails(item);
             }}
           />
+
           <FaShareSquare
             size={14}
             style={{ marginLeft: 30 }}
             onClick={() => {
-              // console.log(item);
-              //openTotalViewofFeed(item);
-              handleOpen();
-              setfeedDetails(item);
+              shareopen(item.feedId);
             }}
           />
+          <div style={{ position: "absolute" }}>
+            {item.sharefeedcheck ? (
+              ShareFeed ? (
+                <div
+                  style={{
+                    position: "relative",
+                    width: "15rem",
+                    height: "15rem",
+                    background: "rgb(255, 255, 255)",
+                    boxShadow: "0px 0px 5px",
+                    top: "5rem",
+                    borderRadius: "5px",
+                    marginLeft: "9rem",
+                    zIndex: "999999999",
+                  }}
+                >
+                  {item.feedId}
+                </div>
+              ) : null
+            ) : null}
+          </div>
           <BsInfoCircle
             size={14}
             style={{ marginLeft: 35 }}
@@ -1867,7 +1909,6 @@ export default function Feeds() {
                         <>
                           <FileItem
                             {...file}
-                            preview
                             style={{ width: "80px", float: "left" }}
                             onDelete={handleDelete}
                             onSee={handleSee}
@@ -1932,6 +1973,23 @@ export default function Feeds() {
           <CircularProgress color="inherit" />
         </Stack>
       )}
+      {bluroption ? (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "#00000042",
+            position: "fixed",
+            left: 0,
+            zIndex: 999,
+            top: 0,
+          }}
+          onClick={() => {
+            setShareFeed(false);
+            setbluroption(false);
+          }}
+        ></div>
+      ) : null}
     </div>
   );
 }

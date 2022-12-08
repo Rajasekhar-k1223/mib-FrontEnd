@@ -971,3 +971,23 @@ header > .headerNavBar {
   font-size: 16px;
   margin-left: 1rem;
 }
+.messanger {
+  width: 99.5%;
+  height: 2.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(180deg, #1680bf, #179deb8c);
+  margin-top: 0.2rem;
+  margin-left: 0.5%;
+}
+.messanger > span {
+  color: #fff;
+  line-height: 1.5rem;
+}
+.messanger > span > img {
+  width: 25;
+}
+.messanger > icons {
+  float: right;
+  color: #fff;
+  font-size: x-large;
+}

@@ -3,6 +3,10 @@ import FriendsList from "./FriendsList";
 import Header from "./Header";
 import image from "../assets/images/avatar.png";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import GroupsIcon from "@mui/icons-material/Groups";
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import VideoChatIcon from "@mui/icons-material/VideoChat";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 export default function ChatList() {
   return (
     <div style={{ overflow: "hidden" }}>
@@ -18,14 +22,17 @@ export default function ChatList() {
           top: "3rem",
           paddingTop: "0.7rem",
         }}
-      ></div>
+      >
+        <GroupsIcon />
+        <TextsmsIcon />
+      </div>
       <div
         style={{
           width: "17%",
           minHeight: "92.3vh",
           maxHeight: "92.3vh",
           overflowY: "auto",
-          borderRight: "1px solid #000",
+          bosShadow: "0px 0px 5px #c9c9c9",
           position: "absolute",
           top: "3rem",
           paddingTop: "0.7rem",
@@ -109,12 +116,21 @@ export default function ChatList() {
           paddingTop: "0.7rem",
         }}
       >
-        <div className="messanger"></div>
+        <div className="messanger">
+          <span>
+            <img src={image} />
+            Rajasekhar
+          </span>
+          <icons>
+            <VideoChatIcon />
+            <MoreVertIcon />
+          </icons>
+        </div>
         <div
           style={{
             width: "100%",
-            minHeight: "78.3vh",
-            maxHeight: "78.3vh",
+            minHeight: "75.3vh",
+            maxHeight: "75.3vh",
             overflowY: "auto",
             paddingBottom: "1rem",
           }}

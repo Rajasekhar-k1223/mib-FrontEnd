@@ -13,11 +13,11 @@ import { BiPhoneOff } from "react-icons/bi";
 import { FiShare } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import TextField from "@material-ui/core/TextField";
-import AssignmentIcon from "@material-ui/icons/Assignment";
-import PhoneIcon from "@material-ui/icons/Phone";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { useLocation } from "react-router-dom";
 // import Peer, { config } from "simple-peer";
 import Peer from "simple-peer";
@@ -326,7 +326,7 @@ export default function VideoCalling() {
                   aria-label="call"
                   onClick={() => callUser(idToCall)}
                 >
-                  <PhoneIcon fontSize="large" />
+                  <LocalPhoneIcon fontSize="large" />
                 </IconButton>
               )}
               {idToCall}

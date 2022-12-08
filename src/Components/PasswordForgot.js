@@ -5,21 +5,17 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import background from "../assets/images/backgroundLogin.jpg";
+import social from "../assets/images/5551.jpg";
+import mails from "../assets/images/64666.jpg";
 export default function PasswordForgot() {
   const [username, setusername] = useState("");
   return (
     <div>
-      <div
-        style={{
-          backgroundImage: "url(" + background + ")",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          width: "100%",
-          height: "100vh",
-          position: "absolute",
-          top: 0,
-        }}
-      ></div>
+      <div className="mainbannerLoginpage">
+        {/* <img src={gifsrc} style={{ width: "21%" }} /> */}
+        <img src={social} style={{ width: "100%" }} />
+        {/* <img src={gifsrc2} /> */}
+      </div>
       <Box
         component="form"
         sx={{
@@ -61,6 +57,16 @@ export default function PasswordForgot() {
               Submit
             </Button>
           </Stack>
+          <img
+            src={mails}
+            style={{
+              width: "100%",
+              position: "relative",
+              top: "2.5rem",
+              boxShadow: "0px 0px 9px grey",
+              // borderRadius: "5px",
+            }}
+          />
         </div>
       </Box>
     </div>

@@ -56,12 +56,12 @@ export default function FriendView(userIdData) {
         console.log(res.data.data[0]);
         setUserDetailsAfterGet(res.data.data[0]);
       });
-    await axios
-      .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
-      .then((res) => {
-        console.log(res.data.data[0]);
-        setcheckFriendRequest(res.data.data[0]);
-      });
+    // await axios
+    //   .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
+    //   .then((res) => {
+    //     console.log(res.data.data[0]);
+    //     setcheckFriendRequest(res.data.data[0]);
+    //   });
   };
   const drag = (event) => {
     const boundingBox = dragRef.current;

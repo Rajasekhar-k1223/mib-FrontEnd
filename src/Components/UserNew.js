@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import background from "../assets/images/backgroundLogin.jpg";
+import social from "../assets/images/5551.jpg";
+import mails from "../assets/images/64666.jpg";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -16,7 +18,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { withStyles, createStyles } from "@material-ui/core/styles";
 import { makeStyles, styled } from "@mui/styles";
 import axios from "axios";
 import { config } from "../Config";
@@ -88,17 +89,11 @@ export default function UserNew() {
 
   return (
     <div>
-      <div
-        style={{
-          backgroundImage: "url(" + background + ")",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          width: "100%",
-          height: "100vh",
-          position: "absolute",
-          top: 0,
-        }}
-      ></div>
+      <div className="mainbannerLoginpage">
+        {/* <img src={gifsrc} style={{ width: "21%" }} /> */}
+        <img src={social} style={{ width: "100%" }} />
+        {/* <img src={gifsrc2} /> */}
+      </div>
       <Box
         component="form"
         sx={{
