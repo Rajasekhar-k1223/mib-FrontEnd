@@ -45,6 +45,15 @@ import Modal from "@mui/material/Modal";
 import { Love, Hate, Fear, Happy, CryingFace } from "animated-emojis";
 import { alpha, styled } from "@mui/material/styles";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import Collapse from "@mui/material/Collapse";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import { red } from "@mui/material/colors";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShareIcon from "@mui/icons-material/Share";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Badge from "@mui/material/Badge";
 import {
   Dropzone,
   FileItem,
@@ -1095,7 +1104,33 @@ export default function Feeds() {
           ""
         )}
         <div style={{ clear: "both" }}></div>
-        <CardContent style={{ paddingBottom: 5 }}>
+        <CardHeader
+          sx={{ padding: 1 }}
+          avatar={
+            <Avatar
+              sx={{
+                // bgcolor: red[500],
+                fontSize: 12,
+                width: "25px",
+                height: "25px",
+                mr: 0.05,
+              }}
+              aria-label="recipe"
+              src={image}
+            >
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          subheaderTypographyProps={{ fontSize: 10 }}
+          title={item.userName || item.username}
+          subheader={item.CreatedAt || item.created_at}
+        />
+        {/* <CardContent style={{ paddingBottom: 5 }}>
           <img
             src={image}
             style={{
@@ -1108,7 +1143,7 @@ export default function Feeds() {
           <div style={{ float: "left", paddingLeft: 5, fontSize: 14 }}>
             Rajsekhar posted{" "}
           </div>
-          {/* <div style={{ float: "right", paddingLeft: 5 }}>:</div> */}
+          {/* <div style={{ float: "right", paddingLeft: 5 }}>:</div> 
           <BiDotsVerticalRounded
             size={18}
             style={{ float: "right", cursor: "pointer" }}
@@ -1117,8 +1152,8 @@ export default function Feeds() {
             }}
           />
           <div style={{ clear: "both" }}></div>
-        </CardContent>
-        <CardContent
+        </CardContent> */}
+        {/* <CardContent
           style={{
             maxHeight: 200,
             overflow: "auto",
@@ -1128,23 +1163,37 @@ export default function Feeds() {
             textIndent: 30,
             padding: "0.1rem 0.5rem",
           }}
+        > */}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          style={{
+            maxHeight: 200,
+            overflow: "auto",
+            textAlign: "justify",
+            fontSize: "0.85rem",
+            padding: "0.1rem 0.5rem",
+          }}
         >
           {item.description}
-          {/* {item.users.forEach((element) => {
+        </Typography>
+        {/* {item.users.forEach((element) => {
             console.log(element);
           })} */}
-        </CardContent>
-        <CardActions>
-          <AiFillHeart
-            size={12}
-            style={{ marginLeft: 5 }}
-            className={item.checkingLike ? "heart" : "unlikeheart"}
-            onClick={() => {
-              item.checkingLike
-                ? dislikenewFeed(item.feedId)
-                : likenewFeed(item.feedId);
-            }}
-          />
+        {/* </CardContent> */}
+        <CardActions style={{ boxShadow: "0px 0px 5px #0000001c inset" }}>
+          <IconButton aria-label="add to favorites">
+            <AiFillHeart
+              size={12}
+              style={{ marginLeft: 5 }}
+              className={item.checkingLike ? "heart" : "unlikeheart"}
+              onClick={() => {
+                item.checkingLike
+                  ? dislikenewFeed(item.feedId)
+                  : likenewFeed(item.feedId);
+              }}
+            />
+          </IconButton>
           <span style={{ fontSize: 12, marginLeft: 3 }}>{item.likes}</span>
           <div
             style={{
@@ -1243,18 +1292,20 @@ export default function Feeds() {
               </div>
             </div>
           ) : null}
-          <BiComment
-            size={14}
-            style={{ marginLeft: 30 }}
-            onClick={() => {
-              handleOpen();
-              setfeedDetails(item);
-            }}
-          />
+          <Badge badgeContent={4}>
+            <BiComment
+              size={14}
+              style={{ marginLeft: 30, cursor: "pointer" }}
+              onClick={() => {
+                handleOpen();
+                setfeedDetails(item);
+              }}
+            />
+          </Badge>
 
           <FaShareSquare
             size={14}
-            style={{ marginLeft: 30 }}
+            style={{ marginLeft: 30, cursor: "pointer" }}
             onClick={() => {
               shareopen(item.feedId);
             }}
