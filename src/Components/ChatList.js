@@ -10,8 +10,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import tickView from "../assets/images/tickview.png";
 import ticknotView from "../assets/images/ticknotview.png";
 import CallIcon from "@mui/icons-material/Call";
+import InputEmoji from "react-input-emoji";
 export default function ChatList() {
   const [viewMsg, setviewMsg] = useState(false);
+  const [text, setText] = useState("");
+  const handleOnEnter = (text, fridId) => {
+    //console.log(messageList);
+    // let ip_address = config.socketIp;
+    // let socket_port = config.socket;
+    // let socket = io(ip_address + ":" + socket_port);
+    // socket.emit("sendChatToServer", text);
+    console.log(text);
+    // console.log(socket);
+    // console.log(socket.id);
+  }
   return (
     <div style={{ overflow: "hidden" }}>
       <Header />
@@ -19,8 +31,8 @@ export default function ChatList() {
         className="chatSystemICons"
         style={{
           width: "5%",
-          minHeight: "92.3vh",
-          maxHeight: "92.3vh",
+          minHeight: "95vh",
+          maxHeight: "95vh",
           overflowY: "auto",
           position: "absolute",
           top: "3rem",
@@ -31,14 +43,19 @@ export default function ChatList() {
         }}
       >
         <div style={{ height: 20, width: "100%" }}></div>
-        <GroupsIcon sx={{ width: "35px", height: "30px" }} />
-        <TextsmsIcon sx={{ width: "35px", height: "30px" }} />
+        <icons>
+        <GroupsIcon sx={{ width: "50px", height: "40px" }} />
+        </icons>
+        <icons>
+        <TextsmsIcon sx={{ width: "50px", height: "40px" }} />
+        </icons>
+        
       </div>
       <div
         style={{
           width: "20%",
-          minHeight: "92.3vh",
-          maxHeight: "92.3vh",
+          minHeight: "95vh",
+          maxHeight: "95vh",
           overflowY: "auto",
           bosShadow: "0px 0px 5px #c9c9c9",
           position: "absolute",
@@ -122,8 +139,8 @@ export default function ChatList() {
         style={{
           width: "75%",
           right: 0,
-          minHeight: "92.3vh",
-          maxHeight: "92.3vh",
+          minHeight: "95vh",
+          maxHeight: "95vh",
           overflowY: "auto",
           position: "absolute",
           top: "3rem",
@@ -146,8 +163,8 @@ export default function ChatList() {
         <div
           style={{
             width: "100%",
-            minHeight: "75.3vh",
-            maxHeight: "75.3vh",
+            minHeight: "80vh",
+            maxHeight: "80vh",
             overflowY: "auto",
             paddingBottom: "1rem",
           }}
@@ -403,7 +420,18 @@ export default function ChatList() {
           className="messageBox"
           contentEditable="true"
           placeholder="Type something..."
-        ></div>
+        >
+           <InputEmoji
+              value={text}
+              onChange={setText}
+              cleanOnEnter
+              onEnter={() => {
+                handleOnEnter(text, '10');
+              }}
+              fontSize="12px"
+              placeholder="Type a message"
+            />
+        </div>
       </div>
     </div>
   );
