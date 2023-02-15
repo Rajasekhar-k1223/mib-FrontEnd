@@ -56,12 +56,12 @@ export default function FriendView(userIdData) {
         console.log(res.data.data[0]);
         setUserDetailsAfterGet(res.data.data[0]);
       });
-    // await axios
-    //   .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
-    //   .then((res) => {
-    //     console.log(res.data.data[0]);
-    //     setcheckFriendRequest(res.data.data[0]);
-    //   });
+    await axios
+      .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
+      .then((res) => {
+        console.log(res.data.data[0]);
+        setcheckFriendRequest(res.data.data[0]);
+      });
   };
   const drag = (event) => {
     const boundingBox = dragRef.current;
@@ -116,8 +116,8 @@ export default function FriendView(userIdData) {
       setOpacity(0.5);
     }
   };
-  const SendFriendRequestNew = (userid) => {
-    console.log(userId);
+  const SendFriendRequestNew = (requestId, userId) => {
+    console.log(requestId, userId);
   };
   useEffect(() => {
     //  get global mouse coordinates
@@ -209,19 +209,20 @@ export default function FriendView(userIdData) {
           <div
             className="followingButton"
             onClick={() => {
-              SendFriendRequestNew(UserDetailsAfterGet.userId);
+              SendFriendRequestNew(UserDetailsAfterGet.userId, userId);
             }}
           >
             {checkFriendRequest.status === "request" ? (
               "Request Waiting"
             ) : (
-              <span>
+              <span style={{ lineHeight: "1.5rem" }}>
                 Add Friend
                 <SendIcon
                   style={{
                     fontSize: "14px",
                     position: "relative",
                     top: "3px",
+                    marginLeft: "0.5rem",
                   }}
                 />
               </span>
