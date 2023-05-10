@@ -8,6 +8,7 @@ import Picker from "emoji-picker-react";
 import { IoIosVideocam, IoMdCall } from "react-icons/io";
 import { config } from "../Config";
 import axios from "axios";
+import YAssit from "../assets/images/yassit.gif";
 import ChatBoxComponent from "./ChatBoxComponent";
 import Peer from "simple-peer";
 import io from "socket.io-client";
@@ -100,6 +101,7 @@ export default function FriendsList() {
       .get(`${config.url}/api/getFriendsList`, AccessDetails)
       .then((res) => {
         const friends = [];
+        console.log(res.data.data[0]);
         res.data.data[0].friends_list.map(async (item) => {
           console.log(item);
           const AccessDetailsUser = {
@@ -108,14 +110,14 @@ export default function FriendsList() {
               // "Content-Type": "application/json",
             },
             params: {
-              from: item,
+              from: item.id,
             },
           };
           console.log(AccessDetailsUser);
           await axios
             .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
             .then((res) => {
-              console.log(res.data.data[0]);
+              console.log(res.data);
               setfriendsCount((friendsCount) => [
                 ...friendsCount,
                 res.data.data[0],
@@ -415,13 +417,76 @@ export default function FriendsList() {
   return (
     <div
       onMouseOut={() => {
-        setListIndex(undefined);
+        // setListIndex(undefined);
       }}
     >
       {/* {console.log(friendsCount)}
       {alert(friendsCount.length)} */}
       {/* {friendsCount.length > 0 ? <div>Empty</div> : console.log(friendsCount)} */}
       {/* <div>{friendsCount.length}</div> */}
+      <div
+        style={{ position: "relative" }} //key={index} // onMouseOut={() => { //   setListIndex(undefined); // }}
+      >
+        <Card
+          className="feedCard"
+          style={{ marginBottom: 2 }} // key={index} // onMouseOver={() => //   listIndex === index //     ? setListIndex(undefined) //     : setListIndex(index) // } // onMouseOut={() => { //   setListIndex(undefined); // }} // onClick={() => { //   showChatBox(item, index); // }}
+        >
+          <CardContent
+            style={{ padding: 10, fontSize: "14px", fontFamily: "monospace" }}
+          >
+            <img
+              src={YAssit}
+              style={{ width: "25px", borderRadius: "74%", float: "left" }}
+            />
+            Your Assit
+          </CardContent>
+        </Card>
+        {/* {index === listIndex ? (
+
+          // {userVisible ? (
+
+          <div
+
+            style={{
+
+              position: "absolute",
+
+              width: "300px",
+
+              height: "100px",
+
+              right: "210px",
+
+              background: "#fff",
+
+              borderRadius: 15,
+
+              padding: "1rem",
+
+              boxShadow: "0px 0px 5px #000",
+
+              top: 0,
+
+            }}
+
+            onMouseOver={() => {
+
+              setListIndex(index);
+
+            }}
+
+          >
+
+            {item.userName}
+
+          </div>
+
+        ) : (
+
+          ""
+
+        )} */}
+      </div>
       {friendsCount.map((item, index) => {
         return (
           // <div key={index}>{item.userName}</div>

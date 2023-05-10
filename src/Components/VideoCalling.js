@@ -260,8 +260,11 @@ export default function VideoCalling() {
         </div>
       ) : null} */}
       <>
-        <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1>
-        <div className="container">
+        {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1> */}
+        <div
+          className="container"
+          style={{ overflow: "hidden", background: "#000" }}
+        >
           <div className="video-containercall">
             <div className="video">
               {stream && (
@@ -270,7 +273,7 @@ export default function VideoCalling() {
                   muted
                   ref={myVideo}
                   autoPlay
-                  style={{ width: "300px" }}
+                  style={{ width: "100vw", height: "100vh" }}
                 />
               )}
             </div>
@@ -285,7 +288,7 @@ export default function VideoCalling() {
               ) : null}
             </div>
           </div>
-          <div className="myId">
+          {/* <div className="myId">
             <TextField
               id="filled-basic"
               label="Name"
@@ -331,7 +334,7 @@ export default function VideoCalling() {
               )}
               {idToCall}
             </div>
-          </div>
+          </div> */}
           <div>
             {receivingCall && !callAccepted ? (
               <div className="caller">

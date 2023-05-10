@@ -11,12 +11,17 @@ import InputEmoji from "react-input-emoji";
 import { config } from "../Config";
 import axios from "axios";
 import image from "../assets/images/avatar.png";
-
+import ReactAudioPlayer from "react-audio-player";
+import Accept from "../assets/images/Accept_1.gif";
+import Rejected from "../assets/images/Rejected_1.gif";
+import RingTone from "../assets/audio/beam_me_up.mp3";
 import { IoIosVideocam, IoMdCall } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { io } from "socket.io-client";
+import VideoCalling from "./VideoCalling";
+import { FiPhoneOff } from "react-icons/fi";
 // import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const MessagesList = forwardRef((props, ref) => {
@@ -188,7 +193,7 @@ export default function ChatBoxComponent(props) {
   let socket = null;
   const [text, setText] = useState("");
   const [showTopBtn, setShowTopBtn] = useState(false);
-  const [VideoCalling, setVideoCalling] = useState(false);
+  const [VideoCalling, setVideoCalling] = useState(true);
   const childRef = useRef(null);
   const mesRef = useRef(null);
   const listInnerRef = useRef();
@@ -264,7 +269,8 @@ export default function ChatBoxComponent(props) {
     // setVideoCalling(true);
     // return <Video data={username} />;
 
-    navigation("/VideoCalling", { state: { userData: username } });
+    VideoCalling ? setVideoCalling(true) : setVideoCalling(false);
+    //navigation("/VideoCalling", { state: { userData: username } });
   };
   return (
     <>
@@ -340,66 +346,71 @@ export default function ChatBoxComponent(props) {
               fontSize="12px"
               placeholder="Type a message"
             />
-
-            <div></div>
           </div>
         </div>
       </div>
-      {/* {VideoCalling ? <Video data={item.data.userId} /> : null} */}
+      {VideoCalling ? <Video data={item.data.userId} /> : null}
+      {/* <div style={{ position: "absolute" }}>
+        {VideoCalling ? <VideoCalling /> : null}
+      </div> */}
     </>
   );
 }
-// const Video = (data) => {
-//   // alert(data);
-//   // const [Pause, setPause] = useState(false);
-//   const [CallingSysten, setCallingSysten] = useState(false);
-//   return (
-//     <div>
-//       {/* <ReactAudioPlayer
-//         src={RingTone}
-//         autoPlay
-//         controls
-//         // onPause={Pause}
-//         // onPlay={true}
-//       /> */}
-//       {CallingSysten ? (
-//         <div
-//           style={{
-//             width: "100%",
-//             height: "100vh",
-//             position: "fixed",
-//             background: "#030E3E",
-//             zIndex: 99999,
-//             left: 0,
-//             top: 0,
-//           }}
-//         >
-//           {/* <Button
-//           onClick={() => {
-//             setPause(false);
-//           }}
-//         >
-//           Pause
-//         </Button> */}
-//           <div className="CallingUserNameICon">{data.data}</div>
-//           <div className="CallingControlsICons">
-//             <img
-//               src={Accept}
-//               className="acceptCall"
-//               onClick={() => {
-//                 alert("Accepted");
-//               }}
-//             />
-//             <img
-//               src={Rejected}
-//               className="rejectedCall"
-//               onClick={() => {
-//                 alert("Rejected");
-//               }}
-//             />
-//           </div>
-//         </div>
-//       ) : null}
-//     </div>
-//   );
-// };
+const Video = (data) => {
+  //alert(data);
+  // const [Pause, setPause] = useState(false);
+  const [CallingSysten, setCallingSysten] = useState(true);
+  return (
+    <div>
+      {/* <ReactAudioPlayer
+        src={RingTone}
+        autoPlay
+        controls
+        // onPause={Pause}
+        // onPlay={true}
+      /> */}
+      {CallingSysten ? (
+        <div
+          style={{
+            width: "95%",
+            height: "90vh",
+            position: "fixed",
+            background: "#030E3E",
+            zIndex: 99999,
+            left: 0,
+            top: 0,
+            margin: "2rem",
+            borderRadius: "1rem",
+          }}
+        >
+          {/* <Button
+          onClick={() => {
+            setPause(false);
+          }}
+        >
+          Pause
+        </Button> */}
+          {/* <VideoCalling /> */}
+          <div className="CallingUserNameICon">{data.data}</div>
+          <div className="CallingControlsICons">
+            <img
+              src={Accept}
+              className="acceptCall"
+              onClick={() => {
+                alert("Accepted");
+              }}
+            />
+            <img
+              src={Rejected}
+              className="rejectedCall"
+              onClick={() => {
+                alert("Rejected");
+              }}
+            />
+            {/* <FiPhoneOff /> */}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};

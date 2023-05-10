@@ -2,7 +2,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: 7fr 3fr;
+  /* grid-template-columns: 7fr 3fr; */
 }
 
 .myId {
@@ -32,12 +32,12 @@
 }
 
 .video-containercall {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
   justify-content: center;
   align-content: center;
-  margin-top: 10rem;
-  margin-left: 10rem;
+  /* margin-top: 10rem;
+  margin-left: 10rem; */
 }
 
 .caller {
@@ -303,12 +303,13 @@ header > .headerNavBar {
   animation: pulse 2s infinite;
 }
 .CallingControlsICons {
-  width: 40%;
+  width: 30%;
   height: 75px;
   position: fixed;
   bottom: 1rem;
-  margin: 0vw 30vw;
+  margin: 0vw 32vw;
   text-align: center;
+  margin-bottom: 3vh;
 }
 .acceptCall {
   width: 70px;
