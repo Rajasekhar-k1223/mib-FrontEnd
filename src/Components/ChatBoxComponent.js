@@ -191,9 +191,12 @@ const MessagesList = forwardRef((props, ref) => {
 export default function ChatBoxComponent(props) {
   const item = props;
   let socket = null;
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  console.log(token);
   const [text, setText] = useState("");
   const [showTopBtn, setShowTopBtn] = useState(false);
-  const [VideoCalling, setVideoCalling] = useState(true);
+  const [VideoCalling, setVideoCalling] = useState(false);
   const childRef = useRef(null);
   const mesRef = useRef(null);
   const listInnerRef = useRef();
@@ -237,12 +240,29 @@ export default function ChatBoxComponent(props) {
     let ip_address = config.socketIp;
     let socket_port = config.socket;
     let socket = io(ip_address + ":" + socket_port);
-    socket.emit("sendChatToServer", text);
-    console.log(text);
-    console.log(socket);
-    console.log(socket.id);
-    return false;
-    childRef.current.addMsgToList(text, fridId);
+    let messageData = {
+      // headers: {
+      //   Authorization: "Bearer " + token,
+      // },
+      token: token,
+      message: text,
+      from: userId,
+      to: fridId,
+    };
+    socket.emit("sendChatToServer", messageData);
+    socket.on("sendChatToClient", (message) => {
+      // console.log(message);
+      childRef.current.addMsgToList(
+        message.message.message,
+        message.message.to
+      );
+      socket.close();
+    });
+    // const checksocket = socket;
+    // console.log(text);
+    // console.log(socket);
+    // console.log(socket[0]);
+    //return false;
 
     // childRef.current.childFunction2();
     //   const messageto = await axios
@@ -359,7 +379,7 @@ export default function ChatBoxComponent(props) {
 const Video = (data) => {
   //alert(data);
   // const [Pause, setPause] = useState(false);
-  const [CallingSysten, setCallingSysten] = useState(true);
+  const [CallingSysten, setCallingSysten] = useState(false);
   return (
     <div>
       {/* <ReactAudioPlayer
