@@ -48,6 +48,7 @@ export default function Login() {
         {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("userId", response.data.userId);
+          localStorage.setItem("userName", response.data.userName);
           if (response.status === 200) {
             navigation("/userpage");
           } else {

@@ -44,11 +44,11 @@ const MessagesList = forwardRef((props, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
-    addMsgToList(text, fridId) {
+    addMsgToList(text, fridId, date) {
       const current = new Date();
-      const date = `${current.getDate()}/${
-        current.getMonth() + 1
-      }/${current.getFullYear()}`;
+      // const date = `${current.getDate()}/${
+      //   current.getMonth() + 1
+      // }/${current.getFullYear()}`;
       //   console.log("child function 1 called");
       console.log(text);
       console.log(fridId);
@@ -75,6 +75,7 @@ const MessagesList = forwardRef((props, ref) => {
     getMsgs(FrdId);
   }, []);
   const getMsgs = async (FrdId) => {
+    console.log(AccessDetails);
     const r = await axios.get(
       `${config.url}/api/GetMessagesFromFriends`,
       AccessDetails
@@ -129,12 +130,14 @@ const MessagesList = forwardRef((props, ref) => {
                 </div>
                 {messages.from == userId ? (
                   <span style={{ fontSize: 8, float: "right" }}>
-                    {new Date(
-                      Date.parse(messages.created_at)
-                    ).toLocaleTimeString([], {
+                    {/* {new Date(messages.created_at).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
-                    })}
+                    })} */}
+                    {new Date(messages.created_at).toLocaleTimeString(
+                      navigator.language,
+                      { hour: "2-digit", minute: "2-digit" }
+                    )}
                   </span>
                 ) : (
                   <span style={{ fontSize: 8, marginLeft: "1rem" }}>
@@ -253,8 +256,11 @@ export default function ChatBoxComponent(props) {
     socket.on("sendChatToClient", (message) => {
       // console.log(message);
       childRef.current.addMsgToList(
-        message.message.message,
-        message.message.to
+        //message.message.message,
+        //message.message.to
+        message.message.data.message,
+        message.message.data.to,
+        message.message.data.created_at
       );
       socket.close();
     });

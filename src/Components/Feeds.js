@@ -54,6 +54,20 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Badge from "@mui/material/Badge";
+import PropTypes from "prop-types";
+// import Button from "@mui/material/Button";
+// import Avatar from "@mui/material/Avatar";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PersonIcon from "@mui/icons-material/Person";
+import AddIcon from "@mui/icons-material/Add";
+// import Typography from "@mui/material/Typography";
+import { blue } from "@mui/material/colors";
 import {
   Dropzone,
   FileItem,
@@ -68,10 +82,130 @@ import { GiCancel } from "react-icons/gi";
 import ReactPlayer from "react-player";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 var FormData = require("form-data");
 // var fs = require("fs");
 // var encode = require("encode-uri");
 // var createObjectURL = require("create-object-url");
+const Map = ReactMapboxGl({
+  accessToken:
+    "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A",
+});
+function SimpleDialog(props) {
+  //alert(props);
+  const { onClose, selectedValue, open } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+  const handleListItemClick = (value) => {
+    onClose(value);
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Settings</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        {/* {emails.map((email) => (
+          <ListItem disableGutters>
+            <ListItemButton
+              onClick={() => handleListItemClick(email)}
+              key={email}
+            >
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={email} />
+            </ListItemButton>
+          </ListItem>
+        ))} */}
+
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disableGutters>
+          <ListItemButton
+            autoFocus
+            onClick={() => handleListItemClick("addAccount")}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add account" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -81,6 +215,7 @@ const getBase64 = (file) =>
 
     reader.onerror = (error) => reject(error);
   });
+const emails = ["username@gmail.com", "user02@gmail.com"];
 export default function Feeds() {
   const navigation = useNavigate();
   const [AllFeeds, setAllFeeds] = useState([]);
@@ -103,6 +238,7 @@ export default function Feeds() {
   const [showPicker, setShowPicker] = useState(false);
   const [checkbackgroundNewFeed, setcheckbackgroundNewFeed] =
     useState("#ffffff");
+  const [selectedValue, setSelectedValue] = React.useState(emails[1]);
   const [changecolorofField, setchangecolorofField] = useState("red");
   const [Files, setFiles] = useState([]);
   const [files, setfiles] = useState([]);
@@ -119,6 +255,7 @@ export default function Feeds() {
   const [previewTitle, setPreviewTitle] = useState("");
   const [ShareFeed, setShareFeed] = useState(false);
   const [bluroption, setbluroption] = useState(false);
+  const [settingFeed, setsettingFeed] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [imageSrc, setImageSrc] = useState(undefined);
   const [videoSrc, setVideoSrc] = useState(undefined);
@@ -331,6 +468,62 @@ export default function Feeds() {
     //   </div>
     // );
   };
+  const settingClose = (id) => {
+    const resp_with_like = AllFeeds.map((item, key) => {
+      if (item.feedId === id) {
+        // console.log(item.feedId);
+        // console.log(id);
+        const y = item.settingsFeed
+          ? { ...item, settingsFeed: false }
+          : { ...item, settingsFeed: true };
+        console.log(y);
+        return y;
+      } else {
+        // const y = item.emojismileAdd
+        //   ? { ...item, emojismileAdd: de }
+        //   : { ...item, emojismileAdd: false };
+        return item;
+      }
+    });
+    setTimeout(() => {
+      setAllFeeds(resp_with_like);
+    }, 1000);
+  };
+  const Settings = (id) => {
+    //setsettingFeed(true);
+
+    // return (
+    //   <Modal
+    //     open={true}
+    //     onClose={handleClose}
+    //     aria-labelledby="modal-modal-title"
+    //     aria-describedby="modal-modal-description"
+    //     className="newFeedClass"
+    //   >
+    //     welcome to Setting Modal
+    //   </Modal>
+    // );
+    // console.log(AllFeeds);
+    const resp_with_like = AllFeeds.map((item, key) => {
+      if (item.feedId === id) {
+        // console.log(item.feedId);
+        // console.log(id);
+        const y = item.settingsFeed
+          ? { ...item, settingsFeed: false }
+          : { ...item, settingsFeed: true };
+        console.log(y);
+        return y;
+      } else {
+        // const y = item.emojismileAdd
+        //   ? { ...item, emojismileAdd: de }
+        //   : { ...item, emojismileAdd: false };
+        return item;
+      }
+    });
+    setTimeout(() => {
+      setAllFeeds(resp_with_like);
+    }, 1000);
+  };
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
     console.log(res.data);
@@ -368,6 +561,7 @@ export default function Feeds() {
                     EmojiAction: false,
                     checkingLike: false,
                     sharefeedcheck: false,
+                    settingsFeed: false,
                   }
                 : {
                     ...el,
@@ -375,6 +569,7 @@ export default function Feeds() {
                     EmojiAction: false,
                     checkingLike: ceckfinf,
                     sharefeedcheck: false,
+                    settingsFeed: false,
                   };
             return yy;
           });
@@ -573,6 +768,7 @@ export default function Feeds() {
     };
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    const userName = localStorage.getItem("userName");
     const formData = new FormData();
     formData.append("data", newfeed);
     // Alert.alert(title);
@@ -587,6 +783,7 @@ export default function Feeds() {
       //return false;
       formData.append("userId", userId);
       //  formData.append("title", title);
+      formData.append("userName", userName);
       formData.append("description", inputStr);
       formData.append("type", image.type);
       formData.append("uploadImage[]", image);
@@ -1122,14 +1319,30 @@ export default function Feeds() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="settings">
+            <IconButton
+              aria-label="settings"
+              onClick={() => {
+                Settings(item.feedId);
+              }}
+            >
               <MoreVertIcon />
             </IconButton>
           }
           subheaderTypographyProps={{ fontSize: 10 }}
           title={item.userName || item.username}
-          subheader={item.CreatedAt || item.created_at}
+          subheader={
+            new Date(item.CreatedAt).toLocaleString() ||
+            new Date(item.created_at).toLocaleString()
+          }
         />
+        {item.settingsFeed ? (
+          <SimpleDialog
+            selectedValue={item.feedId}
+            open={item.settingsFeed}
+            onClose={settingClose}
+          />
+        ) : null}
+
         {/* <CardContent style={{ paddingBottom: 5 }}>
           <img
             src={image}
@@ -1404,7 +1617,6 @@ export default function Feeds() {
     </div>
   );
   const project = () => {
-    alert(emojismileAdd);
     switch (emojismileAdd) {
       case "love":
         return <Love />;
@@ -1429,7 +1641,6 @@ export default function Feeds() {
       <div
         style={{
           width: "100%",
-
           paddingBottom: "5rem",
           float: "left",
         }}
@@ -1475,6 +1686,7 @@ export default function Feeds() {
         >
           +
         </div>
+
         <Modal
           open={NewFeedPage}
           onClose={handleClose}
@@ -1918,7 +2130,12 @@ export default function Feeds() {
                           cursor: "pointer",
                         }}
                       />
-                      <MdOutlineFileUpload size={20} />
+                      <MdOutlineFileUpload
+                        size={20}
+                        onClick={() => {
+                          alert("hello");
+                        }}
+                      />
                       <Dropzone
                         onChange={updateFiles}
                         value={files}

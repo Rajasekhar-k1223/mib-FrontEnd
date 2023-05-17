@@ -106,10 +106,11 @@
     width: 100%;
   }
   .mainbannerLoginpage {
-    display: none !important;
+    /* display: none !important; */
+    width: 68% !important;
   }
   .loginForm {
-    width: 100%;
+    width: 31.99% !important;
     overflow: hidden;
   }
 }
@@ -127,6 +128,33 @@
     overflow: hidden;
   }
 }
+/* On screens that are 992px wide or less, go from four columns to two columns */
+@media screen and (max-width: 300px) and (min-width: 200px) {
+  .column {
+    width: 100%;
+  }
+  .mainbannerLoginpage {
+    display: none !important;
+  }
+  .loginForm {
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+/* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+/* @media screen and (max-width: 600px) and (min-width: 300px) {
+  .column {
+    width: 100% !important;
+  }
+  .mainbannerLoginpage {
+    display: none !important;
+  }
+  .loginForm {
+    width: 100% !important;
+    overflow: hidden;
+  }
+} */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -1005,4 +1033,14 @@ header > .headerNavBar {
 }
 .chatSystemICons > *:hover {
   color: blueviolet;
+}
+.FeedSettingModal {
+  position: absolute;
+  width: 100px;
+  height: 150px;
+  box-shadow: 0px 0px 5px #000;
+  right: 0;
+  background: #fff;
+  top: 16rem;
+  right: 2rem;
 }

@@ -59,8 +59,12 @@ export default function FriendView(userIdData) {
     await axios
       .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
       .then((res) => {
-        console.log(res.data.data[0]);
+        console.log(res.data.data.length);
+        // res.data.length > 0
+        // () => {
         setcheckFriendRequest(res.data.data[0]);
+        // };
+        // : null;
       });
   };
   const drag = (event) => {
@@ -212,21 +216,26 @@ export default function FriendView(userIdData) {
               SendFriendRequestNew(UserDetailsAfterGet.userId, userId);
             }}
           >
-            {checkFriendRequest.status === "request" ? (
-              "Request Waiting"
-            ) : (
-              <span style={{ lineHeight: "1.5rem" }}>
-                Add Friend
-                <SendIcon
-                  style={{
-                    fontSize: "14px",
-                    position: "relative",
-                    top: "3px",
-                    marginLeft: "0.5rem",
-                  }}
-                />
-              </span>
-            )}
+            {console.log("first")}
+            {console.log(checkFriendRequest)}
+            {console.log(checkFriendRequest.length)}
+            {checkFriendRequest.length > 0 ? (
+              checkFriendRequest.status === "request" ? (
+                "Request Waiting"
+              ) : (
+                <span style={{ lineHeight: "1.5rem" }}>
+                  Add Friend
+                  <SendIcon
+                    style={{
+                      fontSize: "14px",
+                      position: "relative",
+                      top: "3px",
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                </span>
+              )
+            ) : null}
           </div>
         )}
         <div
