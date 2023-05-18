@@ -18,9 +18,11 @@ export default function FriendView(userIdData) {
   const [globalCoords, setGlobalCoords] = useState({ x: 0, y: 0 });
   const [Opacity, setOpacity] = useState(1);
   const [session, setsession] = useState(false);
+  const [FriendRequest, setFriendRequest] = useState(0);
   const [checkFriendRequest, setcheckFriendRequest] = useState([]);
   const [UserDetailsAfterGet, setUserDetailsAfterGet] = useState([]);
   const [ChangeMenu, setChangeMenu] = useState("about");
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
   const [uploadBackgroundBannerFile, setuploadBackgroundBannerFile] =
     useState(0);
   const dragRef = useRef(null);
@@ -60,11 +62,11 @@ export default function FriendView(userIdData) {
       .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
       .then((res) => {
         console.log(res.data.data.length);
-        // res.data.length > 0
-        // () => {
-        setcheckFriendRequest(res.data.data[0]);
-        // };
-        // : null;
+        setFriendRequest(res.data.data.length);
+        const checkDAtList =
+          res.data.data.length > 0 ? res.data.data[0] : res.data.data.length;
+        console.log(checkDAtList);
+        setcheckFriendRequest(...checkFriendRequest, checkDAtList);
       });
   };
   const drag = (event) => {
@@ -120,19 +122,45 @@ export default function FriendView(userIdData) {
       setOpacity(0.5);
     }
   };
-  const SendFriendRequestNew = (requestId, userId) => {
-    console.log(requestId, userId);
+  const SendFriendRequestNew = async (requestId, userId) => {
+    const friendDetails = {
+      from: parseInt(userId),
+      to: parseInt(requestId),
+      status: "request",
+    };
+    const requestfriend = await axios.post(
+      `${config.url}/api/FriendRequestFrom`,
+      friendDetails,
+      {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      }
+    );
+    // requestfriend.then((response) => {
+    console.log(requestfriend);
+    // });
   };
   useEffect(() => {
     //  get global mouse coordinates
-    getUserDetails();
+    if (!hasBeenCalled) {
+      // Perform your logic for the first function call here
+      console.log("First useEffect call");
+      getUserDetails();
+      setHasBeenCalled(true);
+    } else {
+      // Perform your logic for subsequent function calls here
+      console.log("Subsequent useEffect call");
+    }
+
     const handleWindowMouseMove = (event) => {
+      console.log("event");
       setGlobalCoords({
         x: event.screenX,
         y: event.screenY,
       });
     };
-    window.addEventListener("mousemove", handleWindowMouseMove);
+    //window.addEventListener("mousemove", handleWindowMouseMove);
 
     return () => {
       window.removeEventListener("mousemove", handleWindowMouseMove);
@@ -210,20 +238,18 @@ export default function FriendView(userIdData) {
             </Button>
           )
         ) : (
-          <div
-            className="followingButton"
-            onClick={() => {
-              SendFriendRequestNew(UserDetailsAfterGet.userId, userId);
-            }}
-          >
-            {console.log("first")}
+          <div className="followingButton">
             {console.log(checkFriendRequest)}
-            {console.log(checkFriendRequest.length)}
-            {checkFriendRequest.length > 0 ? (
+            {FriendRequest > 0 ? (
               checkFriendRequest.status === "request" ? (
                 "Request Waiting"
               ) : (
-                <span style={{ lineHeight: "1.5rem" }}>
+                <span
+                  style={{ lineHeight: "1.5rem" }}
+                  onClick={() => {
+                    SendFriendRequestNew(UserDetailsAfterGet.userId, userId);
+                  }}
+                >
                   Add Friend
                   <SendIcon
                     style={{
@@ -235,7 +261,24 @@ export default function FriendView(userIdData) {
                   />
                 </span>
               )
-            ) : null}
+            ) : (
+              <span
+                style={{ lineHeight: "1.5rem" }}
+                onClick={() => {
+                  SendFriendRequestNew(UserDetailsAfterGet.userId, userId);
+                }}
+              >
+                Add Friend
+                <SendIcon
+                  style={{
+                    fontSize: "14px",
+                    position: "relative",
+                    top: "3px",
+                    marginLeft: "0.5rem",
+                  }}
+                />
+              </span>
+            )}
           </div>
         )}
         <div
