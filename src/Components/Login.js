@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -36,17 +36,17 @@ export default function Login() {
   //console.log("login");
   const [user, setUser] = useState("");
   const [socket, setSocket] = useState(null);
-    useEffect(() => {
-      let ip_address = config.socketIp;
+  useEffect(() => {
+    let ip_address = config.socketIp;
     let socket_port = config.socket;
     let socket = io(ip_address + ":" + socket_port);
-      setSocket(socket);
-    }, []);
-  
-    useEffect(() => {
-      console.log(localStorage.getItem('userName'))
-      socket?.emit("newUser", user);
-    }, [socket, user]);
+    setSocket(socket);
+  }, []);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("userName"));
+    socket?.emit("newUser", localStorage.getItem("userId"));
+  }, [socket, user]);
   const LoginAccount = () => {
     setsubmitData(true);
     const userInfo = {
@@ -65,7 +65,7 @@ export default function Login() {
           localStorage.setItem("userName", response.data.userName);
           if (response.status === 200) {
             setUser(response.data);
-            navigation("/userpage");
+            navigation("/userpage", { socket: socket });
           } else {
             // alert(response.data.error);
 

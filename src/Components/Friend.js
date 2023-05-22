@@ -4,7 +4,7 @@ import { Base64 } from "js-base64";
 import Header from "./Header";
 import FriendsList from "./FriendsList";
 import FriendView from "./FriendView";
-export default function Friend() {
+export default function Friend(socket) {
   const navigation = useNavigate();
   const uselocation = useLocation().search;
   const name = new URLSearchParams(uselocation).get("name");
@@ -23,7 +23,7 @@ export default function Friend() {
             overflowY: "auto",
           }}
         >
-          <FriendView userIdData={userData} />
+          <FriendView userIdData={userData} socket={socket} />
         </div>
         <div className="friendsListSection">
           <FriendsList />

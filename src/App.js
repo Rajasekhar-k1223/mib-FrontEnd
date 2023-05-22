@@ -24,7 +24,6 @@ import ChatList from "./Components/ChatList";
 // Initialize Firebase
 
 function App() {
-  
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
   //   document.addEventListener("click", checkingTokenCon);

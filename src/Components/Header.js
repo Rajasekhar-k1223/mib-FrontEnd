@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { RiSettings2Line } from "react-icons/ri";
 import { RiMailLine } from "react-icons/ri";
@@ -19,6 +19,7 @@ import { IoIosNotifications } from "react-icons/io";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import axios from "axios";
+import { io } from "socket.io-client";
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
@@ -30,9 +31,19 @@ export default function Header() {
   const open = Boolean(anchorEl);
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
+  let ip_address = config.socketIp;
+  let socket_port = config.socket;
+  let socket = io(ip_address + ":" + socket_port);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  useEffect(() => {
+    // console.log(socket);
+    socket.on("getNotification", (response) => {
+      console.log(response);
+    });
+  }, []);
+
   const handleClose = (url) => {
     //setAnchorEl(null);
     // alert(url);
