@@ -21,6 +21,7 @@ import Select from "@mui/material/Select";
 import { makeStyles, styled } from "@mui/styles";
 import axios from "axios";
 import { config } from "../Config";
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   input: {
     "&.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root": {
@@ -60,6 +61,7 @@ export default function UserNew() {
   const [dateofbirth, setdateofbirth] = useState(null);
   const [gender, setgender] = useState("");
   const [mobile, setmobile] = useState(null);
+  const navigation = useNavigate();
   const SignupAccount = () => {
     const userData = {
       username: username,
@@ -70,8 +72,10 @@ export default function UserNew() {
       gender: gender,
       mobile: mobile,
     };
+    console.log(userData)
     axios.post(config.url + "/api/newUser", userData).then((response) => {
       console.log(response);
+      navigation("/");
     });
   };
   const handleChangeGender = (event) => {

@@ -18,11 +18,13 @@ import UserNew from "./Components/UserNew";
 import PasswordForgot from "./Components/PasswordForgot";
 import Friend from "./Components/Friend";
 import ChatList from "./Components/ChatList";
+
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
 
 function App() {
+  
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
   //   document.addEventListener("click", checkingTokenCon);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -20,6 +20,7 @@ import mails from "../assets/images/64666.jpg";
 import gifsrc1 from "../assets/images/transistor-fast-delivery-1.gif";
 import gifsrc2 from "../assets/images/dazzle-team-celebrating-success-of-a-work-project.gif";
 import CircularProgress from "@mui/material/CircularProgress";
+import { io } from "socket.io-client";
 const axios = require("axios").default;
 
 export default function Login() {
@@ -32,7 +33,20 @@ export default function Login() {
   const [submitData, setsubmitData] = useState(false);
   const [error, seterror] = useState("");
   const [errorhide, seterrorhide] = useState(false);
-  console.log("login");
+  //console.log("login");
+  const [user, setUser] = useState("");
+  const [socket, setSocket] = useState(null);
+    useEffect(() => {
+      let ip_address = config.socketIp;
+    let socket_port = config.socket;
+    let socket = io(ip_address + ":" + socket_port);
+      setSocket(socket);
+    }, []);
+  
+    useEffect(() => {
+      console.log(localStorage.getItem('userName'))
+      socket?.emit("newUser", user);
+    }, [socket, user]);
   const LoginAccount = () => {
     setsubmitData(true);
     const userInfo = {
@@ -50,6 +64,7 @@ export default function Login() {
           localStorage.setItem("userId", response.data.userId);
           localStorage.setItem("userName", response.data.userName);
           if (response.status === 200) {
+            setUser(response.data);
             navigation("/userpage");
           } else {
             // alert(response.data.error);
