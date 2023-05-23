@@ -11,8 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { config } from "../Config";
 import { io } from "socket.io-client";
-export default function FriendView(userIdData, socket) {
-  console.log(socket);
+export default function FriendView({ userIdData, socket }) {
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
@@ -41,7 +40,7 @@ export default function FriendView(userIdData, socket) {
         // "Content-Type": "application/json",
       },
       params: {
-        from: userIdData.userIdData,
+        from: userIdData,
       },
     };
     const AccessDetailsUserCheck = {
@@ -51,14 +50,14 @@ export default function FriendView(userIdData, socket) {
       },
       params: {
         from: userId,
-        to: userIdData.userIdData,
+        to: userIdData,
       },
     };
     //   console.log(AccessDetailsUser);
     await axios
       .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
       .then((res) => {
-        console.log(res.data.data[0]);
+        console.log(res.data);
         setUserDetailsAfterGet(res.data.data[0]);
       });
     await axios
@@ -127,8 +126,8 @@ export default function FriendView(userIdData, socket) {
   };
   const SendFriendRequestNew = async (requestId, userId) => {
     //type === 1 && setLiked(true);
-    console.log(socket)
-    socket.socket.emit("sendNotification", {
+    console.log(socket);
+    socket.emit("sendNotification", {
       senderName: userId,
       receiverName: requestId,
       type: "request",
@@ -190,7 +189,7 @@ export default function FriendView(userIdData, socket) {
     <>
       <div className="FriendBanner dragscroll" ref={dragAreaRef}>
         {/* <div className="FriendBannerHeaderBackground"></div> */}
-
+        {console.log(UserDetailsAfterGet)}
         {session === true ? (
           <img
             src={UserDetailsAfterGet.bannerImage}

@@ -56,7 +56,7 @@ export default function FriendsList() {
   //   );
   //   console.log(ChatcontentView);
   // };
-  const socket = io.connect("http://apilistelsea.co.in:" + config.socket);
+  const socket = io.connect("http://localhost:" + config.socket);
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =

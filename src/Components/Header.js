@@ -20,7 +20,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import axios from "axios";
 import { io } from "socket.io-client";
-export default function Headers(socket) {
+export default function Headers({ socket }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
   const [inputWith, setinputWith] = useState(0);
@@ -33,24 +33,22 @@ export default function Headers(socket) {
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
-  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   useEffect(() => {
     // console.log(socket);
-  //   let ip_address = config.socketIp;
-  // let socket_port = config.socket;
-  // setsocket(io(ip_address + ":" + socket_port));
-  console.log("Header")
-  console.log(socket)
-  console.log(socket.socket)
-  socket.socket.on("getNotification", (response) => {
+    //   let ip_address = config.socketIp;
+    // let socket_port = config.socket;
+    // setsocket(io(ip_address + ":" + socket_port));
+    console.log("Header");
+    console.log(socket);
+    socket.on("getNotification", (response) => {
       console.log(response);
     });
-  }, [socket.socket]);
+  }, [socket]);
 
-  
   const handleClose = (url) => {
     //setAnchorEl(null);
     // alert(url);
@@ -86,7 +84,7 @@ export default function Headers(socket) {
     navigation("/friend:?name=" + appName);
   };
   const checkinguri = (url) => {
-   // console.log(url);
+    // console.log(url);
     navigation("/" + url);
   };
   const showSearchBar = () => {
@@ -290,7 +288,7 @@ export default function Headers(socket) {
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           > */}
-          <HiUserCircle size={35} color="black" className="userIconMenu" /> 
+          <HiUserCircle size={35} color="black" className="userIconMenu" />
           <sub>{userName}</sub>
           <div className="Submunu">
             <div
