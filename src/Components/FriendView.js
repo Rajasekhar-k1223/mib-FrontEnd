@@ -12,6 +12,7 @@ import axios from "axios";
 import { config } from "../Config";
 import { io } from "socket.io-client";
 export default function FriendView(userIdData, socket) {
+  console.log(socket);
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
@@ -126,10 +127,8 @@ export default function FriendView(userIdData, socket) {
   };
   const SendFriendRequestNew = async (requestId, userId) => {
     //type === 1 && setLiked(true);
-    let ip_address = config.socketIp;
-    let socket_port = config.socket;
-    let socket = io(ip_address + ":" + socket_port);
-    socket.emit("sendNotification", {
+    console.log(socket)
+    socket.socket.emit("sendNotification", {
       senderName: userId,
       receiverName: requestId,
       type: "request",

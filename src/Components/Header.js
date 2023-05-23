@@ -20,7 +20,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import axios from "axios";
 import { io } from "socket.io-client";
-export default function Header() {
+export default function Headers(socket) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
   const [inputWith, setinputWith] = useState(0);
@@ -28,22 +28,29 @@ export default function Header() {
   const [listofusers, setlistofusers] = useState([]);
   const [NotificationList, setNotificationList] = useState([]);
   const [showNotifications, setshowNotifications] = useState(false);
+  // const [socket, setsocket] = useState(null)
   const open = Boolean(anchorEl);
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
-  let ip_address = config.socketIp;
-  let socket_port = config.socket;
-  let socket = io(ip_address + ":" + socket_port);
+  const userName = localStorage.getItem("userName");
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   useEffect(() => {
     // console.log(socket);
-    socket.on("getNotification", (response) => {
+  //   let ip_address = config.socketIp;
+  // let socket_port = config.socket;
+  // setsocket(io(ip_address + ":" + socket_port));
+  console.log("Header")
+  console.log(socket)
+  console.log(socket.socket)
+  socket.socket.on("getNotification", (response) => {
       console.log(response);
     });
-  }, []);
+  }, [socket.socket]);
 
+  
   const handleClose = (url) => {
     //setAnchorEl(null);
     // alert(url);
@@ -79,12 +86,12 @@ export default function Header() {
     navigation("/friend:?name=" + appName);
   };
   const checkinguri = (url) => {
-    console.log(url);
+   // console.log(url);
     navigation("/" + url);
   };
   const showSearchBar = () => {
     for (let i = 0; i <= 400; i++) {
-      console.log(i);
+      // console.log(i);
       setTimeout(() => {
         setinputWith(i);
         setSearchbar("block");
@@ -283,7 +290,8 @@ export default function Header() {
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           > */}
-          <HiUserCircle size={35} color="black" className="userIconMenu" />
+          <HiUserCircle size={35} color="black" className="userIconMenu" /> 
+          <sub>{userName}</sub>
           <div className="Submunu">
             <div
               onClick={() => {
