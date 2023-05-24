@@ -45,6 +45,7 @@ export default function Headers({ socket }) {
     console.log("Header");
     console.log(socket);
     socket.on("getNotification", (response) => {
+      alert(response)
       console.log(response);
     });
   }, [socket]);

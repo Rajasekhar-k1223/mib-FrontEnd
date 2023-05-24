@@ -130,9 +130,11 @@ export default function FriendView({ userIdData, socket }) {
     socket.emit("sendNotification", {
       senderName: userId,
       receiverName: requestId,
-      type: "request",
     });
-
+    socket.on("getNotification", (response) => {
+      alert(response)
+      console.log(response);
+    });
     const friendDetails = {
       from: parseInt(userId),
       to: parseInt(requestId),

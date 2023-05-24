@@ -41,6 +41,7 @@ function App() {
   //     ? setcheckingToken(false)
   //     : setcheckingToken(true);
   // };
+  console.log("Socket App")
   console.log(socket)
   return (
     <Router>
@@ -53,7 +54,7 @@ function App() {
         <Route exact path="/settings" element={<Settings />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/chatList" element={<ChatList />} />
-        <Route exact path="/friendsView" element={<FriendsView />} />
+        <Route exact path="/friendsView" element={<FriendsView socket={socket} />} />
         <Route exact path="/newgrid" element={<NewGridView />} />
         <Route exact path="/videoCalling" element={<VideoCalling />} />
         <Route exact path="/passwordForgot" element={<PasswordForgot />} />

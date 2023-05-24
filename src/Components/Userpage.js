@@ -4,7 +4,7 @@ import FriendsList from "./FriendsList";
 import Header from "./Header";
 import { io } from "socket.io-client";
 import { config } from "../Config";
-export default function Userpage(socket) {
+export default function Userpage({socket}) {
   console.log("userpage")
   console.log(socket)
   const [Dragable, setDragable] = useState("pointer");
@@ -18,7 +18,7 @@ export default function Userpage(socket) {
   return (
     <div>
       <Header
-        socket={socket.socket}
+        socket={socket}
         changingHeaderDragble={changingHeaderDragble}
         style={{ cursor: Dragable }}
       />
