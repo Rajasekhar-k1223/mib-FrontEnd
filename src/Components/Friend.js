@@ -4,7 +4,7 @@ import { Base64 } from "js-base64";
 import Header from "./Header";
 import FriendsList from "./FriendsList";
 import FriendView from "./FriendView";
-export default function Friend(socket) {
+export default function Friend({ socket }) {
   const [Dragable, setDragable] = useState("pointer");
   const changingHeaderDragble = () => {
     setDragable("all-scroll");
@@ -13,15 +13,13 @@ export default function Friend(socket) {
   const uselocation = useLocation().search;
   const name = new URLSearchParams(uselocation).get("name");
   const userData = Base64.decode(Base64.decode(name));
-  const socketN = socket.socket;
   console.log("Friend View");
-  console.log(socketN);
   return (
     <>
       <Header
-        socket={socketN}
-        changingHeaderDragble={changingHeaderDragble}
-        style={{ cursor: Dragable }}
+        socket={socket}
+        // changingHeaderDragble={changingHeaderDragble}
+        // style={{ cursor: Dragable }}
       />
       <div className="MainSection">
         <div
@@ -33,7 +31,7 @@ export default function Friend(socket) {
             overflowY: "auto",
           }}
         >
-          <FriendView userIdData={userData} socket={socketN} />
+          <FriendView userIdData={userData} socket={socket} />
         </div>
         <div className="friendsListSection">
           <FriendsList />

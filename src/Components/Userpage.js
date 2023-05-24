@@ -4,9 +4,9 @@ import FriendsList from "./FriendsList";
 import Header from "./Header";
 import { io } from "socket.io-client";
 import { config } from "../Config";
-export default function Userpage({socket}) {
-  console.log("userpage")
-  console.log(socket)
+export default function Userpage({ socket }) {
+  console.log("userpage");
+  console.log(socket);
   const [Dragable, setDragable] = useState("pointer");
   const changingHeaderDragble = () => {
     setDragable("all-scroll");
@@ -19,8 +19,8 @@ export default function Userpage({socket}) {
     <div>
       <Header
         socket={socket}
-        changingHeaderDragble={changingHeaderDragble}
-        style={{ cursor: Dragable }}
+        // changingHeaderDragble={changingHeaderDragble}
+        // style={{ cursor: Dragable }}
       />
       <div className="MainSection">
         <div className="FeedsSections">

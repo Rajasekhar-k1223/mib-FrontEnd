@@ -18,20 +18,39 @@ import UserNew from "./Components/UserNew";
 import PasswordForgot from "./Components/PasswordForgot";
 import Friend from "./Components/Friend";
 import ChatList from "./Components/ChatList";
-import {config} from "./Config";
+import { config } from "./Config";
 import { io } from "socket.io-client";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
 
 function App() {
-  const [socket, setsocket] = useState(null);
-  useEffect(() => {
-    let ip_address = config.socketIp;
+  //const [socket, setsocket] = useState(null);
+  let ip_address = config.socketIp;
   let socket_port = config.socket;
-  socket === null ? setsocket(io(ip_address + ":" + socket_port)):setsocket(io(ip_address + ":" + socket_port))
-  }, [])
-  
+  const socket = io(ip_address + ":" + socket_port);
+  // useEffect(() => {
+  //   let ip_address = config.socketIp;
+  //   let socket_port = config.socket;
+  //   socket === null
+  //     ? setsocket(io(ip_address + ":" + socket_port))
+  //     : setsocket(io(ip_address + ":" + socket_port));
+  // }, []);
+  useEffect(() => {
+    // getNotification();
+    // let ip_address = config.socketIp;
+    // let socket_port = config.socket;
+    // const socket = io(ip_address + ":" + socket_port);
+    socket.on("getNotification", (response) => {
+      console.log("getnotification");
+      console.log(response);
+      <GetNotification />;
+    });
+  }, [socket]);
+  const GetNotification = () => {
+    alert("hello");
+    <div className="notification_frd_request">Hello</div>;
+  };
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
   //   document.addEventListener("click", checkingTokenCon);
@@ -41,27 +60,56 @@ function App() {
   //     ? setcheckingToken(false)
   //     : setcheckingToken(true);
   // };
-  console.log("Socket App")
-  console.log(socket)
+
+  console.log("Socket App");
+  console.log(socket);
   return (
     <Router>
       {/* {checkingToken ? <Header /> : null} */}
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/" element={<Login socket={socket} />} />
         <Route exact path="/about" element={<About />} />
         <Route exact path="/userpage" element={<Userpage socket={socket} />} />
-        <Route exact path="/email" element={<EmailSystem />} />
-        <Route exact path="/settings" element={<Settings />} />
-        <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/chatList" element={<ChatList />} />
-        <Route exact path="/friendsView" element={<FriendsView socket={socket} />} />
-        <Route exact path="/newgrid" element={<NewGridView />} />
-        <Route exact path="/videoCalling" element={<VideoCalling />} />
-        <Route exact path="/passwordForgot" element={<PasswordForgot />} />
+        <Route exact path="/email" element={<EmailSystem socket={socket} />} />
+        <Route exact path="/settings" element={<Settings socket={socket} />} />
+        <Route exact path="/profile" element={<Profile socket={socket} />} />
+        <Route exact path="/chatList" element={<ChatList socket={socket} />} />
+        <Route
+          exact
+          path="/friendsView"
+          element={<FriendsView socket={socket} />}
+        />
+        <Route
+          exact
+          path="/newgrid"
+          element={<NewGridView socket={socket} />}
+        />
+        <Route
+          exact
+          path="/videoCalling"
+          element={<VideoCalling socket={socket} />}
+        />
+        <Route
+          exact
+          path="/passwordForgot"
+          element={<PasswordForgot socket={socket} />}
+        />
         <Route exact path="/signup" element={<UserNew />} />
-        <Route exact path="/blog:appName" element={<BlogViewPage />} />
-        <Route exact path="/page:appName" element={<AppViewPage />} />
-        <Route exact path="/friend:friendName" element={<Friend socket={socket} />} />
+        <Route
+          exact
+          path="/blog:appName"
+          element={<BlogViewPage socket={socket} />}
+        />
+        <Route
+          exact
+          path="/page:appName"
+          element={<AppViewPage socket={socket} />}
+        />
+        <Route
+          exact
+          path="/friend:friendName"
+          element={<Friend socket={socket} />}
+        />
       </Routes>
     </Router>
   );

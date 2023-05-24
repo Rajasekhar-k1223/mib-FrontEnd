@@ -37,18 +37,20 @@ export default function Headers({ socket }) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  useEffect(() => {
-    // console.log(socket);
-    //   let ip_address = config.socketIp;
-    // let socket_port = config.socket;
-    // setsocket(io(ip_address + ":" + socket_port));
-    console.log("Header");
-    console.log(socket);
-    socket.on("getNotification", (response) => {
-      alert(response)
-      console.log(response);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   // console.log(socket);
+  //   // let ip_address = config.socketIp;
+  //   // let socket_port = config.socket;
+  //   // setsocket(io(ip_address + ":" + socket_port));
+  //   console.log("Header");
+  //   //    console.log(socket);
+  //   // let socket = io(ip_address + ":" + socket_port);
+  //   // console.log(socket);
+  //   // socket.on("getNotification", (response) => {
+  //   //   alert(response);
+  //   //   console.log(response);
+  //   // });
+  // }, [socket]);
 
   const handleClose = (url) => {
     //setAnchorEl(null);
@@ -75,6 +77,7 @@ export default function Headers({ socket }) {
   };
   const navigation = useNavigate();
   const LogOut = () => {
+    // socket.emit("logout", userId);
     localStorage.setItem("token", "");
     localStorage.setItem("userId", "");
     navigation("/");

@@ -23,7 +23,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { io } from "socket.io-client";
 const axios = require("axios").default;
 
-export default function Login() {
+export default function Login({ socket }) {
   const navigation = useNavigate();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
@@ -35,13 +35,13 @@ export default function Login() {
   const [errorhide, seterrorhide] = useState(false);
   //console.log("login");
   const [user, setUser] = useState("");
-  const [socket, setSocket] = useState(null);
-  useEffect(() => {
-    let ip_address = config.socketIp;
-    let socket_port = config.socket;
-    let socket = io(ip_address + ":" + socket_port);
-    setSocket(socket);
-  }, []);
+  // const [socket, setSocket] = useState(null);
+  // useEffect(() => {
+  //   // let ip_address = config.socketIp;
+  //   // let socket_port = config.socket;
+  //   // let socket = io(ip_address + ":" + socket_port);
+  //   setSocket(socket);
+  // }, []);
 
   useEffect(() => {
     console.log(localStorage.getItem("userName"));
