@@ -14,6 +14,7 @@ import { io } from "socket.io-client";
 export default function FriendView({ userIdData, socket }) {
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
+  const userName = localStorage.getItem("userName");
 
   const [coords, setCoords] = useState(0);
   const [globalCoords, setGlobalCoords] = useState({ x: 0, y: 0 });
@@ -127,14 +128,15 @@ export default function FriendView({ userIdData, socket }) {
   const SendFriendRequestNew = async (requestId, userId) => {
     //type === 1 && setLiked(true);
     console.log(socket);
-    socket.emit("sendNotification", {
-      senderName: userId,
-      receiverName: requestId,
+    socket?.emit("sendNotification", {
+      senderID: userId,
+      senderName: userName,
+      receiverID: requestId,
+      type:"Friend Request From"
     });
-    socket.on("getNotification", (response) => {
-      alert(response)
-      console.log(response);
-    });
+    // socket.on("getNotification", (response) => {
+    //   console.log(response);
+    // });
     const friendDetails = {
       from: parseInt(userId),
       to: parseInt(requestId),

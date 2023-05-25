@@ -1044,3 +1044,27 @@ header > .headerNavBar {
   top: 16rem;
   right: 2rem;
 }
+.getNotification_frd_request{
+  
+    background: #fff;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #000;
+   
+    width: 10rem;
+    font-size: 14px;
+    color: purple;
+    font-family: monospace;
+}
+.getNotification_frd_request_body{
+  position: absolute;
+  z-index: 9999;
+  bottom: 10px;
+  right: 10px;
+}
+.getNotification_frd_request_close{
+  position: absolute;
+    right: -10px;
+    top: -17px;
+    cursor: pointer;
+}

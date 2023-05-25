@@ -18,6 +18,7 @@ import UserNew from "./Components/UserNew";
 import PasswordForgot from "./Components/PasswordForgot";
 import Friend from "./Components/Friend";
 import ChatList from "./Components/ChatList";
+import GetNotifications from "./Components/GetNotifications";
 import { config } from "./Config";
 import { io } from "socket.io-client";
 // import { initializeApp } from "firebase/app";
@@ -26,9 +27,12 @@ import { io } from "socket.io-client";
 
 function App() {
   //const [socket, setsocket] = useState(null);
+  const [NotiRequest, setNotiRequest] = useState(false);
+  const [NotiRequestData, setNotiRequestData] = useState([]);
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
+  
   // useEffect(() => {
   //   let ip_address = config.socketIp;
   //   let socket_port = config.socket;
@@ -42,15 +46,16 @@ function App() {
     // let socket_port = config.socket;
     // const socket = io(ip_address + ":" + socket_port);
     socket.on("getNotification", (response) => {
-      console.log("getnotification");
-      console.log(response);
-      <GetNotification />;
+      console.log(response)
+      setNotiRequestData([...NotiRequestData,response]);
+      setNotiRequest(true);
+      console.log(NotiRequestData)
+setTimeout(()=>{
+setNotiRequest(false)
+},5000)
     });
   }, [socket]);
-  const GetNotification = () => {
-    alert("hello");
-    <div className="notification_frd_request">Hello</div>;
-  };
+  console.log(NotiRequestData)
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
   //   document.addEventListener("click", checkingTokenCon);
@@ -64,6 +69,8 @@ function App() {
   console.log("Socket App");
   console.log(socket);
   return (
+    <>
+    {NotiRequest? NotiRequestData.map((data)=><GetNotifications data={data}/>):null}
     <Router>
       {/* {checkingToken ? <Header /> : null} */}
       <Routes>
@@ -112,6 +119,7 @@ function App() {
         />
       </Routes>
     </Router>
+    </>
   );
 }
 
