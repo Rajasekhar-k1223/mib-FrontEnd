@@ -19,6 +19,13 @@ import { IoIosNotifications } from "react-icons/io";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import axios from "axios";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Checkbox from "@mui/material/Checkbox";
+import Avatar from "@mui/material/Avatar";
 import { io } from "socket.io-client";
 export default function Headers({ socket }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,6 +40,7 @@ export default function Headers({ socket }) {
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
+  const token = localStorage.getItem("token");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,6 +65,16 @@ export default function Headers({ socket }) {
     // alert(url);
     navigation("/" + url);
   };
+  const AcceptFriendRequest = (from, to, toName) => {
+    const AuthDetails = {
+      token: token,
+      from: from,
+      fromName: userName,
+      to: to,
+      toName: toName,
+    };
+    socket.emit("AcceptFriendRequest", AuthDetails);
+  };
   const showNotificationList = async () => {
     const AccessDetailsUserCheck = {
       headers: {
@@ -72,7 +90,9 @@ export default function Headers({ socket }) {
       .get(`${config.url}/api/CheckListNotification`, AccessDetailsUserCheck)
       .then((res) => {
         console.log(res.data.data);
-        setNotificationList(res.data.data);
+        const requestList = res.data.data.map(([item]) => ({ item }));
+        console.log(requestList);
+        setNotificationList(requestList);
       });
   };
   const navigation = useNavigate();
@@ -265,9 +285,43 @@ export default function Headers({ socket }) {
               >
                 {NotificationList.length > 0 ? (
                   NotificationList.map((user, index) => {
+                    // console.log(user.item.userId);
                     return (
-                      <div key={index} className="notificationAlertView">
-                        {user.to}
+                      <div
+                        key={index}
+                        className="notificationAlertView"
+                        style={{
+                          justifyContent: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div className="reqfrd_1 reqfrd_Noti">
+                          <img
+                            src={user.item.profile_pic}
+                            className="requestFrd_img"
+                          />
+                        </div>
+                        <div className="reqfrd_2 reqfrd_Noti">
+                          {user.item.userName}
+                          <p>Friend Request </p>
+                        </div>
+                        <div className="reqfrd_3 reqfrd_Noti">
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            style={{ fontSize: "10px", fontWeight: "bold" }}
+                            onClick={() => {
+                              AcceptFriendRequest(
+                                userId,
+                                user.item.userId,
+                                user.item.userName
+                              );
+                            }}
+                          >
+                            Accept
+                          </Button>
+                        </div>
+                        <div className="clear"></div>
                       </div>
                     );
                   })

@@ -132,7 +132,7 @@ export default function FriendView({ userIdData, socket }) {
       senderID: userId,
       senderName: userName,
       receiverID: requestId,
-      type:"Friend Request From"
+      type: "Friend Request From",
     });
     // socket.on("getNotification", (response) => {
     //   console.log(response);
