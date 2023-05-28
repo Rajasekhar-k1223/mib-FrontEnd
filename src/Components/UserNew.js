@@ -72,7 +72,7 @@ export default function UserNew() {
       gender: gender,
       mobile: mobile,
     };
-    console.log(userData)
+    console.log(userData);
     axios.post(config.url + "/api/newUser", userData).then((response) => {
       console.log(response);
       navigation("/");
@@ -301,7 +301,7 @@ export default function UserNew() {
                 onChange={handleChange}
                 renderInput={(params) => <TextField {...params} />}
                 style={{
-                  width: "80%",
+                  //width: "80%",
                   marginBottom: "0.3rem",
                   background: LabelColor,
                   borderRadius: "5px",
