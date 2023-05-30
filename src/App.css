@@ -1101,3 +1101,19 @@ header > .headerNavBar {
 .css-13r4j3i .MuiTextField-root {
   width: 30ch !important;
 }
+
+.frd_List_profile_pic {
+  width: 20px;
+  height: 20px;
+  border-radius: 1rem;
+  float: left;
+  margin-right: 4px;
+}
+.frd_List_profile_card {
+  font-family: monospace;
+  padding: 8px !important;
+  line-height: 20px;
+  padding-left: 10px !important;
+  text-transform: capitalize;
+  font-size: 14px;
+}

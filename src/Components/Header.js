@@ -8,7 +8,7 @@ import { MdGroups } from "react-icons/md";
 import { AiOutlineLogout } from "react-icons/ai";
 import { HiUserCircle } from "react-icons/hi";
 import { BiLogOut } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -68,11 +68,12 @@ export default function Headers({ socket }) {
   const AcceptFriendRequest = (from, to, toName) => {
     const AuthDetails = {
       token: token,
-      from: from,
-      fromName: userName,
-      to: to,
-      toName: toName,
+      from: parseInt(from),
+      fromName: userName.toString(),
+      to: parseInt(to),
+      toName: toName.toString(),
     };
+
     socket.emit("AcceptFriendRequest", AuthDetails);
   };
   const showNotificationList = async () => {

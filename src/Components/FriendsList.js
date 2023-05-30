@@ -110,7 +110,7 @@ export default function FriendsList() {
               // "Content-Type": "application/json",
             },
             params: {
-              from: item.id,
+              from: item.userId,
             },
           };
           console.log(AccessDetailsUser);
@@ -491,7 +491,7 @@ export default function FriendsList() {
         return (
           // <div key={index}>{item.userName}</div>
           <div
-            style={{ position: "relative" }}
+            style={{ position: "relative", cursor: "pointer" }}
             key={index}
             onMouseOut={() => {
               setListIndex(undefined);
@@ -500,13 +500,13 @@ export default function FriendsList() {
             {console.log(item.userName)}
             <Card
               className="feedCard"
-              style={{ marginBottom: 2 }}
+              style={{ marginBottom: 4 }}
               key={index}
-              // onMouseOver={() =>
-              //   listIndex === index
-              //     ? setListIndex(undefined)
-              //     : setListIndex(index)
-              // }
+              onMouseOver={() =>
+                listIndex === index
+                  ? setListIndex(undefined)
+                  : setListIndex(index)
+              }
               // onMouseOut={() => {
               //   setListIndex(undefined);
               // }}
@@ -514,7 +514,13 @@ export default function FriendsList() {
                 showChatBox(item, index);
               }}
             >
-              <CardContent style={{ padding: 10 }}>{item.userName}</CardContent>
+              <CardContent
+                style={{ padding: 10 }}
+                className="frd_List_profile_card"
+              >
+                <img src={item.profile_pic} className="frd_List_profile_pic" />
+                {item.userName}
+              </CardContent>
             </Card>
             {index === listIndex ? (
               // {userVisible ? (
@@ -534,6 +540,7 @@ export default function FriendsList() {
                   setListIndex(index);
                 }}
               >
+                <img src={item.profile_pic} className="frd_List_profile_pic" />
                 {item.userName}
               </div>
             ) : (
