@@ -1117,3 +1117,9 @@ header > .headerNavBar {
   text-transform: capitalize;
   font-size: 14px;
 }
+.notifi_close{
+  position: relative;
+    right: -8px;
+    float: right;
+    top: -18px;
+}

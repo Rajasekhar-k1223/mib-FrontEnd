@@ -4,8 +4,10 @@ function GetNotifications({data}) {
     console.log(data)
   return (
     <div className='getNotification_frd_request_body'>
-    <AiFillCloseCircle />
-    <div className='getNotification_frd_request'>{data.senderName}</div>
+    <AiFillCloseCircle className='notifi_close'/>
+    <div className='getNotification_frd_request'>{data.senderName}
+    <p>{data.type}</p>
+    </div>
     </div>
   )
 }

@@ -54,6 +54,24 @@ setTimeout(()=>{
 setNotiRequest(false)
 },5000)
     });
+    socket.on("getNotificationAcceptfrom", (response) => {
+      console.log(response)
+      setNotiRequestData([...NotiRequestData,response]);
+      setNotiRequest(true);
+      console.log(NotiRequestData)
+// setTimeout(()=>{
+// setNotiRequest(false)
+// },5000)
+    });
+    socket.on("getNotificationAcceptto", (response) => {
+      console.log(response)
+      setNotiRequestData([...NotiRequestData,response]);
+      setNotiRequest(true);
+      console.log(NotiRequestData)
+// setTimeout(()=>{
+// setNotiRequest(false)
+// },5000)
+    });
   }, [socket]);
   console.log(NotiRequestData)
   // const [checkingToken, setcheckingToken] = useState("");

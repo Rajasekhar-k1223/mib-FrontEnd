@@ -304,9 +304,23 @@ export default function Headers({ socket }) {
                         </div>
                         <div className="reqfrd_2 reqfrd_Noti">
                           {user.item.userName}
-                          <p>Friend Request </p>
+                          {user.item.status === "Accept"?null:
+                          <p>Friend Request </p>}
                         </div>
                         <div className="reqfrd_3 reqfrd_Noti">
+                        {user.item.status === "Accept"? <Button
+                            variant="outlined"
+                            size="small"
+                            style={{ fontSize: "10px", fontWeight: "bold" }}
+                            onClick={() => {
+                              viewProfile(
+                                user.item.userId,
+                              );
+                            }}
+                          >
+                            View Profile
+                          </Button>:
+                          
                           <Button
                             variant="outlined"
                             size="small"
@@ -320,7 +334,7 @@ export default function Headers({ socket }) {
                             }}
                           >
                             Accept
-                          </Button>
+                          </Button>}
                         </div>
                         <div className="clear"></div>
                       </div>
