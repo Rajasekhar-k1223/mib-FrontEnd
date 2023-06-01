@@ -257,6 +257,8 @@ export default function FriendView({ userIdData, socket }) {
             {FriendRequest > 0 ? (
               checkFriendRequest.status === "request" ? (
                 "Request Waiting"
+              ) : checkFriendRequest.status === "Accept" ? (
+                "Friends"
               ) : (
                 <span
                   style={{ lineHeight: "1.5rem" }}

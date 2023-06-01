@@ -14,12 +14,14 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 // const client = new W3CWebSocket("ws://192.168.10.60:8000/laravel-websockets");
-export default function FriendsList() {
+export default function FriendsList({ userOn }) {
   // window.$ = window.jQuery = require("jquery");
   // global.$ = global.jQuery = $;
   // client.onopen = () => {
   //   console.log("WebSocket Client Connected");
   // };
+  console.log("User On");
+  console.log(userOn);
   const [userVisible, setuserVisible] = useState(false);
   const [listIndex, setListIndex] = useState(undefined);
   const [friendsList, setfriendsList] = useState([]);
@@ -80,13 +82,13 @@ export default function FriendsList() {
   }, []);
   const checkingFriendsList = async () => {
     console.log("object");
-    socket.on("LoginUserList", (users) => {
-      console.log(users);
-      users.map((item) => {
-        socketUsersList.push(item);
-      });
-      setsocketUsersList(users);
-    });
+    // socket.on("LoginUserList", (users) => {
+    //   console.log(users);
+    //   users.map((item) => {
+    //     socketUsersList.push(item);
+    //   });
+    //   setsocketUsersList(users);
+    // });
 
     const AccessDetails = {
       headers: {
@@ -142,6 +144,12 @@ export default function FriendsList() {
           //     //console.log(socketUsersList);
           //     //console.log(res.data.data[0].userName);
           //   });
+        });
+        const frdsListN = res.data.data[0].friends_list;
+        socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
+        socket.on("getOnlinefrds", (responseFrds) => {
+          alert(responseFrds);
+          console.log(responseFrds);
         });
         // console.log(friendsCount);
         // setfriendsCount(friends);

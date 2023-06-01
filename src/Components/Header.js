@@ -34,6 +34,8 @@ export default function Headers({ socket }) {
   const [searchValue, setsearchValue] = useState("");
   const [listofusers, setlistofusers] = useState([]);
   const [NotificationList, setNotificationList] = useState([]);
+  const [FrdsNotificationList, setFrdsNotificationList] = useState([]);
+  const [showFrdsNotifications, setshowFrdsNotifications] = useState(false);
   const [showNotifications, setshowNotifications] = useState(false);
   // const [socket, setsocket] = useState(null)
   const open = Boolean(anchorEl);
@@ -76,6 +78,27 @@ export default function Headers({ socket }) {
 
     socket.emit("AcceptFriendRequest", AuthDetails);
   };
+  const showFrdsNotification = async () => {
+    const AccessDetailsUserCheck = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        // "Content-Type": "application/json",
+      },
+      params: {
+        from: userId,
+        status: "accept",
+      },
+    };
+    await axios
+      .get(`${config.url}/api/CheckLisFriends`, AccessDetailsUserCheck)
+      .then((res) => {
+        console.log(res.data.data);
+        //const requestList = res.data.data.map(([item]) => ({ item }));
+        //console.log(requestList);
+        setFrdsNotificationList(res.data.data);
+      });
+  };
+
   const showNotificationList = async () => {
     const AccessDetailsUserCheck = {
       headers: {
@@ -91,9 +114,9 @@ export default function Headers({ socket }) {
       .get(`${config.url}/api/CheckListNotification`, AccessDetailsUserCheck)
       .then((res) => {
         console.log(res.data.data);
-        const requestList = res.data.data.map(([item]) => ({ item }));
-        console.log(requestList);
-        setNotificationList(requestList);
+        //const requestList = res.data.data.map(([item]) => ({ item }));
+        //console.log(requestList);
+        setNotificationList(res.data.data);
       });
   };
   const navigation = useNavigate();
@@ -249,8 +272,22 @@ export default function Headers({ socket }) {
             />
             <MdGroups
               size={20}
-              onClick={() => {
-                handleClose("friendsView");
+              // onClick={() => {
+              //   handleClose("friendsView");
+              // }}
+              onMouseEnter={() => {
+                setshowFrdsNotifications(true);
+                showFrdsNotification();
+              }}
+              // onMouseUp={() => {
+              //   alert("hello");
+              //   setshowNotifications(false);
+              // }}
+              className="notificationIcon"
+              onMouseLeave={() => {
+                setTimeout(() => {
+                  setshowFrdsNotifications(false);
+                }, 99);
               }}
             />
             <IoIosNotifications
@@ -298,43 +335,125 @@ export default function Headers({ socket }) {
                       >
                         <div className="reqfrd_1 reqfrd_Noti">
                           <img
-                            src={user.item.profile_pic}
+                            src={user.profile_pic}
                             className="requestFrd_img"
                           />
                         </div>
                         <div className="reqfrd_2 reqfrd_Noti">
-                          {user.item.userName}
-                          {user.item.status === "Accept"?null:
-                          <p>Friend Request </p>}
+                          {user.userName}
+                          {user.status === "Accept" ? null : (
+                            <p>Friend Request </p>
+                          )}
                         </div>
                         <div className="reqfrd_3 reqfrd_Noti">
-                        {user.item.status === "Accept"? <Button
-                            variant="outlined"
-                            size="small"
-                            style={{ fontSize: "10px", fontWeight: "bold" }}
-                            onClick={() => {
-                              viewProfile(
-                                user.item.userId,
-                              );
-                            }}
-                          >
-                            View Profile
-                          </Button>:
-                          
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            style={{ fontSize: "10px", fontWeight: "bold" }}
-                            onClick={() => {
-                              AcceptFriendRequest(
-                                userId,
-                                user.item.userId,
-                                user.item.userName
-                              );
-                            }}
-                          >
-                            Accept
-                          </Button>}
+                          {user.status === "Accept" ? (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              style={{ fontSize: "10px", fontWeight: "bold" }}
+                              onClick={() => {
+                                viewProfile(user.userId);
+                              }}
+                            >
+                              View Profile
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              style={{ fontSize: "10px", fontWeight: "bold" }}
+                              onClick={() => {
+                                AcceptFriendRequest(
+                                  userId,
+                                  user.userId,
+                                  user.userName
+                                );
+                              }}
+                            >
+                              Accept
+                            </Button>
+                          )}
+                        </div>
+                        <div className="clear"></div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <Box sx={{ width: "100%" }}>
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                  </Box>
+                )}
+              </div>
+            ) : null}
+            {showFrdsNotifications ? (
+              <div
+                className="notificationView"
+                onMouseLeave={() => {
+                  setshowFrdsNotifications(false);
+                }}
+                onMouseEnter={() => {
+                  clearInterval();
+                  setTimeout(() => {
+                    setshowFrdsNotifications(true);
+                  }, 100);
+                }}
+              >
+                {FrdsNotificationList.length > 0 ? (
+                  FrdsNotificationList.map((user, index) => {
+                    // console.log(user.item.userId);
+                    return (
+                      <div
+                        key={index}
+                        className="notificationAlertView"
+                        style={{
+                          justifyContent: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div className="reqfrd_1 reqfrd_Noti">
+                          <img
+                            src={user.profile_pic}
+                            className="requestFrd_img"
+                          />
+                        </div>
+                        <div className="reqfrd_2 reqfrd_Noti">
+                          {user.userName}
+                          {user.status === "Accept" ? null : (
+                            <p>Friend Request </p>
+                          )}
+                        </div>
+                        <div className="reqfrd_3 reqfrd_Noti">
+                          {user.status === "Accept" ? (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              style={{ fontSize: "10px", fontWeight: "bold" }}
+                              onClick={() => {
+                                viewProfile(user.userId);
+                              }}
+                            >
+                              View Profile
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              style={{ fontSize: "10px", fontWeight: "bold" }}
+                              onClick={() => {
+                                AcceptFriendRequest(
+                                  userId,
+                                  user.userId,
+                                  user.userName
+                                );
+                              }}
+                            >
+                              Accept
+                            </Button>
+                          )}
                         </div>
                         <div className="clear"></div>
                       </div>
