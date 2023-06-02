@@ -1123,3 +1123,9 @@ header > .headerNavBar {
     float: right;
     top: -18px;
 }
+.feedLikesCount{
+  font-size: 11px;
+  position: relative;
+  right: 8px;
+  bottom: 8px;
+}

@@ -1394,11 +1394,11 @@ export default function Feeds() {
             console.log(element);
           })} */}
         {/* </CardContent> */}
-        <CardActions style={{ boxShadow: "0px 0px 5px #0000001c inset" }}>
+        <CardActions style={{ boxShadow: "0px 0px 5px #0000001c inset",justifyContent:"space-between" }}>
           <IconButton aria-label="add to favorites">
             <AiFillHeart
               size={12}
-              style={{ marginLeft: 5 }}
+              // style={{ marginLeft: 5 }}
               className={item.checkingLike ? "heart" : "unlikeheart"}
               onClick={() => {
                 item.checkingLike
@@ -1407,7 +1407,7 @@ export default function Feeds() {
               }}
             />
           </IconButton>
-          <span style={{ fontSize: 12, marginLeft: 3 }}>{item.likes}</span>
+          <span className="feedLikesCount">{item.likes}</span>
           <div
             style={{
               marginLeft: 0,
@@ -1415,7 +1415,7 @@ export default function Feeds() {
               width: "25px",
               height: "21px",
               position: "relative",
-              left: "0.9rem",
+              // left: "0.9rem",
             }}
             className="addsmileAction"
             onClick={() => {
@@ -1508,7 +1508,9 @@ export default function Feeds() {
           <Badge badgeContent={4}>
             <BiComment
               size={14}
-              style={{ marginLeft: 30, cursor: "pointer" }}
+              style={{ 
+                // marginLeft: 30, 
+                cursor: "pointer" }}
               onClick={() => {
                 handleOpen();
                 setfeedDetails(item);
@@ -1518,7 +1520,9 @@ export default function Feeds() {
 
           <FaShareSquare
             size={14}
-            style={{ marginLeft: 30, cursor: "pointer" }}
+            style={{ 
+              // marginLeft: 30,
+               cursor: "pointer" }}
             onClick={() => {
               shareopen(item.feedId);
             }}
@@ -1546,7 +1550,7 @@ export default function Feeds() {
           </div>
           <BsInfoCircle
             size={14}
-            style={{ marginLeft: 35 }}
+            // style={{ marginLeft: 35 }}
             onClick={() => {
               // console.log(item);
               //openTotalViewofFeed(item);
@@ -1556,7 +1560,9 @@ export default function Feeds() {
           />
           <ImEnlarge2
             size={13}
-            style={{ marginLeft: 35, cursor: "pointer" }}
+            style={{ 
+              // marginLeft: 35, 
+              cursor: "pointer" }}
             onClick={() => {
               // console.log(item);
               //openTotalViewofFeed(item);
