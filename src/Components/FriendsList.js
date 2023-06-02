@@ -12,16 +12,40 @@ import YAssit from "../assets/images/yassit.gif";
 import ChatBoxComponent from "./ChatBoxComponent";
 import Peer from "simple-peer";
 import io from "socket.io-client";
+import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/system';
+
+const blink = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const BlinkedBox = styled('div')({
+  backgroundColor: 'red',
+  width: 10,
+  height: 10,
+  borderRadius:15,
+  float:"right",
+  marginTop:7,
+  // animation: `${blink} 1s linear infinite`,
+});
+const OnlineBox = styled('div')({
+  backgroundColor: 'green',
+  width: 10,
+  height: 10,
+  borderRadius:15,
+  float:"right",
+  marginTop:7,
+  // animation: `${blink} 1s linear infinite`,
+});
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 // const client = new W3CWebSocket("ws://192.168.10.60:8000/laravel-websockets");
-export default function FriendsList({ userOn }) {
+export default function FriendsList({socket}) {
   // window.$ = window.jQuery = require("jquery");
   // global.$ = global.jQuery = $;
   // client.onopen = () => {
   //   console.log("WebSocket Client Connected");
   // };
-  console.log("User On");
-  console.log(userOn);
   const [userVisible, setuserVisible] = useState(false);
   const [listIndex, setListIndex] = useState(undefined);
   const [friendsList, setfriendsList] = useState([]);
@@ -58,7 +82,7 @@ export default function FriendsList({ userOn }) {
   //   );
   //   console.log(ChatcontentView);
   // };
-  const socket = io.connect("http://localhost:" + config.socket);
+  // const socket = io.connect("http://localhost:" + config.socket);
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =
@@ -79,7 +103,7 @@ export default function FriendsList({ userOn }) {
     // return () => {
     //   document.removeEventListener("click", showEmojiContainer(0), true);
     // };
-  }, []);
+  }, [socket]);
   const checkingFriendsList = async () => {
     console.log("object");
     // socket.on("LoginUserList", (users) => {
@@ -148,8 +172,32 @@ export default function FriendsList({ userOn }) {
         const frdsListN = res.data.data[0].friends_list;
         socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
         socket.on("getOnlinefrds", (responseFrds) => {
-          alert(responseFrds);
-          console.log(responseFrds);
+         const frdsStatus =  friendsCount.map((frdLst)=>{
+           return responseFrds.map((frdOn)=>{
+              if (frdOn.userId === frdLst.userId) {
+                console.log(frdLst.status);
+                // const y = frdOn.userOn
+                //   ? { ...frdLst, status: false }
+                //   : { ...frdLst, status: true };
+                const y =  {...frdLst, status: frdOn.userOn };
+                console.log(y);
+                return y;
+              } 
+              // else {
+              //   //  console.log(item);
+              //   if (frdLst.frdLst === true) {
+              //     // const itemcheck = frdLst.status
+              //     //   ? { ...frdLst, status: false }
+              //     //   : { ...frdLst, status: true };
+              //     const itemcheck =  {...frdLst, status: frdOn.userOn };
+              //     return itemcheck;
+              //   } else {
+              //     return frdLst;
+              //   }
+              // }
+            })
+          })
+          setfriendsCount(frdsStatus);
         });
         // console.log(friendsCount);
         // setfriendsCount(friends);
@@ -528,6 +576,8 @@ export default function FriendsList({ userOn }) {
               >
                 <img src={item.profile_pic} className="frd_List_profile_pic" />
                 {item.userName}
+                {/* <BlinkedBox /> */}
+              {item.status?<OnlineBox />:<BlinkedBox /> }
               </CardContent>
             </Card>
             {index === listIndex ? (
@@ -550,6 +600,7 @@ export default function FriendsList({ userOn }) {
               >
                 <img src={item.profile_pic} className="frd_List_profile_pic" />
                 {item.userName}
+                <BlinkedBox />
               </div>
             ) : (
               ""

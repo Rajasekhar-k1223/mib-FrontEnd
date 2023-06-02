@@ -55,11 +55,11 @@ function App() {
         setNotiRequest(false);
       }, 5000);
     });
-    socket.on("getOnlinefrds", (userOn) => {
-      alert(userOn);
-      console.log(userOn);
-      <FriendsList userOn={userOn} />;
-    });
+    // socket.on("getOnlinefrds", (userOn) => {
+    //   alert(userOn);
+    //   console.log(userOn);
+    //   <FriendsList data={userOn} />;
+    // });
     socket.on("getNotificationAcceptfrom", (response) => {
       console.log(response);
       setNotiRequestData([...NotiRequestData, response]);

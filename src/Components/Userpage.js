@@ -27,7 +27,7 @@ export default function Userpage({ socket }) {
           <Feeds />
         </div>
         <div className="friendsListSection">
-          <FriendsList />
+          <FriendsList socket={socket}/>
         </div>
       </div>
     </div>
