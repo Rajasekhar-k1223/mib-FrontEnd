@@ -309,7 +309,7 @@ export default function ChatBoxComponent(props) {
       >
         <div className="chat-Header">
           <div className="chat-Header-title">{item.data.userName}</div>
-          <div
+          {/* <div
             style={{
               width: "7%",
               float: "left",
@@ -334,7 +334,15 @@ export default function ChatBoxComponent(props) {
             }}
           >
             <IoMdCall size={15} />
-          </div>
+          </div> */}
+          <div  style={{
+              width: "7%",
+              float: "left",
+              padding: "0px",
+              lineHeight: "2.5rem",
+              marginLeft: "0.5rem",
+              cursor: "pointer",
+            }}>-</div>
           <div
             className="close"
             onClick={() => {

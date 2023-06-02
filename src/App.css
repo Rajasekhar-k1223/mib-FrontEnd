@@ -499,7 +499,7 @@ header > .headerNavBar {
   cursor: pointer;
 }
 .chat-Header-title {
-  width: 60%;
+  width: 65%;
   float: left;
   margin: 0.5rem;
 }
@@ -1128,4 +1128,26 @@ header > .headerNavBar {
   position: relative;
   right: 8px;
   bottom: 8px;
+}
+
+
+.react-input-emoji--input{
+min-height: 40px !important;
+max-height: 40px !important;
+max-width: 97% !important;
+}
+.react-input-emoji--container{
+  border-radius: 5px !important;
+}
+.react-input-emoji--container{
+  margin: 1px !important
+}
+.react-input-emoji--button{
+  position: absolute !important;
+  z-index: 9999 !important;
+  right: 0 !important;
+}
+.react-input-emoji--button > svg{
+  width: 15px !important;
+  height: 15px !important;
 }
