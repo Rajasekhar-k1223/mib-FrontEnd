@@ -12,35 +12,35 @@ import YAssit from "../assets/images/yassit.gif";
 import ChatBoxComponent from "./ChatBoxComponent";
 import Peer from "simple-peer";
 import io from "socket.io-client";
-import { styled } from '@mui/material/styles';
-import { keyframes } from '@mui/system';
+import { styled } from "@mui/material/styles";
+import { keyframes } from "@mui/system";
 
 const blink = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
 `;
 
-const BlinkedBox = styled('div')({
-  backgroundColor: 'red',
+const BlinkedBox = styled("div")({
+  backgroundColor: "red",
   width: 10,
   height: 10,
-  borderRadius:15,
-  float:"right",
-  marginTop:7,
+  borderRadius: 15,
+  float: "right",
+  marginTop: 7,
   // animation: `${blink} 1s linear infinite`,
 });
-const OnlineBox = styled('div')({
-  backgroundColor: 'green',
+const OnlineBox = styled("div")({
+  backgroundColor: "green",
   width: 10,
   height: 10,
-  borderRadius:15,
-  float:"right",
-  marginTop:7,
+  borderRadius: 15,
+  float: "right",
+  marginTop: 7,
   // animation: `${blink} 1s linear infinite`,
 });
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 // const client = new W3CWebSocket("ws://192.168.10.60:8000/laravel-websockets");
-export default function FriendsList({socket}) {
+export default function FriendsList({ socket }) {
   // window.$ = window.jQuery = require("jquery");
   // global.$ = global.jQuery = $;
   // client.onopen = () => {
@@ -62,6 +62,7 @@ export default function FriendsList({socket}) {
   const [ChatcontentView, setChatcontentView] = useState("");
   const [socketUsersList, setsocketUsersList] = useState([]);
   const [defaultValues, setdefaultValues] = useState("");
+  const [checkonlineList, setcheckonlineList] = useState(false);
 
   const userToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
@@ -83,7 +84,7 @@ export default function FriendsList({socket}) {
   //   console.log(ChatcontentView);
   // };
   // const socket = io.connect("http://localhost:" + config.socket);
-  useEffect(() => {
+  useEffect(async () => {
     // const script = document.createElement("script");
     // script.src =
     //   "https://rawgit.com/mervick/emojionearea/master/dist/emojionearea.js";
@@ -96,6 +97,10 @@ export default function FriendsList({socket}) {
     // window.jQuery = jQuery;
 
     checkingFriendsList();
+    console.log(friendsCount.length);
+    (await friendsCount.length) > 0
+      ? await checkOnline()
+      : await checkingFriendsList();
     //setfriendsCount(friends);
     // showEmojiContainer(0);
     //document.addEventListener("click", showEmojiContainer(0));
@@ -125,10 +130,10 @@ export default function FriendsList({socket}) {
     };
     const r = await axios
       .get(`${config.url}/api/getFriendsList`, AccessDetails)
-      .then((res) => {
+      .then(async (res) => {
         const friends = [];
         console.log(res.data.data[0]);
-        res.data.data[0].friends_list.map(async (item) => {
+        await res.data.data[0].friends_list.map(async (item) => {
           console.log(item);
           const AccessDetailsUser = {
             headers: {
@@ -142,18 +147,20 @@ export default function FriendsList({socket}) {
           console.log(AccessDetailsUser);
           await axios
             .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
-            .then((res) => {
+            .then(async (res) => {
               console.log(res.data);
+              console.log(res.data.data[0]);
               setfriendsCount((friendsCount) => [
                 ...friendsCount,
                 res.data.data[0],
               ]);
+              console.log(friendsCount);
               //  setfriendsCount([...friendsCount, res.data.data[0]]);
               friends.push(res.data.data[0]);
               //console.log(res.data.data[0]);
               // res.data.data[0].friends_list.map((item) => {
               //   console.log(item);
-              //   console.log(friendsCount);
+              console.log(friendsCount);
             });
           //setfriendsCount(friends);
           //   console.log(friendsCount);
@@ -169,43 +176,52 @@ export default function FriendsList({socket}) {
           //     //console.log(res.data.data[0].userName);
           //   });
         });
-        const frdsListN = res.data.data[0].friends_list;
+        const frdsListN = await res.data.data[0].friends_list;
         socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
-        socket.on("getOnlinefrds", (responseFrds) => {
-         const frdsStatus =  friendsCount.map((frdLst)=>{
-           return responseFrds.map((frdOn)=>{
-              if (frdOn.userId === frdLst.userId) {
-                console.log(frdLst.status);
-                // const y = frdOn.userOn
-                //   ? { ...frdLst, status: false }
-                //   : { ...frdLst, status: true };
-                const y =  {...frdLst, status: frdOn.userOn };
-                console.log(y);
-                return y;
-              } 
-              // else {
-              //   //  console.log(item);
-              //   if (frdLst.frdLst === true) {
-              //     // const itemcheck = frdLst.status
-              //     //   ? { ...frdLst, status: false }
-              //     //   : { ...frdLst, status: true };
-              //     const itemcheck =  {...frdLst, status: frdOn.userOn };
-              //     return itemcheck;
-              //   } else {
-              //     return frdLst;
-              //   }
-              // }
-            })
-          })
-          setfriendsCount(frdsStatus);
-        });
+        console.log(friendsCount);
+
         // console.log(friendsCount);
         // setfriendsCount(friends);
       });
 
     // console.log(friends);
   };
-
+  const checkOnline = () => {
+    socket.on("getOnlinefrds", async (responseFrds) => {
+      console.log(responseFrds);
+      console.log(friendsCount);
+      const frdsStatus = friendsCount.map((frdLst) => {
+        return responseFrds.map((frdOn) => {
+          // alert(frdOn);
+          console.log(frdOn);
+          console.log(frdOn.userId);
+          console.log(frdLst.userId);
+          if (frdOn.userId === frdLst.userId) {
+            // console.log(frdLst.status);
+            // const y = frdOn.userOn
+            //   ? { ...frdLst, status: false }
+            //   : { ...frdLst, status: true };
+            const y = { ...frdLst, status: frdOn.userOn };
+            console.log(y);
+            return y;
+          }
+          // else {
+          //   //  console.log(item);
+          //   if (frdLst.frdLst === true) {
+          //     // const itemcheck = frdLst.status
+          //     //   ? { ...frdLst, status: false }
+          //     //   : { ...frdLst, status: true };
+          //     const itemcheck =  {...frdLst, status: frdOn.userOn };
+          //     return itemcheck;
+          //   } else {
+          //     return frdLst;
+          //   }
+          // }
+        });
+      });
+      setfriendsCount(frdsStatus);
+    });
+  };
   const checkingemojiClose = () => {
     console.log("first");
   };
@@ -553,7 +569,7 @@ export default function FriendsList({socket}) {
               setListIndex(undefined);
             }}
           >
-            {console.log(item.userName)}
+            {console.log(item)}
             <Card
               className="feedCard"
               style={{ marginBottom: 4 }}
@@ -577,7 +593,7 @@ export default function FriendsList({socket}) {
                 <img src={item.profile_pic} className="frd_List_profile_pic" />
                 {item.userName}
                 {/* <BlinkedBox /> */}
-              {item.status?<OnlineBox />:<BlinkedBox /> }
+                {item.status ? <OnlineBox /> : <BlinkedBox />}
               </CardContent>
             </Card>
             {index === listIndex ? (

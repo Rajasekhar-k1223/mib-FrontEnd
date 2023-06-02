@@ -1394,8 +1394,16 @@ export default function Feeds() {
             console.log(element);
           })} */}
         {/* </CardContent> */}
-        <CardActions style={{ boxShadow: "0px 0px 5px #0000001c inset",justifyContent:"space-between" }}>
-          <IconButton aria-label="add to favorites">
+        <CardActions
+          style={{
+            boxShadow: "0px 0px 5px #0000001c inset",
+            justifyContent: "space-between",
+          }}
+        >
+          <IconButton
+            aria-label="add to favorites"
+            style={{ position: "absolute" }}
+          >
             <AiFillHeart
               size={12}
               // style={{ marginLeft: 5 }}
@@ -1508,9 +1516,10 @@ export default function Feeds() {
           <Badge badgeContent={4}>
             <BiComment
               size={14}
-              style={{ 
-                // marginLeft: 30, 
-                cursor: "pointer" }}
+              style={{
+                // marginLeft: 30,
+                cursor: "pointer",
+              }}
               onClick={() => {
                 handleOpen();
                 setfeedDetails(item);
@@ -1520,9 +1529,10 @@ export default function Feeds() {
 
           <FaShareSquare
             size={14}
-            style={{ 
+            style={{
               // marginLeft: 30,
-               cursor: "pointer" }}
+              cursor: "pointer",
+            }}
             onClick={() => {
               shareopen(item.feedId);
             }}
@@ -1560,9 +1570,10 @@ export default function Feeds() {
           />
           <ImEnlarge2
             size={13}
-            style={{ 
-              // marginLeft: 35, 
-              cursor: "pointer" }}
+            style={{
+              // marginLeft: 35,
+              cursor: "pointer",
+            }}
             onClick={() => {
               // console.log(item);
               //openTotalViewofFeed(item);

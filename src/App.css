@@ -1117,37 +1117,36 @@ header > .headerNavBar {
   text-transform: capitalize;
   font-size: 14px;
 }
-.notifi_close{
+.notifi_close {
   position: relative;
-    right: -8px;
-    float: right;
-    top: -18px;
+  right: -8px;
+  float: right;
+  top: -18px;
 }
-.feedLikesCount{
+.feedLikesCount {
   font-size: 11px;
   position: relative;
-  right: 8px;
+  right: -20px;
   bottom: 8px;
 }
 
-
-.react-input-emoji--input{
-min-height: 40px !important;
-max-height: 40px !important;
-max-width: 97% !important;
+.react-input-emoji--input {
+  min-height: 40px !important;
+  max-height: 40px !important;
+  max-width: 97% !important;
 }
-.react-input-emoji--container{
+.react-input-emoji--container {
   border-radius: 5px !important;
 }
-.react-input-emoji--container{
-  margin: 1px !important
+.react-input-emoji--container {
+  margin: 1px !important;
 }
-.react-input-emoji--button{
+.react-input-emoji--button {
   position: absolute !important;
   z-index: 9999 !important;
   right: 0 !important;
 }
-.react-input-emoji--button > svg{
+.react-input-emoji--button > svg {
   width: 15px !important;
   height: 15px !important;
 }
