@@ -22,6 +22,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { io } from "socket.io-client";
 import VideoCalling from "./VideoCalling";
 import { FiPhoneOff } from "react-icons/fi";
+import { HiDotsHorizontal } from "react-icons/hi";
 // import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const MessagesList = forwardRef((props, ref) => {
@@ -196,7 +197,6 @@ export default function ChatBoxComponent(props) {
   let socket = null;
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  console.log(token);
   const [text, setText] = useState("");
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [VideoCalling, setVideoCalling] = useState(false);
@@ -204,6 +204,7 @@ export default function ChatBoxComponent(props) {
   const mesRef = useRef(null);
   const listInnerRef = useRef();
   const navigation = useNavigate();
+  const [clickCall, setclickCall] = useState(false);
   useEffect(() => {
     // window.addEventListener("scroll", () => {
     //   if (window.scrollY > 400) {
@@ -294,14 +295,14 @@ export default function ChatBoxComponent(props) {
   const VideoCall = (username) => {
     // setVideoCalling(true);
     // return <Video data={username} />;
-
-    VideoCalling ? setVideoCalling(true) : setVideoCalling(false);
-    //navigation("/VideoCalling", { state: { userData: username } });
+    // VideoCalling ? setVideoCalling(false) : setVideoCalling(true);
+    // alert(VideoCalling)
+    navigation("/VideoCalling", { state: { userData: username } });
   };
   return (
     <>
       <div
-        className="chatbox"
+        className={"chatbox chat-"+(item.data.userId)}
         style={{
           right: 13 * (item.index + 1) + item.index + item.index + "rem",
         }}
@@ -309,13 +310,29 @@ export default function ChatBoxComponent(props) {
       >
         <div className="chat-Header">
           <div className="chat-Header-title">{item.data.userName}</div>
-          {/* <div
-            style={{
+          <div  style={{
               width: "7%",
+              float: "left",
+              padding: "0px",
+              lineHeight: "3rem",
+              cursor: "pointer",height:"40px",
+            }}><HiDotsHorizontal  onClick={()=>{setclickCall(true)
+            setTimeout(()=>{
+              setclickCall(false)
+            },5000)
+            }}/></div>
+          {clickCall ? <div style={{width: "100%",
+    position: "absolute",
+    right: "0px",top:"2.5rem"}}><div
+            style={{
+              width: "49.1%",
               float: "left",
               padding: "0px",
               lineHeight: "2.5rem",
               cursor: "pointer",
+              textAlign: "center",
+    background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
+    borderRadius: "0px 0px 5px 0px",
             }}
           >
             <IoIosVideocam
@@ -325,23 +342,27 @@ export default function ChatBoxComponent(props) {
           </div>
           <div
             style={{
-              width: "7%",
+              width: "50%",
               float: "left",
               padding: "0px",
               lineHeight: "2.5rem",
-              marginLeft: "0.5rem",
+              marginLeft: "0.1rem",
               cursor: "pointer",
+              textAlign:"center",
+              background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
+              borderRadius: "0px 0px 0px 5px",
             }}
           >
             <IoMdCall size={15} />
-          </div> */}
+          </div></div>:null}
           <div  style={{
-              width: "7%",
+              width: "5%",
               float: "left",
               padding: "0px",
               lineHeight: "2.5rem",
-              marginLeft: "0.5rem",
+              marginLeft: "1.1rem",
               cursor: "pointer",
+              fontSize:"35px",
             }}>-</div>
           <div
             className="close"
@@ -391,7 +412,8 @@ export default function ChatBoxComponent(props) {
   );
 }
 const Video = (data) => {
-  //alert(data);
+ // alert(data);
+ console.log(data)
   // const [Pause, setPause] = useState(false);
   const [CallingSysten, setCallingSysten] = useState(false);
   return (

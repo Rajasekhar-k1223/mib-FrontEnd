@@ -494,12 +494,15 @@ header > .headerNavBar {
 }
 .close {
   width: 20px;
-  float: right;
-  margin: 0.3rem;
-  cursor: pointer;
+    float: right;
+    margin: 0.3rem;
+    cursor: pointer;
+    line-height: 2rem;
+    text-align: center;
+    height: 20px;
 }
 .chat-Header-title {
-  width: 65%;
+  width: 60%;
   float: left;
   margin: 0.5rem;
 }
