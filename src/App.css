@@ -494,12 +494,12 @@ header > .headerNavBar {
 }
 .close {
   width: 20px;
-    float: right;
-    margin: 0.3rem;
-    cursor: pointer;
-    line-height: 2rem;
-    text-align: center;
-    height: 20px;
+  float: right;
+  margin: 0.3rem;
+  cursor: pointer;
+  line-height: 2rem;
+  text-align: center;
+  height: 20px;
 }
 .chat-Header-title {
   width: 60%;
@@ -1152,4 +1152,50 @@ header > .headerNavBar {
 .react-input-emoji--button > svg {
   width: 15px !important;
   height: 15px !important;
+}
+.notificationfor_call {
+  width: 320px;
+  height: 200px;
+  background: #3c3c3c;
+  position: absolute;
+  z-index: 99999;
+  bottom: 0;
+  right: 25px;
+  border-radius: 5px;
+}
+.notification_call_user {
+  width: 65px;
+  height: 65px;
+  border-radius: 15rem;
+  border: 1px solid #fff;
+  color: #fff;
+  text-align: center;
+  line-height: 65px;
+  box-shadow: 0px 0px 5px #fff;
+  font-weight: 900;
+  font-family: auto;
+  margin: auto;
+  margin-top: 4rem;
+}
+.callAcceptBtn {
+  width: 75px;
+  /* height: 89px; */
+  border: 1px solid;
+  padding: 0.5rem;
+  border-radius: 5px;
+  color: #fff;
+  float: left;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+.callRejectedBtn {
+  width: 75px;
+  /* height: 89px; */
+  border: 1px solid;
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-right: 1rem;
+  color: red;
+  float: right;
+  margin-top: 2rem;
 }

@@ -21,6 +21,7 @@ import ChatList from "./Components/ChatList";
 import GetNotifications from "./Components/GetNotifications";
 import { config } from "./Config";
 import { io } from "socket.io-client";
+import GetCallRequest from "./Components/GetCallRequest";
 import FriendsList from "./Components/FriendsList";
 // import { initializeApp } from "firebase/app";
 
@@ -30,6 +31,8 @@ function App() {
   //const [socket, setsocket] = useState(null);
   const [NotiRequest, setNotiRequest] = useState(false);
   const [NotiRequestData, setNotiRequestData] = useState([]);
+  const [NotiCallRequest, setNotiCallRequest] = useState(false);
+  const [NotiCallRequestData, setNotiCallRequestData] = useState([]);
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
@@ -79,6 +82,15 @@ function App() {
       // setNotiRequest(false)
       // },5000)
     });
+    socket.on("CallAcceptance", (response) => {
+      // console.log(response);
+      setNotiCallRequestData([...NotiCallRequestData, response]);
+      setNotiCallRequest(true);
+      // console.log(NotiRequestData);
+      // setTimeout(()=>{
+      // setNotiRequest(false)
+      // },5000)
+    });
   }, [socket]);
   console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
@@ -97,6 +109,14 @@ function App() {
     <>
       {NotiRequest
         ? NotiRequestData.map((data) => <GetNotifications data={data} />)
+        : null}
+      {/* {NotiCallRequest
+        ? NotiCallRequestData.map((data) => <GetCallRequest data={data} />)
+        : null} */}
+      {NotiCallRequest
+        ? NotiCallRequestData.map((data) => (
+            <GetCallRequest data={data} socket={socket} />
+          ))
         : null}
       <Router>
         {/* {checkingToken ? <Header /> : null} */}

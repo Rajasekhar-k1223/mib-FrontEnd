@@ -97,7 +97,7 @@ export default function FriendsList({ socket }) {
     // window.jQuery = jQuery;
 
     checkingFriendsList();
-  
+
     //setfriendsCount(friends);
     // showEmojiContainer(0);
     //document.addEventListener("click", showEmojiContainer(0));
@@ -107,7 +107,7 @@ export default function FriendsList({ socket }) {
     // };
   }, [socket]);
   const checkingFriendsList = async () => {
-   // console.log("object");
+    // console.log("object");
     // socket.on("LoginUserList", (users) => {
     //   console.log(users);
     //   users.map((item) => {
@@ -129,9 +129,9 @@ export default function FriendsList({ socket }) {
       .get(`${config.url}/api/getFriendsList`, AccessDetails)
       .then(async (res) => {
         const friends = [];
-     //   console.log(res.data.data[0]);
+        //   console.log(res.data.data[0]);
         await res.data.data[0].friends_list.map(async (item) => {
-      //    console.log(item);
+          //    console.log(item);
           const AccessDetailsUser = {
             headers: {
               Authorization: "Bearer " + userToken,
@@ -141,23 +141,23 @@ export default function FriendsList({ socket }) {
               from: item.userId,
             },
           };
-    //      console.log(AccessDetailsUser);
+          //      console.log(AccessDetailsUser);
           await axios
             .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
             .then(async (res) => {
-      //        console.log(res.data);
-       //       console.log(res.data.data[0]);
+              //        console.log(res.data);
+              //       console.log(res.data.data[0]);
               setfriendsCount((friendsCount) => [
                 ...friendsCount,
                 res.data.data[0],
               ]);
-      //        console.log(friendsCount);
+              //        console.log(friendsCount);
               //  setfriendsCount([...friendsCount, res.data.data[0]]);
               friends.push(res.data.data[0]);
               //console.log(res.data.data[0]);
               // res.data.data[0].friends_list.map((item) => {
               //   console.log(item);
-     //         console.log(friendsCount);
+              //         console.log(friendsCount);
             });
           //setfriendsCount(friends);
           //   console.log(friendsCount);
@@ -174,8 +174,8 @@ export default function FriendsList({ socket }) {
           //   });
         });
         const frdsListN = await res.data.data[0].friends_list;
-        socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
-      //  console.log(friendsCount);
+        // socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
+        //  console.log(friendsCount);
 
         // console.log(friendsCount);
         // setfriendsCount(friends);
@@ -185,18 +185,17 @@ export default function FriendsList({ socket }) {
   };
   const checkOnline = () => {
     socket.on("getOnlinefrds", async (responseFrds) => {
-
       const frdsStatus = friendsCount.map((frdLst) => {
         return responseFrds.map((frdOn) => {
           // alert(frdOn);
-      
+
           if (frdOn.userId === frdLst.userId) {
             // console.log(frdLst.status);
             // const y = frdOn.userOn
             //   ? { ...frdLst, status: false }
             //   : { ...frdLst, status: true };
             const y = { ...frdLst, status: frdOn.userOn };
-     
+
             return y;
           }
           // else {
@@ -586,7 +585,7 @@ export default function FriendsList({ socket }) {
                 <img src={item.profile_pic} className="frd_List_profile_pic" />
                 {item.userName}
                 {/* <BlinkedBox /> */}
-                {item.is_login === true? <OnlineBox /> : <BlinkedBox />}
+                {item.is_login === true ? <OnlineBox /> : <BlinkedBox />}
               </CardContent>
             </Card>
             {index === listIndex ? (
@@ -619,7 +618,7 @@ export default function FriendsList({ socket }) {
       })}
       <div>
         {PopupChatBoxByUser.map((item, index) => {
-          return <ChatBoxComponent data={item} index={index} />;
+          return <ChatBoxComponent data={item} index={index} socket={socket} />;
         })}
       </div>
       {/* <Card className="feedCard" style={{ marginBottom: 2 }}>

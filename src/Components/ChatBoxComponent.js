@@ -194,7 +194,7 @@ const MessagesList = forwardRef((props, ref) => {
 
 export default function ChatBoxComponent(props) {
   const item = props;
-  let socket = null;
+  let socket = item.socket;
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const [text, setText] = useState("");
@@ -297,12 +297,14 @@ export default function ChatBoxComponent(props) {
     // return <Video data={username} />;
     // VideoCalling ? setVideoCalling(false) : setVideoCalling(true);
     // alert(VideoCalling)
-    navigation("/VideoCalling", { state: { userData: username } });
+    //navigation("/VideoCalling", { state: { userData: username } });
+    console.log(socket);
+    socket.emit("callfromVideo", username);
   };
   return (
     <>
       <div
-        className={"chatbox chat-"+(item.data.userId)}
+        className={"chatbox chat-" + item.data.userId}
         style={{
           right: 13 * (item.index + 1) + item.index + item.index + "rem",
         }}
@@ -310,60 +312,78 @@ export default function ChatBoxComponent(props) {
       >
         <div className="chat-Header">
           <div className="chat-Header-title">{item.data.userName}</div>
-          <div  style={{
+          <div
+            style={{
               width: "7%",
               float: "left",
               padding: "0px",
               lineHeight: "3rem",
-              cursor: "pointer",height:"40px",
-            }}><HiDotsHorizontal  onClick={()=>{setclickCall(true)
-            setTimeout(()=>{
-              setclickCall(false)
-            },5000)
-            }}/></div>
-          {clickCall ? <div style={{width: "100%",
-    position: "absolute",
-    right: "0px",top:"2.5rem"}}><div
-            style={{
-              width: "49.1%",
-              float: "left",
-              padding: "0px",
-              lineHeight: "2.5rem",
               cursor: "pointer",
-              textAlign: "center",
-    background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
-    borderRadius: "0px 0px 5px 0px",
+              height: "40px",
             }}
           >
-            <IoIosVideocam
-              onClick={() => VideoCall(item.data.userId)}
-              size={15}
+            <HiDotsHorizontal
+              onClick={() => {
+                setclickCall(true);
+                setTimeout(() => {
+                  setclickCall(false);
+                }, 5000);
+              }}
             />
           </div>
+          {clickCall ? (
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                right: "0px",
+                top: "2.5rem",
+              }}
+            >
+              <div
+                style={{
+                  width: "49.1%",
+                  float: "left",
+                  padding: "0px",
+                  lineHeight: "2.5rem",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
+                  borderRadius: "0px 0px 5px 0px",
+                }}
+              >
+                <IoIosVideocam onClick={() => VideoCall(item.data)} size={15} />
+              </div>
+              <div
+                style={{
+                  width: "50%",
+                  float: "left",
+                  padding: "0px",
+                  lineHeight: "2.5rem",
+                  marginLeft: "0.1rem",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
+                  borderRadius: "0px 0px 0px 5px",
+                }}
+              >
+                <IoMdCall size={15} />
+              </div>
+            </div>
+          ) : null}
           <div
             style={{
-              width: "50%",
-              float: "left",
-              padding: "0px",
-              lineHeight: "2.5rem",
-              marginLeft: "0.1rem",
-              cursor: "pointer",
-              textAlign:"center",
-              background: "linear-gradient(180deg, #2196F3, #61b5fb57)",
-              borderRadius: "0px 0px 0px 5px",
-            }}
-          >
-            <IoMdCall size={15} />
-          </div></div>:null}
-          <div  style={{
               width: "5%",
               float: "left",
               padding: "0px",
               lineHeight: "2.5rem",
               marginLeft: "1.1rem",
               cursor: "pointer",
-              fontSize:"35px",
-            }}>-</div>
+              fontSize: "35px",
+            }}
+          >
+            -
+          </div>
           <div
             className="close"
             onClick={() => {
@@ -412,8 +432,8 @@ export default function ChatBoxComponent(props) {
   );
 }
 const Video = (data) => {
- // alert(data);
- console.log(data)
+  // alert(data);
+  console.log(data);
   // const [Pause, setPause] = useState(false);
   const [CallingSysten, setCallingSysten] = useState(false);
   return (

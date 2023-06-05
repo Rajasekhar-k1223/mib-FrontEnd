@@ -49,6 +49,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-input-emoji": "4.1.0",
     "react-mapbox-gl": "^5.1.1",
+    "react-pageflip": "^2.0.3",
     "react-player": "^2.10.1",
     "react-responsive-masonry": "^2.1.5",
     "react-router-dom": "^6.4.4",

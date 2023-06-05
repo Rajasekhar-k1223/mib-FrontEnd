@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import RegNewApp from "./RegNewApp";
+import AlbumLoad from "./AlbumLoad";
 // import { MenuItem } from "@mui/material";
 const currencies = [
   {
@@ -19,6 +20,10 @@ const currencies = [
   {
     value: "page",
     label: "Page",
+  },
+  {
+    value: "album",
+    label: "Album",
   },
 ];
 const applistold = [
@@ -63,6 +68,7 @@ export default function NewGridView() {
           <div className="FeedsSections">
             {/* <Feeds /> */}
             <div>
+              <AlbumLoad />
               <RegNewApp props={AppsList} />
 
               <div
