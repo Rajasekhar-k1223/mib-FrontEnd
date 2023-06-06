@@ -1187,6 +1187,7 @@ header > .headerNavBar {
   float: left;
   margin-top: 2rem;
   margin-left: 1rem;
+  cursor: pointer;
 }
 .callRejectedBtn {
   width: 75px;
@@ -1198,4 +1199,5 @@ header > .headerNavBar {
   color: red;
   float: right;
   margin-top: 2rem;
+  cursor: pointer;
 }

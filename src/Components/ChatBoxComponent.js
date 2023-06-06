@@ -299,7 +299,7 @@ export default function ChatBoxComponent(props) {
     // alert(VideoCalling)
     //navigation("/VideoCalling", { state: { userData: username } });
     console.log(socket);
-    socket.emit("callfromVideo", username);
+    socket.emit("callfromVideo", {username,userId});
   };
   return (
     <>

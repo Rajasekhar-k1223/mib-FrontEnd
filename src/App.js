@@ -23,6 +23,7 @@ import { config } from "./Config";
 import { io } from "socket.io-client";
 import GetCallRequest from "./Components/GetCallRequest";
 import FriendsList from "./Components/FriendsList";
+import CallConnected from "./Components/CallConnected";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
@@ -33,6 +34,8 @@ function App() {
   const [NotiRequestData, setNotiRequestData] = useState([]);
   const [NotiCallRequest, setNotiCallRequest] = useState(false);
   const [NotiCallRequestData, setNotiCallRequestData] = useState([]);
+  const [NotiCallRequestAccept, setNotiCallRequestAccept] = useState(false);
+  const [NotiCallRequestAcceptData, setNotiCallRequestAcceptData] = useState([]);
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
@@ -91,6 +94,15 @@ function App() {
       // setNotiRequest(false)
       // },5000)
     });
+    socket.on("callAcceptedres", (response) => {
+      // console.log(response);
+      setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, response]);
+      setNotiCallRequestAccept(true);
+      // console.log(NotiRequestData);
+      // setTimeout(()=>{
+      // setNotiRequest(false)
+      // },5000)
+    });
   }, [socket]);
   console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
@@ -117,6 +129,11 @@ function App() {
         ? NotiCallRequestData.map((data) => (
             <GetCallRequest data={data} socket={socket} />
           ))
+        : null}
+        {NotiCallRequestAccept?
+        // ? NotiCallRequestAcceptData.map((data) => (
+            <CallConnected socket={socket} />
+          //))
         : null}
       <Router>
         {/* {checkingToken ? <Header /> : null} */}
@@ -154,11 +171,11 @@ function App() {
             path="/newgrid"
             element={<NewGridView socket={socket} />}
           />
-          <Route
+          {/* <Route
             exact
             path="/videoCalling"
             element={<VideoCalling socket={socket} />}
-          />
+          /> */}
           <Route
             exact
             path="/passwordForgot"

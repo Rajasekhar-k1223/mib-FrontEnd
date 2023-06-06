@@ -1,9 +1,11 @@
 import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-export default function componentName({ data }) {
-  const socket = data.socket;
-  const Accepted = () => {
-    socket.emit();
+export default function GetCallRequest({ data,socket }) {
+  console.log(data)
+  console.log(socket)
+  //const socket = data.socket;
+  const Accepted = (userData) => {
+    socket.emit("callAccepted",userData);
   };
   return (
     <div className="notificationfor_call">
@@ -16,7 +18,7 @@ export default function componentName({ data }) {
       <div
         className="callAcceptBtn"
         onClick={() => {
-          Accepted();
+          Accepted(data.user);
         }}
       >
         Accept
