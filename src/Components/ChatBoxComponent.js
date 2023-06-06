@@ -299,7 +299,7 @@ export default function ChatBoxComponent(props) {
     // alert(VideoCalling)
     //navigation("/VideoCalling", { state: { userData: username } });
     console.log(socket);
-    socket.emit("callfromVideo", {username,userId});
+    socket.emit("callfromVideo", { username, userId });
   };
   return (
     <>
@@ -338,6 +338,8 @@ export default function ChatBoxComponent(props) {
                 position: "absolute",
                 right: "0px",
                 top: "2.5rem",
+                zIndex: 9999,
+                background: "#fff",
               }}
             >
               <div
