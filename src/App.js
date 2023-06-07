@@ -36,6 +36,8 @@ function App() {
   const [NotiCallRequestData, setNotiCallRequestData] = useState([]);
   const [NotiCallRequestAccept, setNotiCallRequestAccept] = useState(false);
   const [NotiCallRequestAcceptData, setNotiCallRequestAcceptData] = useState([]);
+  const [NotiCallRequestFrom, setNotiCallRequestFrom] = useState(false);
+  const [NotiCallRequestDataFrom, setNotiCallRequestDataFrom] = useState([])
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
@@ -103,6 +105,16 @@ function App() {
       // setNotiRequest(false)
       // },5000)
     });
+    socket.on("CallAcceptanceSender", (response) => {
+      // console.log(response);
+      setNotiCallRequestDataFrom([...NotiCallRequestData, response]);
+      setNotiCallRequestFrom(true);
+      // console.log(NotiRequestData);
+      // setTimeout(()=>{
+      // setNotiRequest(false)
+      // },5000)
+    });
+    
   }, [socket]);
   console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
@@ -127,6 +139,11 @@ function App() {
         : null} */}
       {NotiCallRequest
         ? NotiCallRequestData.map((data) => (
+            <GetCallRequest data={data} socket={socket} />
+          ))
+        : null}
+        {NotiCallRequestFrom
+        ? NotiCallRequestDataFrom.map((data) => (
             <GetCallRequest data={data} socket={socket} />
           ))
         : null}
