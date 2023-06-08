@@ -1163,6 +1163,17 @@ header > .headerNavBar {
   right: 25px;
   border-radius: 5px;
 }
+.notificationform_call {
+  width: 80%;
+  height: 80vh;
+  background: #3c3c3c;
+  position: absolute;
+  z-index: 99999;
+  bottom: 0;
+  right: 25px;
+  border-radius: 5px;
+  margin:2rem;
+}
 .notification_call_user {
   width: 65px;
   height: 65px;

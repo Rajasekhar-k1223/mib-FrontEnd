@@ -24,6 +24,7 @@ import { io } from "socket.io-client";
 import GetCallRequest from "./Components/GetCallRequest";
 import FriendsList from "./Components/FriendsList";
 import CallConnected from "./Components/CallConnected";
+import GetCallRequestFrom from "./Components/GetCallRequestFrom";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
@@ -144,7 +145,7 @@ function App() {
         : null}
         {NotiCallRequestFrom
         ? NotiCallRequestDataFrom.map((data) => (
-            <GetCallRequest data={data} socket={socket} />
+            <GetCallRequestFrom data={data} socket={socket} />
           ))
         : null}
         {NotiCallRequestAccept?
