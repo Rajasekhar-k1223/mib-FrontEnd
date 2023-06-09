@@ -39,7 +39,9 @@
   /* margin-top: 10rem;
   margin-left: 10rem; */
 }
-
+.video{
+  text-align: center;
+}
 .caller {
   text-align: center;
   color: #fff;
@@ -1164,8 +1166,8 @@ header > .headerNavBar {
   border-radius: 5px;
 }
 .notificationform_call {
-  width: 80%;
-  height: 80vh;
+  width: 90%;
+  height: 90vh;
   background: #3c3c3c;
   position: absolute;
   z-index: 99999;
@@ -1173,6 +1175,7 @@ header > .headerNavBar {
   right: 25px;
   border-radius: 5px;
   margin:2rem;
+  padding:1rem;
 }
 .notification_call_user {
   width: 65px;
@@ -1211,4 +1214,20 @@ header > .headerNavBar {
   float: right;
   margin-top: 2rem;
   cursor: pointer;
+}
+
+
+.rejected_icon{
+  position: absolute;
+    /* width: 65px; */
+    bottom: 0;
+    text-align: center;
+    /* align-items: center; */
+    /* margin: auto; */
+    left: 0;
+    right: 0;
+}
+.rejected_icon > img{
+  width: 15%;
+  border-radius: 4rem;
 }

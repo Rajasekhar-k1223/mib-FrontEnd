@@ -293,6 +293,8 @@ export default function ChatBoxComponent(props) {
     // );
   };
   const VideoCall = (username) => {
+    // console.log(username);
+    // return false;
     // setVideoCalling(true);
     // return <Video data={username} />;
     // VideoCalling ? setVideoCalling(false) : setVideoCalling(true);

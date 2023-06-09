@@ -19,7 +19,8 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-function CallConnected({socket}) {
+function CallConnected({socket,callAccept}) {
+  console.log(callAccept)
     const [CallingSysten, setCallingSysten] = useState(true);
     const [AcceptCall, setAcceptCall] = useState(false);
     const [addUserView, setaddUserView] = useState(false);
@@ -29,7 +30,7 @@ function CallConnected({socket}) {
     const [receivingCall, setReceivingCall] = useState(false);
     const [caller, setCaller] = useState("");
     const [callerSignal, setCallerSignal] = useState();
-    const [callAccepted, setCallAccepted] = useState(false);
+    const [callAccepted, setCallAccepted] = useState(callAccept);
     const [idToCall, setIdToCall] = useState("");
     const [callEnded, setCallEnded] = useState(false);
     const [name, setName] = useState("");
@@ -55,6 +56,7 @@ function CallConnected({socket}) {
           setName(data.name);
           setCallerSignal(data.signal);
         });
+        setCallAccepted(callAccept)
       }, []);
       const callfriend = (id) => {
         //let socket = io(ip_address + ":" + socket_port);
@@ -115,7 +117,7 @@ function CallConnected({socket}) {
         connectionRef.current.destroy();
       };
   return (
-    <div>
+    <div style={{position:"relative",zIndex:9999}}>
       {/* <ReactAudioPlayer
         src={RingTone}
         autoPlay
@@ -262,12 +264,14 @@ function CallConnected({socket}) {
                   muted
                   ref={myVideo}
                   autoPlay
-                  style={{ width: "100vw", height: "100vh" }}
+                  // style={{ width: "100vw", height: "100vh" }}
                 />
               )}
             </div>
             <div className="video">
-              {callAccepted && !callEnded ? (
+              {/* {callAccepted && !callEnded ? ( */}
+              {console.log(callAccepted)}
+              {callAccepted? (
                 <video
                   playsInline
                   ref={userVideo}
@@ -277,7 +281,8 @@ function CallConnected({socket}) {
               ) : null}
             </div>
           </div>
-          <div className="myId">
+          <div className='rejected_icon'><img src={Rejected} /></div>
+          {/* <div className="myId">
             <TextField
               id="filled-basic"
               label="Name"
@@ -323,8 +328,8 @@ function CallConnected({socket}) {
               )}
               {idToCall}
             </div>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             {receivingCall && !callAccepted ? (
               <div className="caller">
                 <h1>{name} is calling...</h1>
@@ -337,7 +342,7 @@ function CallConnected({socket}) {
                 </Button>
               </div>
             ) : null}
-          </div>
+          </div> */}
         </div>
       </>
     </div>

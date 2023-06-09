@@ -38,7 +38,8 @@ function App() {
   const [NotiCallRequestAccept, setNotiCallRequestAccept] = useState(false);
   const [NotiCallRequestAcceptData, setNotiCallRequestAcceptData] = useState([]);
   const [NotiCallRequestFrom, setNotiCallRequestFrom] = useState(false);
-  const [NotiCallRequestDataFrom, setNotiCallRequestDataFrom] = useState([])
+  const [NotiCallRequestDataFrom, setNotiCallRequestDataFrom] = useState([]);
+  const [accepted, setaccepted] = useState(false)
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
@@ -101,6 +102,7 @@ function App() {
       // console.log(response);
       setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, response]);
       setNotiCallRequestAccept(true);
+      setaccepted(true);
       // console.log(NotiRequestData);
       // setTimeout(()=>{
       // setNotiRequest(false)
@@ -117,7 +119,7 @@ function App() {
     });
     
   }, [socket]);
-  console.log(NotiRequestData);
+  // console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
   //   document.addEventListener("click", checkingTokenCon);
@@ -140,7 +142,7 @@ function App() {
         : null} */}
       {NotiCallRequest
         ? NotiCallRequestData.map((data) => (
-            <GetCallRequest data={data} socket={socket} />
+            <GetCallRequest data={data} socket={socket}/>
           ))
         : null}
         {NotiCallRequestFrom
@@ -150,7 +152,7 @@ function App() {
         : null}
         {NotiCallRequestAccept?
         // ? NotiCallRequestAcceptData.map((data) => (
-            <CallConnected socket={socket} />
+            <CallConnected socket={socket} callAccept={true}/>
           //))
         : null}
       <Router>

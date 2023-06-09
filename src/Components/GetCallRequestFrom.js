@@ -4,7 +4,7 @@ import Peer from "simple-peer";
 import CallConnected from './CallConnected';
 export default function GetCallRequestFrom({ data,socket }) {
  
-  
+  const [accepted, setaccepted] = useState(false)
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -13,6 +13,9 @@ export default function GetCallRequestFrom({ data,socket }) {
 
     const Reject = (userData) => {
         socket.emit("callRejected",userData);
+        socket.on("callAcceptedresSender",(response)=>{
+          alert(response)
+        })
       };
   return (
     <div className="notificationform_call">
@@ -22,8 +25,8 @@ export default function GetCallRequestFrom({ data,socket }) {
         {data.senderName}
         <p>{data.type}</p>
       </div> */}
-      <div className="notification_call_user">R</div>
-      <CallConnected socket={socket} />
+      {/* <div className="notification_call_user">R</div> */}
+      <CallConnected socket={socket} callAccept={accepted}/>
       {/* <video
                   playsInline
                   ref={userVideo}
