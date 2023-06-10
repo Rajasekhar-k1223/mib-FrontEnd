@@ -36,10 +36,12 @@ function App() {
   const [NotiCallRequest, setNotiCallRequest] = useState(false);
   const [NotiCallRequestData, setNotiCallRequestData] = useState([]);
   const [NotiCallRequestAccept, setNotiCallRequestAccept] = useState(false);
-  const [NotiCallRequestAcceptData, setNotiCallRequestAcceptData] = useState([]);
+  const [NotiCallRequestAcceptData, setNotiCallRequestAcceptData] = useState(
+    []
+  );
   const [NotiCallRequestFrom, setNotiCallRequestFrom] = useState(false);
   const [NotiCallRequestDataFrom, setNotiCallRequestDataFrom] = useState([]);
-  const [accepted, setaccepted] = useState(false)
+  const [accepted, setaccepted] = useState(false);
   let ip_address = config.socketIp;
   let socket_port = config.socket;
   const socket = io(ip_address + ":" + socket_port);
@@ -117,7 +119,6 @@ function App() {
       // setNotiRequest(false)
       // },5000)
     });
-    
   }, [socket]);
   // console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
@@ -142,18 +143,18 @@ function App() {
         : null} */}
       {NotiCallRequest
         ? NotiCallRequestData.map((data) => (
-            <GetCallRequest data={data} socket={socket}/>
+            <GetCallRequest data={data} socket={socket} />
           ))
         : null}
-        {NotiCallRequestFrom
+      {NotiCallRequestFrom
         ? NotiCallRequestDataFrom.map((data) => (
             <GetCallRequestFrom data={data} socket={socket} />
           ))
         : null}
-        {NotiCallRequestAccept?
-        // ? NotiCallRequestAcceptData.map((data) => (
-            <CallConnected socket={socket} callAccept={true}/>
-          //))
+      {NotiCallRequestAccept
+        ? NotiCallRequestAcceptData.map((data, socket) => (
+            <CallConnected socket={socket} callAccept={true} data={data} />
+          ))
         : null}
       <Router>
         {/* {checkingToken ? <Header /> : null} */}

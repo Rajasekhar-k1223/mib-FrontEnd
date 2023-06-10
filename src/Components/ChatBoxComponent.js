@@ -292,7 +292,7 @@ export default function ChatBoxComponent(props) {
     //   </div>
     // );
   };
-  const VideoCall = (username) => {
+  const VideoCall = (userData) => {
     // console.log(username);
     // return false;
     // setVideoCalling(true);
@@ -301,7 +301,7 @@ export default function ChatBoxComponent(props) {
     // alert(VideoCalling)
     //navigation("/VideoCalling", { state: { userData: username } });
     console.log(socket);
-    socket.emit("callfromVideo", { username, userId });
+    socket.emit("callfromVideo", { userData, userId });
   };
   return (
     <>

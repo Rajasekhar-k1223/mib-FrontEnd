@@ -1,4 +1,4 @@
-import React,{useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 import Peer from "simple-peer";
 import { useNavigate } from "react-router-dom";
 import ReactAudioPlayer from "react-audio-player";
@@ -19,105 +19,108 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-function CallConnected({socket,callAccept}) {
-  console.log(callAccept)
-    const [CallingSysten, setCallingSysten] = useState(true);
-    const [AcceptCall, setAcceptCall] = useState(false);
-    const [addUserView, setaddUserView] = useState(false);
-    const [mute, setmute] = useState(true);
-    const [me, setMe] = useState("");
-    const [stream, setStream] = useState();
-    const [receivingCall, setReceivingCall] = useState(false);
-    const [caller, setCaller] = useState("");
-    const [callerSignal, setCallerSignal] = useState();
-    const [callAccepted, setCallAccepted] = useState(callAccept);
-    const [idToCall, setIdToCall] = useState("");
-    const [callEnded, setCallEnded] = useState(false);
-    const [name, setName] = useState("");
-    const myVideo = useRef();
-    const userVideo = useRef();
-    const connectionRef = useRef();
-    useEffect(() => {
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: true })
-          .then((stream) => {
-            setStream(stream);
-            myVideo.current.srcObject = stream;
-          });
-    
-        // socket.on("RequestUser", (id) => {
-        //   setMe(id);
-        // });
-        callfriend(32);
-    
-        socket.on("callUser", (data) => {
-          setReceivingCall(true);
-          setCaller(data.from);
-          setName(data.name);
-          setCallerSignal(data.signal);
-        });
-        setCallAccepted(callAccept)
-      }, []);
-      const callfriend = (id) => {
-        //let socket = io(ip_address + ":" + socket_port);
-        // socket.emit("sendChatToServer", text);
-        // console.log(text);
-        // console.log(socket);
-        // console.log(socket.id);
-        console.log(id);
-        socket.emit("JoinServer", id);
-        console.log(socket);
-        callUser(socket.id);
-      };
-      const callUser = (id) => {
-        console.log(id);
-        const peer = new Peer({
-          initiator: true,
-          trickle: false,
-          stream: stream,
-        });
-        peer.on("signal", (data) => {
-          socket.emit("callUser", {
-            userToCall: id,
-            signalData: data,
-            from: me,
-            name: name,
-          });
-        });
-        peer.on("stream", (stream) => {
-          userVideo.current.srcObject = stream;
-        });
-        socket.on("callAccepted", (signal) => {
-          setCallAccepted(true);
-          peer.signal(signal);
-        });
-    
-        connectionRef.current = peer;
-      };
-      const answerCall = () => {
-        setCallAccepted(true);
-        const peer = new Peer({
-          initiator: false,
-          trickle: false,
-          stream: stream,
-        });
-        peer.on("signal", (data) => {
-          socket.emit("answerCall", { signal: data, to: caller });
-        });
-        peer.on("stream", (stream) => {
-          userVideo.current.srcObject = stream;
-        });
-    
-        peer.signal(callerSignal);
-        connectionRef.current = peer;
-      };
-    
-      const leaveCall = () => {
-        setCallEnded(true);
-        connectionRef.current.destroy();
-      };
+function CallConnected({ socket, callAccept, data }) {
+  console.log(data);
+  const [CallingSysten, setCallingSysten] = useState(true);
+  const [AcceptCall, setAcceptCall] = useState(false);
+  const [addUserView, setaddUserView] = useState(false);
+  const [mute, setmute] = useState(true);
+  const [me, setMe] = useState("");
+  const [stream, setStream] = useState();
+  const [receivingCall, setReceivingCall] = useState(false);
+  const [caller, setCaller] = useState("");
+  const [callerSignal, setCallerSignal] = useState();
+  const [callAccepted, setCallAccepted] = useState(callAccept);
+  const [idToCall, setIdToCall] = useState("");
+  const [callEnded, setCallEnded] = useState(false);
+  const [name, setName] = useState("");
+  const myVideo = useRef();
+  const userVideo = useRef();
+  const connectionRef = useRef();
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        myVideo.current.srcObject = stream;
+      });
+
+    // socket.on("RequestUser", (id) => {
+    //   setMe(id);
+    // });
+    callAccept === true ? callfriend(data.userData.userId) : notstart();
+
+    socket.on("callUser", (data) => {
+      setReceivingCall(true);
+      setCaller(data.from);
+      setName(data.name);
+      setCallerSignal(data.signal);
+    });
+    setCallAccepted(callAccept);
+  }, [socket]);
+  const callfriend = (id) => {
+    //let socket = io(ip_address + ":" + socket_port);
+    // socket.emit("sendChatToServer", text);
+    // console.log(text);
+    console.log(socket);
+    console.log(socket.Socket);
+    console.log(id);
+    socket.emit("JoinServer", id);
+    console.log(socket);
+    callUser(socket.id);
+  };
+  const notstart = () => {
+    console.log(AcceptCall);
+  };
+  const callUser = (id) => {
+    console.log(id);
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      socket.emit("callUser", {
+        userToCall: id,
+        signalData: data,
+        from: me,
+        name: name,
+      });
+    });
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+    socket.on("callAccepted", (signal) => {
+      setCallAccepted(true);
+      peer.signal(signal);
+    });
+
+    connectionRef.current = peer;
+  };
+  const answerCall = () => {
+    setCallAccepted(true);
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      socket.emit("answerCall", { signal: data, to: caller });
+    });
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+
+    peer.signal(callerSignal);
+    connectionRef.current = peer;
+  };
+
+  const leaveCall = () => {
+    setCallEnded(true);
+    connectionRef.current.destroy();
+  };
   return (
-    <div style={{position:"relative",zIndex:9999}}>
+    <div style={{ position: "relative", zIndex: 9999 }}>
       {/* <ReactAudioPlayer
         src={RingTone}
         autoPlay
@@ -271,7 +274,7 @@ function CallConnected({socket,callAccept}) {
             <div className="video">
               {/* {callAccepted && !callEnded ? ( */}
               {console.log(callAccepted)}
-              {callAccepted? (
+              {callAccepted ? (
                 <video
                   playsInline
                   ref={userVideo}
@@ -281,7 +284,9 @@ function CallConnected({socket,callAccept}) {
               ) : null}
             </div>
           </div>
-          <div className='rejected_icon'><img src={Rejected} /></div>
+          <div className="rejected_icon">
+            <img src={Rejected} />
+          </div>
           {/* <div className="myId">
             <TextField
               id="filled-basic"
@@ -349,4 +354,4 @@ function CallConnected({socket,callAccept}) {
   );
 }
 
-export default CallConnected
+export default CallConnected;
