@@ -48,7 +48,7 @@ function CallConnected({ socket, callAccept, data }) {
     // socket.on("RequestUser", (id) => {
     //   setMe(id);
     // });
-    callAccept === true ? callfriend(data.userData.userId) : notstart();
+    callAccept === true ? answerCall() : callfriend(data.userData.userId) ;
 
     socket.on("callUser", (data) => {
       setReceivingCall(true);
@@ -62,12 +62,14 @@ function CallConnected({ socket, callAccept, data }) {
     //let socket = io(ip_address + ":" + socket_port);
     // socket.emit("sendChatToServer", text);
     // console.log(text);
+   
     console.log(socket);
     console.log(socket.Socket);
     console.log(id);
     socket.emit("JoinServer", id);
     console.log(socket);
-    callUser(socket.id);
+    // console.log(socket.Socket.data)
+    callUser(id);
   };
   const notstart = () => {
     console.log(AcceptCall);
@@ -274,6 +276,9 @@ function CallConnected({ socket, callAccept, data }) {
             <div className="video">
               {/* {callAccepted && !callEnded ? ( */}
               {console.log(callAccepted)}
+              {console.log(myVideo)}
+              {console.log(userVideo)}
+              {console.log(stream)}
               {callAccepted ? (
                 <video
                   playsInline

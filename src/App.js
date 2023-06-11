@@ -25,6 +25,7 @@ import GetCallRequest from "./Components/GetCallRequest";
 import FriendsList from "./Components/FriendsList";
 import CallConnected from "./Components/CallConnected";
 import GetCallRequestFrom from "./Components/GetCallRequestFrom";
+import CalltoScreen from "./Components/CalltoScreen";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
@@ -146,14 +147,14 @@ function App() {
             <GetCallRequest data={data} socket={socket} />
           ))
         : null}
-      {NotiCallRequestFrom
+      {/* {NotiCallRequestFrom
         ? NotiCallRequestDataFrom.map((data) => (
             <GetCallRequestFrom data={data} socket={socket} />
           ))
-        : null}
+        : null} */}
       {NotiCallRequestAccept
-        ? NotiCallRequestAcceptData.map((data, socket) => (
-            <CallConnected socket={socket} callAccept={true} data={data} />
+        ? NotiCallRequestAcceptData.map((data) => (
+            <CalltoScreen socket={socket} callAccept={true} data={data} />
           ))
         : null}
       <Router>
