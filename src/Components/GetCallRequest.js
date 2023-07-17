@@ -1,14 +1,30 @@
-import React from "react";
+import React,{useCallback,useEffect} from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 export default function GetCallRequest({ data, socket }) {
+  const navigate = useNavigate();
   console.log(data);
   console.log(socket);
   //const socket = data.socket;
   const Accepted = (userData, userId) => {
     console.log(userData);
     console.log(userId);
-    socket.emit("callAccepted", { userData, userId });
+    socket.emit("Accept-Room", { userData, userId });
   };
+  const handleRoomJoined = useCallback(({roomId}) =>{
+    console.log(data)
+    //    socket.emit("join-room",{emailId:email,roomId})
+       navigate(`/room/${data.roomId}`)
+    },[navigate])
+    const handleJoinRoom = ({roomId}) =>{
+        socket.emit("join-room",{emailId:data.email,roomId})
+     }
+     useEffect(()=>{
+      socket.on("joined-room",handleRoomJoined);
+      return ()=>{
+          socket.off("joined-room",handleRoomJoined);
+      }
+  },[handleRoomJoined,socket]);
   return (
     <div className="notificationfor_call">
       <AiFillCloseCircle className="notifi_close" />

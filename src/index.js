@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter} from 'react-router-dom';
+import { ChakraProvider } from "@chakra-ui/react";
+import { ContextProvider } from "./Context";
 import { stopReportingRuntimeErrors } from "react-error-overlay";
 import "./assets/fonts/PT_Sans/PTSans-Bold.ttf";
 if (process.env.NODE_ENV === "development") {
@@ -17,7 +20,9 @@ if (process.env.NODE_ENV === "development") {
 // );
 ReactDOM.render(
   <React.StrictMode>
+    <BrowserRouter>
     <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
