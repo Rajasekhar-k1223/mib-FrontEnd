@@ -9,7 +9,7 @@ export default function GetCallRequest({ data, socket }) {
   const Accepted = (userData, userId) => {
     console.log(userData);
     console.log(userId);
-    socket.emit("Accept-Room", { userData, userId });
+    socket.emit("Accept-Room", { userData });
   };
   const handleRoomJoined = useCallback(({roomId}) =>{
     console.log(data)

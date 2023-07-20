@@ -13,7 +13,7 @@ iceServers:[{
     }));
     const createOffer = async()=>{
         const offer = await peer.createOffer();
-        await peer.setLocalDescription(offer);
+        await peer.setLocalDescription(new RTCSessionDescription(offer));
         return offer
     }
     const creatAnswer = async(offer)=>{
