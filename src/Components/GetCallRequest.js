@@ -1,30 +1,34 @@
-import React,{useCallback,useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-export default function GetCallRequest({ data, socket }) {
+import { useSocket } from "./context/SocketProvider";
+export default function GetCallRequest({ data }) {
   const navigate = useNavigate();
+  const socket = useSocket();
   console.log(data);
   console.log(socket);
   //const socket = data.socket;
-  const Accepted = (userData, userId) => {
-    console.log(userData);
-    console.log(userId);
-    socket.emit("Accept-Room", { userData });
+  const Accepted = (data) => {
+    console.log(data);
+    socket.emit("room:join", { from: data.to, to: null, roomId: data.roomId });
   };
-  const handleRoomJoined = useCallback(({roomId}) =>{
-    console.log(data)
-    //    socket.emit("join-room",{emailId:email,roomId})
-       navigate(`/room/${data.roomId}`)
-    },[navigate])
-    const handleJoinRoom = ({roomId}) =>{
-        socket.emit("join-room",{emailId:data.email,roomId})
-     }
-     useEffect(()=>{
-      socket.on("joined-room",handleRoomJoined);
-      return ()=>{
-          socket.off("joined-room",handleRoomJoined);
-      }
-  },[handleRoomJoined,socket]);
+  const handleRoomJoined = useCallback(
+    ({ roomId }) => {
+      console.log(data);
+      //    socket.emit("join-room",{emailId:email,roomId})
+      navigate(`/room/${data.roomId}`);
+    },
+    [navigate]
+  );
+  const handleJoinRoom = ({ roomId }) => {
+    socket.emit("join-room", { emailId: data.email, roomId });
+  };
+  useEffect(() => {
+    socket.on("room:join", handleRoomJoined);
+    return () => {
+      socket.off("room:join", handleRoomJoined);
+    };
+  }, [handleRoomJoined, socket]);
   return (
     <div className="notificationfor_call">
       <AiFillCloseCircle className="notifi_close" />
@@ -37,7 +41,7 @@ export default function GetCallRequest({ data, socket }) {
       <div
         className="callAcceptBtn"
         onClick={() => {
-          Accepted(data.userData, data.userId);
+          Accepted(data);
         }}
       >
         Accept

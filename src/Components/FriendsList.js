@@ -618,7 +618,7 @@ export default function FriendsList({ socket }) {
       })}
       <div>
         {PopupChatBoxByUser.map((item, index) => {
-          return <ChatBoxComponent data={item} index={index} socket={socket} />;
+          return <ChatBoxComponent data={item} index={index} />;
         })}
       </div>
       {/* <Card className="feedCard" style={{ marginBottom: 2 }}>

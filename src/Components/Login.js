@@ -21,10 +21,12 @@ import gifsrc1 from "../assets/images/transistor-fast-delivery-1.gif";
 import gifsrc2 from "../assets/images/dazzle-team-celebrating-success-of-a-work-project.gif";
 import CircularProgress from "@mui/material/CircularProgress";
 import { io } from "socket.io-client";
+import { useSocket } from "../Components/context/SocketProvider";
 const axios = require("axios").default;
 
-export default function Login({ socket }) {
+export default function Login() {
   const navigation = useNavigate();
+  const socket = useSocket();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
   const [passwordShow, setpasswordShow] = useState("password");

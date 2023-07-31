@@ -33,8 +33,10 @@ import VideoPlayer from "./Components/VideoPlayer";
 import Notifications from "./Components/Notifications";
 import { SocketContext } from "./Context";
 import RoomPage from "./Components/RoomPage";
+import Room from "./Components/Room";
 import { PeerProvider } from "./Components/Peer";
-import { SocketProvider } from "./Socket";
+import { useSocket } from "./Components/context/SocketProvider";
+//import { useSocket } from "./Socket";
 // import { initializeApp } from "firebase/app";
 
 // Initialize Firebase
@@ -59,7 +61,15 @@ function App() {
   // const [call, setCall] = useState({});
   let ip_address = config.socketIp;
   let socket_port = config.socket;
-  const socket = io(ip_address + ":" + socket_port);
+  // const socket = io(ip_address + ":" + socket_port);
+  const socket = useSocket();
+  useEffect(() => {
+    socket.on("incoming-call-to", (response) => {
+      console.log(response);
+      setNotiCallRequestData([...NotiCallRequestData, response]);
+      setNotiCallRequest(true);
+    });
+  });
   // const {
   //   name,
   //   callAccepted,
@@ -77,100 +87,100 @@ function App() {
   //     ? setsocket(io(ip_address + ":" + socket_port))
   //     : setsocket(io(ip_address + ":" + socket_port));
   // }, []);
-  useEffect(() => {
-    // getNotification();
-    // let ip_address = config.socketIp;
-    // let socket_port = config.socket;
-    // const socket = io(ip_address + ":" + socket_port);
-    socket.on("getNotification", (response) => {
-      console.log(response);
-      setNotiRequestData([...NotiRequestData, response]);
-      setNotiRequest(true);
-      console.log(NotiRequestData);
-      setTimeout(() => {
-        setNotiRequest(false);
-      }, 5000);
-    });
-    // socket.on("getOnlinefrds", (userOn) => {
-    //   alert(userOn);
-    //   console.log(userOn);
-    //   <FriendsList data={userOn} />;
-    // });
-    socket.on("getNotificationAcceptfrom", (response) => {
-      console.log(response);
-      setNotiRequestData([...NotiRequestData, response]);
-      setNotiRequest(true);
-      console.log(NotiRequestData);
-      // setTimeout(()=>{
-      // setNotiRequest(false)
-      // },5000)
-    });
+  // useEffect(() => {
+  //   alert(SocketProvider);
+  //   // getNotification();
+  //   // let ip_address = config.socketIp;
+  //   // let socket_port = config.socket;
+  //   // const socket = io(ip_address + ":" + socket_port);
+  //   socket.on("getNotification", (response) => {
+  //     console.log(response);
+  //     setNotiRequestData([...NotiRequestData, response]);
+  //     setNotiRequest(true);
+  //     console.log(NotiRequestData);
+  //     setTimeout(() => {
+  //       setNotiRequest(false);
+  //     }, 5000);
+  //   });
+  //   // socket.on("getOnlinefrds", (userOn) => {
+  //   //   alert(userOn);
+  //   //   console.log(userOn);
+  //   //   <FriendsList data={userOn} />;
+  //   // });
+  //   socket.on("getNotificationAcceptfrom", (response) => {
+  //     console.log(response);
+  //     setNotiRequestData([...NotiRequestData, response]);
+  //     setNotiRequest(true);
+  //     console.log(NotiRequestData);
+  //     // setTimeout(()=>{
+  //     // setNotiRequest(false)
+  //     // },5000)
+  //   });
 
-    socket.on("getNotificationAcceptto", (response) => {
-      console.log(response);
-      setNotiRequestData([...NotiRequestData, response]);
-      setNotiRequest(true);
-      console.log(NotiRequestData);
-      // setTimeout(()=>{
-      // setNotiRequest(false)
-      // },5000)
-    });
-    socket.on("CallAcceptance", (response) => {
-      // console.log(response);
-      setNotiCallRequestData([...NotiCallRequestData, response]);
-      setNotiCallRequest(true);
-      // console.log(NotiRequestData);
-      // setTimeout(()=>{
-      // setNotiRequest(false)
-      // },5000)
-    });
-    socket.on("callAcceptedres", (response) => {
-      // console.log(response);
-      // setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, response]);
-      setNotiCallRequestAccept(true);
-      setaccepted(true);
-      // console.log(NotiRequestData);
-      // setTimeout(()=>{
-      // setNotiRequest(false)
-      // },5000)
-    });
-    socket.on("CallAcceptanceSender", (response) => {
-      // console.log(response);
-      setNotiCallRequestDataFrom([...NotiCallRequestData, response]);
-      setNotiCallRequest(true);
-      // console.log(NotiRequestData);
-      // setTimeout(()=>{
-      // setNotiRequest(false)
-      // },5000)
-    });
-    socket.on("callUser", ({ from, name: callerName, signal }) => {
-      console.log({ from, name: callerName, signal });
-      alert(from)
-     // setCall({ isReceivingCall: true, from, name: callerName, signal });
-    });
-    // socket.on("callUser", (data) => {
-      
-    //   // alert(data)
-    //   // console.log(data)
-    //   // setReceivingCall(true);
-    //   // setCaller(data.from);
-    //   // setName(data.name);
-    //   // setCallerSignal(data.signal);
-    //   // setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, data]);
-    // });
-    socket.on("callAccepted", (signal) => {
-       //setCallAccepted(true);
-       const peer = new Peer();
-       peer.signal(signal);
-      //setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, signal]);
-    });
-    socket.on("calling-Request",(data)=>{
-      console.log("Request")
-      setNotiCallRequestData([...NotiCallRequestData, data]);
-      setNotiCallRequest(true);
+  //   socket.on("getNotificationAcceptto", (response) => {
+  //     console.log(response);
+  //     setNotiRequestData([...NotiRequestData, response]);
+  //     setNotiRequest(true);
+  //     console.log(NotiRequestData);
+  //     // setTimeout(()=>{
+  //     // setNotiRequest(false)
+  //     // },5000)
+  //   });
+  //   socket.on("CallAcceptance", (response) => {
+  //     // console.log(response);
+  //     setNotiCallRequestData([...NotiCallRequestData, response]);
+  //     setNotiCallRequest(true);
+  //     // console.log(NotiRequestData);
+  //     // setTimeout(()=>{
+  //     // setNotiRequest(false)
+  //     // },5000)
+  //   });
+  //   socket.on("callAcceptedres", (response) => {
+  //     // console.log(response);
+  //     // setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, response]);
+  //     setNotiCallRequestAccept(true);
+  //     setaccepted(true);
+  //     // console.log(NotiRequestData);
+  //     // setTimeout(()=>{
+  //     // setNotiRequest(false)
+  //     // },5000)
+  //   });
+  //   socket.on("CallAcceptanceSender", (response) => {
+  //     // console.log(response);
+  //     setNotiCallRequestDataFrom([...NotiCallRequestData, response]);
+  //     setNotiCallRequest(true);
+  //     // console.log(NotiRequestData);
+  //     // setTimeout(()=>{
+  //     // setNotiRequest(false)
+  //     // },5000)
+  //   });
+  //   socket.on("callUser", ({ from, name: callerName, signal }) => {
+  //     console.log({ from, name: callerName, signal });
+  //     alert(from);
+  //     // setCall({ isReceivingCall: true, from, name: callerName, signal });
+  //   });
+  //   // socket.on("callUser", (data) => {
 
-    })
-  }, [socket]);
+  //   //   // alert(data)
+  //   //   // console.log(data)
+  //   //   // setReceivingCall(true);
+  //   //   // setCaller(data.from);
+  //   //   // setName(data.name);
+  //   //   // setCallerSignal(data.signal);
+  //   //   // setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, data]);
+  //   // });
+  //   socket.on("callAccepted", (signal) => {
+  //     //setCallAccepted(true);
+  //     const peer = new Peer();
+  //     peer.signal(signal);
+  //     //setNotiCallRequestAcceptData([...NotiCallRequestAcceptData, signal]);
+  //   });
+  //   socket.on("calling-Request", (data) => {
+  //     console.log("Request");
+  //     setNotiCallRequestData([...NotiCallRequestData, data]);
+  //     setNotiCallRequest(true);
+  //   });
+  // }, [socket]);
   // console.log(NotiRequestData);
   // const [checkingToken, setcheckingToken] = useState("");
   // useEffect(() => {
@@ -182,11 +192,11 @@ function App() {
   //     : setcheckingToken(true);
   // };
 
-  console.log("Socket App");
-  console.log(socket);
+  // console.log("Socket App");
+  // console.log(socket);
   return (
     <>
-    {/* {call.isReceivingCall? <Notifications />:null} */}
+      {/* {call.isReceivingCall? <Notifications />:null} */}
       {NotiRequest
         ? NotiRequestData.map((data) => <GetNotifications data={data} />)
         : null}
@@ -195,92 +205,47 @@ function App() {
         : null} */}
       {/* {NotiCallRequest
         ? NotiCallRequestData.map((data) => ( */}
-        {NotiCallRequest ? NotiCallRequestData.map((data) => 
-            <GetCallRequest data={data} socket={socket} />):null}
-          {/* ))
+      {NotiCallRequest
+        ? NotiCallRequestData.map((data) => <GetCallRequest data={data} />)
+        : null}
+      {/* ))
         : null} */}
       {NotiCallRequestFrom
-        ? NotiCallRequestDataFrom.map((data) => (
-            <CallFromScreen data={data} socket={socket} />
-          ))
+        ? NotiCallRequestDataFrom.map((data) => <CallFromScreen data={data} />)
         : null}
       {NotiCallRequestAccept
         ? NotiCallRequestAcceptData.map((data) => (
-            <CalltoScreen socket={socket} callAccept={true} data={data} />
+            <CalltoScreen callAccept={true} data={data} />
           ))
         : null}
-      <SocketProvider>
-        <PeerProvider>  
-            {/* {checkingToken ? <Header /> : null} */}
-            <Routes>
-              <Route exact path="/" element={<Login socket={socket} />} />
-              <Route exact path="/about" element={<About />} />
-              <Route
-                exact
-                path="/userpage"
-                element={<Userpage socket={socket} />}
-              />
-              <Route
-                exact
-                path="/email"
-                element={<EmailSystem socket={socket} />}
-              />
-              <Route
-                exact
-                path="/settings"
-                element={<Settings socket={socket} />}
-              />
-              <Route exact path="/profile" element={<Profile socket={socket} />} />
-              <Route
-                exact
-                path="/chatList"
-                element={<ChatList socket={socket} />}
-              />
-              <Route
-                exact
-                path="/friendsView"
-                element={<FriendsView socket={socket} />}
-              />
-              <Route
-                exact
-                path="/newgrid"
-                element={<NewGridView socket={socket} />}
-              />
-              <Route
-                exact
-                path="/videoplayer"
-                element={<VideoPlayer socket={socket} />}
-              />
-              {/* <Route
+      {/* <SocketProvider> */}
+      {/* <PeerProvider> */}
+      {/* {checkingToken ? <Header /> : null} */}
+      <Routes>
+        <Route exact path="/" element={<Login />} />
+        <Route exact path="/about" element={<About />} />
+        <Route exact path="/userpage" element={<Userpage />} />
+        <Route exact path="/email" element={<EmailSystem />} />
+        <Route exact path="/settings" element={<Settings />} />
+        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/chatList" element={<ChatList />} />
+        <Route exact path="/friendsView" element={<FriendsView />} />
+        <Route exact path="/newgrid" element={<NewGridView />} />
+        <Route exact path="/videoplayer" element={<VideoPlayer />} />
+        {/* <Route
                 exact
                 path="/videoCalling"
                 element={<VideoCalling socket={socket} />}
               /> */}
-              <Route
-                exact
-                path="/passwordForgot"
-                element={<PasswordForgot socket={socket} />}
-              />
-              <Route exact path="/signup" element={<UserNew />} />
-              <Route
-                exact
-                path="/blog:appName"
-                element={<BlogViewPage socket={socket} />}
-              />
-              <Route
-                exact
-                path="/page:appName"
-                element={<AppViewPage socket={socket} />}
-              />
-              <Route
-                exact
-                path="/friend:friendName"
-                element={<Friend socket={socket} />}
-              />
-              <Route path="/room/:roomid" element={<RoomPage />} />
-            </Routes>
-        </PeerProvider>
-      </SocketProvider>
+        <Route exact path="/passwordForgot" element={<PasswordForgot />} />
+        <Route exact path="/signup" element={<UserNew />} />
+        <Route exact path="/blog:appName" element={<BlogViewPage />} />
+        <Route exact path="/page:appName" element={<AppViewPage />} />
+        <Route exact path="/friend:friendName" element={<Friend />} />
+        <Route path="/room/:roomid" element={<Room />} />
+      </Routes>
+      {/* </PeerProvider> */}
+      {/* </SocketProvider> */}
     </>
   );
 }

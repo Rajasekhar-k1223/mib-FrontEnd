@@ -1,10 +1,12 @@
 import React, {
   useState,
   useEffect,
-  useRef,useCallback,
+  useRef,
+  useCallback,
   forwardRef,
   createRef,
-  useImperativeHandle,useContext
+  useImperativeHandle,
+  useContext,
 } from "react";
 //import MessagesList from "./MessagesList";
 import InputEmoji from "react-input-emoji";
@@ -19,12 +21,13 @@ import { IoIosVideocam, IoMdCall } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { io } from "socket.io-client";
 import VideoCalling from "./VideoCalling";
 import { FiPhoneOff } from "react-icons/fi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { SocketContext } from "../Context";
+import { useSocket } from "./context/SocketProvider";
 // import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const MessagesList = forwardRef((props, ref) => {
@@ -196,7 +199,10 @@ const MessagesList = forwardRef((props, ref) => {
 
 export default function ChatBoxComponent(props) {
   const item = props;
-  let socket = item.socket;
+  console.log(item);
+  //let socket = item.socket;
+  const socket = useSocket();
+  console.log(socket);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const email = localStorage.getItem("userName");
@@ -219,22 +225,25 @@ export default function ChatBoxComponent(props) {
   //   leaveCall,
   //   callUser
   // } = useContext(SocketContext);
-    const [roomId,setroomId] = useState();
-    
-    
-    const handleRoomJoined = useCallback(({roomId}) =>{
-    //    socket.emit("join-room",{emailId:email,roomId})
-       navigate(`/room/${roomId}`)
-    },[navigate])
-    const handleJoinRoom = ({roomId}) =>{
-        socket.emit("join-room",{emailId:email,roomId})
-     }
-     useEffect(()=>{
-      socket.on("joined-room",handleRoomJoined);
-      return ()=>{
-          socket.off("joined-room",handleRoomJoined);
-      }
-  },[handleRoomJoined,socket]);
+  const [roomId, setroomId] = useState();
+
+  const handleRoomJoined = useCallback(
+    ({ roomId }) => {
+      alert(roomId);
+      //    socket.emit("join-room",{emailId:email,roomId})
+      navigate(`/room/${roomId}`);
+    },
+    [navigate]
+  );
+  const handleJoinRoom = ({ roomId }) => {
+    socket.emit("room:join", { emailId: email, roomId });
+  };
+  useEffect(() => {
+    socket.on("room:join", handleRoomJoined);
+    return () => {
+      socket.off("room:join", handleRoomJoined);
+    };
+  }, [handleRoomJoined, socket]);
   useEffect(() => {
     // window.addEventListener("scroll", () => {
     //   if (window.scrollY > 400) {
@@ -243,10 +252,10 @@ export default function ChatBoxComponent(props) {
     //     setShowTopBtn(false);
     //   }
     // });
-    socket.on("CallAcceptanceSendercheck",(response)=>{
-      console.log(response)
-      alert(response)
-          })
+    socket.on("CallAcceptanceSendercheck", (response) => {
+      console.log(response);
+      alert(response);
+    });
   }, [socket]);
 
   //   const handleClick = () => {
@@ -337,8 +346,12 @@ export default function ChatBoxComponent(props) {
     //navigation("/VideoCalling", { state: { userData: username } });
     console.log(socket);
     // socket.emit("callfromVideo", { userData, userId,roomId });
-    socket.emit("join-room",{emailId:userData.email,userId:userData.userId,roomId})
-    
+    socket.emit("room:join", {
+      emailId: userData.email,
+      to: userData.userId,
+      from: userId,
+      roomId,
+    });
   };
   return (
     <>
