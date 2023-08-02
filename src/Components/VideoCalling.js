@@ -24,9 +24,9 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import { config } from "../Config";
 // const socket = io.connect("http://localhost" + config.socket + "");
-export default function VideoCalling({socket}) {
+export default function VideoCalling({ socket }) {
   // const location = useLocation();
-  const { userData } = 32
+  const { userData } = 32;
 
   const navigation = useNavigate();
   const [CallingSysten, setCallingSysten] = useState(true);
@@ -263,7 +263,12 @@ export default function VideoCalling({socket}) {
         {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1> */}
         <div
           className="container"
-          style={{ overflow: "hidden", background: "#000",position: "absolute",zIndex: 999999}}
+          style={{
+            overflow: "hidden",
+            background: "#000",
+            position: "absolute",
+            zIndex: 999999,
+          }}
         >
           <div className="video-containercall">
             <div className="video">

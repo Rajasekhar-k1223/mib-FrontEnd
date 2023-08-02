@@ -4,7 +4,7 @@ import Peer from "simple-peer";
 
 const SocketContext = createContext();
 
-const socket = io("http://localhost:3006");
+const socket = io("https://socketmib.in");
 
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
@@ -26,7 +26,7 @@ const ContextProvider = ({ children }) => {
 
         myVideo.current.srcObject = currentStream;
       });
-   
+
     // socket.on("me", (id) => {setMe(id)});
 
     socket.on("callUser", ({ from, name: callerName, signal }) => {
@@ -62,7 +62,7 @@ const ContextProvider = ({ children }) => {
         userToCall: id.userId,
         signalData: data,
         from: userid,
-        name:username
+        name: username,
       });
     });
 
@@ -101,7 +101,7 @@ const ContextProvider = ({ children }) => {
         me,
         callUser,
         leaveCall,
-        answerCall
+        answerCall,
       }}
     >
       {children}

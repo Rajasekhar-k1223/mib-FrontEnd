@@ -284,9 +284,9 @@ export default function ChatBoxComponent(props) {
 
   const handleOnEnter = (text, fridId) => {
     //console.log(messageList);
-    let ip_address = config.socketIp;
-    let socket_port = config.socket;
-    let socket = io(ip_address + ":" + socket_port);
+    // let ip_address = config.socketIp;
+    // let socket_port = config.socket;
+    let socket = io("https://socketmib.in");
     let messageData = {
       // headers: {
       //   Authorization: "Bearer " + token,

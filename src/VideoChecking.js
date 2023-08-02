@@ -10,7 +10,8 @@ import io from "socket.io-client";
 import "./App.css";
 import { config } from "./Config";
 
-const socket = io.connect("http://" + config.socketIp + ":" + config.socket);
+//const socket = io.connect("http://" + config.socketIp + ":" + config.socket);
+const socket = io.connect("https://socketmib.in");
 function App() {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
