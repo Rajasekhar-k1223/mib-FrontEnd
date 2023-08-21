@@ -27,7 +27,10 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import { io } from "socket.io-client";
-export default function Headers({ socket }) {
+import { useSocket } from "./context/SocketProvider";
+export default function Headers() {
+  const socket = useSocket();
+  console.log(socket);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
   const [inputWith, setinputWith] = useState(0);

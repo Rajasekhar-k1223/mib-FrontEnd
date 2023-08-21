@@ -1,6 +1,20 @@
 import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
+import ReactAudioPlayer from "react-audio-player";
+import Accept from "../assets/images/Accept_1.gif";
+import Rejected from "../assets/images/Rejected_1.gif";
+import RingTone from "../assets/audio/beam_me_up.mp3";
+import { FaUserPlus } from "react-icons/fa";
+import { BsRecordCircleFill } from "react-icons/bs";
+import { BsFillCameraVideoFill } from "react-icons/bs";
+import { BsFillCameraVideoOffFill } from "react-icons/bs";
+import { BsMicFill } from "react-icons/bs";
+import { BsMicMuteFill } from "react-icons/bs";
+import { BiPhoneOff } from "react-icons/bi";
+import { FiShare } from "react-icons/fi";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useSocket } from "../Components/context/SocketProvider";
 
 const RoomPage = () => {
@@ -9,6 +23,7 @@ const RoomPage = () => {
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
+  const [VideoStream, setVideoStream] = useState(true);
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(email);
@@ -117,37 +132,127 @@ const RoomPage = () => {
     handleNegoNeedIncomming,
     handleNegoNeedFinal,
   ]);
+  const checkVideoStreamoff = async () => {
+    // const stream = await navigator.mediaDevices.getUserMedia({
+    //   audio: true,
+    //   video: false,
+    // });
+    // console.log(stream);
+    // console.log();
+    console.log(myStream.getTracks().find((track) => track.kind === "video"));
+    const videoTrack = myStream
+      .getTracks()
+      .find((track) => track.kind === "video");
+    videoTrack.enabled = false;
+    //setMyStream(stream);
+    setVideoStream(false);
+    console.log(videoTrack);
+  };
+  const checkVideoStreamon = async () => {
+    // const stream = await navigator.mediaDevices.getUserMedia({
+    //   audio: true,
+    //   video: true,
+    // });
+    // setMyStream(stream);
+    console.log(myStream.getTracks().find((track) => track.kind === "video"));
+    setVideoStream(true);
+    const videoTrack = myStream
+      .getTracks()
+      .find((track) => track.kind === "video");
+    videoTrack.enabled = true;
+    console.log(videoTrack);
+  };
 
   return (
-    <div>
-      <h1>Room Page</h1>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        background: "rgb(20, 20, 30)",
+      }}
+    >
+      {/* <h1>Room Page</h1>
       <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+      {myStream && <button onClick={sendStreams}>Send Stream</button>}*/}
+      {/* <ReactAudioPlayer
+        src={RingTone}
+        autoPlay
+        controls
+        // onPause={Pause}
+        // onPlay={true}
+      /> */}
+      {remoteSocketId && (
+        <button
+          onClick={handleCallUser}
+          style={{ position: "absolute", zIndex: "9999999" }}
+        >
+          CALL
+        </button>
+      )}
       {myStream && (
         <>
-          <h1>My Stream</h1>
           <ReactPlayer
             playing
             muted
-            height="100px"
-            width="200px"
+            width="80%"
+            height="100%"
+            style={{
+              position: "absolute",
+              background: "#14141e",
+              zIndex: "99999",
+            }}
             url={myStream}
           />
+          {/* <video srcObject={myStream} autoPlay playsInline /> */}
         </>
       )}
       {remoteStream && (
         <>
-          <h1>Remote Stream</h1>
           <ReactPlayer
             playing
             muted
-            height="100px"
-            width="200px"
+            width="15%"
+            height="auto"
+            style={{
+              position: "absolute",
+              zIndex: "99999",
+              right: "0px",
+              bottom: "4px",
+            }}
             url={remoteStream}
           />
+          {/* <video srcObject={remoteStream} autoPlay playsInline /> */}
         </>
       )}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8px",
+          left: "0px",
+          right: "0px",
+          /* width: 100%; */
+          /* height: 100px; */
+          zIndex: "99999",
+          textAlign: "center",
+        }}
+      >
+        <BsMicFill color="#fff" size="16" />
+        <img src={Rejected} style={{ width: "3rem", borderRadius: "2rem" }} />
+        {VideoStream ? (
+          <BsFillCameraVideoOffFill
+            size="16"
+            color="#fff"
+            onClick={() => checkVideoStreamoff()}
+          />
+        ) : (
+          <BsFillCameraVideoFill
+            size="16"
+            color="#fff"
+            onClick={() => checkVideoStreamon()}
+          />
+        )}
+      </div>
     </div>
   );
 };
