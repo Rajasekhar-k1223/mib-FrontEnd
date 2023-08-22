@@ -59,8 +59,8 @@ function App() {
   const [Name, setName] = useState();
   const [CallerSignal, setCallerSignal] = useState();
   // const [call, setCall] = useState({});
-  let ip_address = config.socketIp;
-  let socket_port = config.socket;
+  //let ip_address = config.socketIp;
+  //let socket_port = config.socket;
   // const socket = io(ip_address + ":" + socket_port);
   const socket = useSocket();
   useEffect(() => {

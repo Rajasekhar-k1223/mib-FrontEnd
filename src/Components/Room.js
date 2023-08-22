@@ -16,14 +16,15 @@ import { FiShare } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useSocket } from "../Components/context/SocketProvider";
+import { PeerProvider } from "./Peer";
 
 const RoomPage = () => {
   const socket = useSocket();
-  console.log(socket);
+  // console.log(socket);
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
-  const [VideoStream, setVideoStream] = useState(true);
+  const [VideoStream, setVideoStream] = useState(false);
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(email);
@@ -33,7 +34,7 @@ const RoomPage = () => {
   }, []);
 
   const handleCallUser = useCallback(async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
+    const stream = await window.navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
     });
@@ -47,7 +48,7 @@ const RoomPage = () => {
   const handleIncommingCall = useCallback(
     async ({ from, offer }) => {
       setRemoteSocketId(from);
-      const stream = await navigator.mediaDevices.getUserMedia({
+      const stream = await window.navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true,
       });
@@ -106,6 +107,7 @@ const RoomPage = () => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
+      console.log(remoteStream);
       setRemoteStream(remoteStream[0]);
     });
   }, []);
@@ -132,6 +134,36 @@ const RoomPage = () => {
     handleNegoNeedIncomming,
     handleNegoNeedFinal,
   ]);
+  const checkVideoStream = async () => {
+    const enabled = myStream.getTracks()[1].enabled;
+    console.log(enabled);
+    if (enabled) {
+      myStream.getTracks()[1].enabled = false;
+      myStream.getTracks().forEach(function (track) {
+        const cloneTrack = track.clone();
+        peer.peer.addTrack(cloneTrack, myStream);
+        cloneTrack.enabled = false;
+        console.log(cloneTrack);
+      });
+
+      // html = `<i class="fas fa-video-slash"></i>`;
+      // stopVideo.classList.toggle("background__red");
+      // stopVideo.innerHTML = html;
+    } else {
+      myStream.getTracks()[1].enabled = true;
+      myStream.getTracks().forEach(function (track) {
+        const cloneTrack = track.clone();
+        peer.peer.addTrack(cloneTrack, myStream);
+        cloneTrack.enabled = true;
+        console.log(cloneTrack);
+      });
+      console.log(myStream.getTracks());
+      // html = `<i class="fas fa-video"></i>`;
+      // stopVideo.classList.toggle("background__red");
+      // stopVideo.innerHTML = html;
+    }
+    //console.log(myStream.getVideoTracks());
+  };
   const checkVideoStreamoff = async () => {
     // const stream = await navigator.mediaDevices.getUserMedia({
     //   audio: true,
@@ -139,13 +171,18 @@ const RoomPage = () => {
     // });
     // console.log(stream);
     // console.log();
-    console.log(myStream.getTracks().find((track) => track.kind === "video"));
+    //console.log(myStream.getTracks().find((track) => track.kind === "video"));
     const videoTrack = myStream
       .getTracks()
       .find((track) => track.kind === "video");
+    // myStream.getTracks().forEach(function (track) {
+    //   const cloneTrack = track.clone();
+    //   peer.peer.addTrack(cloneTrack, myStream);
+    //   cloneTrack.enabled = false;
+    // });
     videoTrack.enabled = false;
     //setMyStream(stream);
-    setVideoStream(false);
+    setVideoStream(true);
     console.log(videoTrack);
   };
   const checkVideoStreamon = async () => {
@@ -154,13 +191,20 @@ const RoomPage = () => {
     //   video: true,
     // });
     // setMyStream(stream);
-    console.log(myStream.getTracks().find((track) => track.kind === "video"));
-    setVideoStream(true);
+    // console.log(myStream.getTracks().find((track) => track.kind === "video"));
+    // setVideoStream(true);
     const videoTrack = myStream
       .getTracks()
       .find((track) => track.kind === "video");
     videoTrack.enabled = true;
+    // console.log(videoTrack);
+    // myStream.getTracks().forEach(function (track) {
+    //   const cloneTrack = track.clone();
+    //   peer.peer.addTrack(cloneTrack, myStream);
+    //   cloneTrack.enabled = true;
+    // });
     console.log(videoTrack);
+    setVideoStream(false);
   };
 
   return (
@@ -240,16 +284,16 @@ const RoomPage = () => {
         <BsMicFill color="#fff" size="16" />
         <img src={Rejected} style={{ width: "3rem", borderRadius: "2rem" }} />
         {VideoStream ? (
-          <BsFillCameraVideoOffFill
-            size="16"
-            color="#fff"
-            onClick={() => checkVideoStreamoff()}
-          />
-        ) : (
           <BsFillCameraVideoFill
             size="16"
             color="#fff"
-            onClick={() => checkVideoStreamon()}
+            onClick={() => checkVideoStream()}
+          />
+        ) : (
+          <BsFillCameraVideoOffFill
+            size="16"
+            color="#fff"
+            onClick={() => checkVideoStream()}
           />
         )}
       </div>
