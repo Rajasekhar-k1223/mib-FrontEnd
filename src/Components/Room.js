@@ -25,6 +25,7 @@ const RoomPage = () => {
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
   const [VideoStream, setVideoStream] = useState(false);
+  const [camColor, setcamColor] = useState("#fff");
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(email);
@@ -40,7 +41,8 @@ const RoomPage = () => {
     });
     const offer = await peer.getOffer();
     socket.emit("user:call", { to: remoteSocketId, offer });
-    setMyStream(stream);
+    //setMyStream(stream);
+    document.getElementById("mib-stream-local").srcObject = stream;
   }, [remoteSocketId, socket]);
   // useEffect(() => {
   //   handleCallUser();
@@ -108,7 +110,8 @@ const RoomPage = () => {
       const remoteStream = ev.streams;
       console.log("GOT TRACKS!!");
       console.log(remoteStream);
-      setRemoteStream(remoteStream[0]);
+      //setRemoteStream(remoteStream[0]);
+      document.getElementById("mib-stream-remote").srcObject = remoteStream[0];
     });
   }, []);
 
@@ -135,8 +138,12 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
   const checkVideoStream = async () => {
+    // const mystream = myStream
+    //   .getVideoTracks()
+    //   .forEach((track) => (track.enabled = !track.enabled));
+    // myStream.srcObject = mystream;
     const enabled = myStream.getTracks()[1].enabled;
-    console.log(enabled);
+    // console.log(enabled);
     if (enabled) {
       myStream.getTracks()[1].enabled = false;
       myStream.getTracks().forEach(function (track) {
@@ -236,7 +243,7 @@ const RoomPage = () => {
       )}
       {myStream && (
         <>
-          <ReactPlayer
+          {/* <ReactPlayer
             playing
             muted
             width="80%"
@@ -247,13 +254,23 @@ const RoomPage = () => {
               zIndex: "99999",
             }}
             url={myStream}
+          /> */}
+          <video
+            // srcObject={myStream}
+            autoPlay
+            id="mib-stream-local"
+            //     playsInline
+            style={{
+              position: "absolute",
+              background: "#14141e",
+              zIndex: "99999",
+            }}
           />
-          {/* <video srcObject={myStream} autoPlay playsInline /> */}
         </>
       )}
       {remoteStream && (
         <>
-          <ReactPlayer
+          {/* <ReactPlayer
             playing
             muted
             width="15%"
@@ -265,8 +282,19 @@ const RoomPage = () => {
               bottom: "4px",
             }}
             url={remoteStream}
+          /> */}
+          <video
+            //srcObject={remoteStream}
+            autoPlay
+            id="mib-stream-remote"
+            //  playsInline
+            style={{
+              position: "absolute",
+              zIndex: "99999",
+              right: "0px",
+              bottom: "4px",
+            }}
           />
-          {/* <video srcObject={remoteStream} autoPlay playsInline /> */}
         </>
       )}
       <div
@@ -283,19 +311,19 @@ const RoomPage = () => {
       >
         <BsMicFill color="#fff" size="16" />
         <img src={Rejected} style={{ width: "3rem", borderRadius: "2rem" }} />
-        {VideoStream ? (
-          <BsFillCameraVideoFill
-            size="16"
-            color="#fff"
-            onClick={() => checkVideoStream()}
-          />
-        ) : (
+        {/* {VideoStream ? ( */}
+        <BsFillCameraVideoFill
+          size="16"
+          color={camColor}
+          onClick={() => checkVideoStream()}
+        />
+        {/* ) : (
           <BsFillCameraVideoOffFill
             size="16"
             color="#fff"
             onClick={() => checkVideoStream()}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

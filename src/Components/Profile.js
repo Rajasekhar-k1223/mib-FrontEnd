@@ -4,12 +4,23 @@ import banner from "../assets/images/banner.jpg";
 import user from "../assets/images/avatar.png";
 import { RiExternalLinkFill } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
+import { BsLockFill } from "react-icons/bs";
+import { BsUnlockFill } from "react-icons/bs";
+import { TiDeleteOutline } from "react-icons/ti";
+import { FaAngleDown } from "react-icons/fa";
+import { FaAngleUp } from "react-icons/fa";
 import { MdOutlineFollowTheSigns } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
 import FriendsList from "./FriendsList";
 export default function Profile() {
   const [info, setinfo] = useState(true);
   const [Friends, setFriends] = useState(false);
+  const [schoolLock, setschoolLock] = useState(true);
+  const [studyLock, setstudyLock] = useState(true);
+  const [workLock, setworkLock] = useState(true);
+  const [addinfoLock, setaddinfoLock] = useState(true);
+  const [infoshow, setinfoshow] = useState(true);
+  const [addprofileMenu, setaddprofileMenu] = useState(false);
   const viewUserDetails = (id) => {
     alert(id);
   };
@@ -21,10 +32,58 @@ export default function Profile() {
     setinfo(true);
     setFriends(false);
   };
+  const updateUserProfilebyName = () => {
+    const divElement = document.createElement("div");
+    divElement.setAttribute("id", "profileId");
+    divElement.setAttribute("class", "profileId");
+    document.getElementById("profileIdsList").appendChild(divElement);
+  };
   return (
     <div>
       <Header />
       <div className="MainSection">
+        {addprofileMenu ? (
+          <>
+            {" "}
+            <div
+              style={{
+                background: "rgb(0 0 0 / 45%)",
+                width: "100%",
+                height: "100vh",
+                position: "fixed",
+                zIndex: "9999",
+              }}
+              onClick={() => {
+                addprofileMenu
+                  ? setaddprofileMenu(false)
+                  : setaddprofileMenu(true);
+              }}
+            ></div>
+            <div
+              style={{
+                width: "50%",
+                height: "50vh",
+                position: "fixed",
+                zIndex: "99999",
+                background: "#fff",
+                padding: "1rem",
+                borderRadius: "5px",
+                top: "30vh",
+                left: "25vw",
+              }}
+            >
+              Add New Profile tab header
+              <input />
+              <button
+                onClick={() => {
+                  updateUserProfilebyName();
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </>
+        ) : null}
         <div
           style={{
             width: "14rem",
@@ -120,8 +179,54 @@ export default function Profile() {
         >
           {info ? (
             <div>
-              <div>
-                <div className="infoHeader">Personal Info</div>
+              <div
+                style={{
+                  padding: "0.5rem",
+                  width: "6rem",
+                  border: "1px solid rgb(97 218 251)",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  background: "linear-gradient(176deg, #61dafb, transparent)",
+                  color: "#000",
+                  float: "right",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  addprofileMenu
+                    ? setaddprofileMenu(false)
+                    : setaddprofileMenu(true);
+                }}
+              >
+                Add +
+              </div>
+
+              <div style={{ clear: "both" }}></div>
+              <div id="profileIdsList">
+                <div className="infoHeader">
+                  Personal Info{" "}
+                  <TiDeleteOutline
+                    style={{ float: "right", marginLeft: 3, cursor: "pointer" }}
+                  />
+                  {schoolLock ? (
+                    <BsLockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setschoolLock(false);
+                      }}
+                    />
+                  ) : (
+                    <BsUnlockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setschoolLock(true);
+                      }}
+                    />
+                  )}
+                </div>
                 <div className="personalInfo">
                   <p>
                     <div style={{ width: 150, float: "left" }}>
@@ -167,16 +272,303 @@ export default function Profile() {
                 </div>
               </div>
               <div>
-                <div className="infoHeader">School Info</div>
+                <div className="infoHeader">
+                  School Info{" "}
+                  <TiDeleteOutline
+                    style={{ float: "right", marginLeft: 3, cursor: "pointer" }}
+                  />
+                  {schoolLock ? (
+                    <BsLockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setschoolLock(false);
+                      }}
+                    />
+                  ) : (
+                    <BsUnlockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setschoolLock(true);
+                      }}
+                    />
+                  )}
+                </div>
+                <div className="personalInfo">
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      User Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      First Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Last Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Date of Birth :
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Email : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Address : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <button>+Add</button>
+                  </p>
+                </div>
               </div>
               <div>
-                <div className="infoHeader">Study Info</div>
+                <div className="infoHeader">
+                  Study Info{" "}
+                  <TiDeleteOutline
+                    style={{ float: "right", marginLeft: 3, cursor: "pointer" }}
+                  />
+                  {studyLock ? (
+                    <BsLockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setstudyLock(false);
+                      }}
+                    />
+                  ) : (
+                    <BsUnlockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setstudyLock(true);
+                      }}
+                    />
+                  )}
+                </div>
+                <div className="personalInfo">
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      User Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      First Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Last Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Date of Birth :
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Email : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Address : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <button>+Add</button>
+                  </p>
+                </div>
               </div>
               <div>
-                <div className="infoHeader">Work Experience Info</div>
+                <div className="infoHeader">
+                  {infoshow ? <FaAngleDown /> : <FaAngleUp />} Work Experience
+                  Info{" "}
+                  <TiDeleteOutline
+                    style={{ float: "right", marginLeft: 3, cursor: "pointer" }}
+                  />
+                  {workLock ? (
+                    <BsLockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setworkLock(false);
+                      }}
+                    />
+                  ) : (
+                    <BsUnlockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setworkLock(true);
+                      }}
+                    />
+                  )}
+                </div>
+                <div className="personalInfo">
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      User Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      First Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Last Name :{" "}
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>
+                      Date of Birth :
+                    </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Email : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <div style={{ width: 150, float: "left" }}>Address : </div>
+                    <div style={{ width: 150, float: "left" }}>Rajasekhar</div>
+                    <div style={{ clear: "both" }}></div>
+                  </p>
+                  <p>
+                    <button>+Add</button>
+                  </p>
+                </div>
               </div>
               <div>
-                <div className="infoHeader">Addtional Info</div>
+                <div
+                  className="infoHeader"
+                  style={{ height: "2.4rem", lineHeight: "1.5rem" }}
+                >
+                  <div
+                    onClick={() => {
+                      infoshow ? setinfoshow(false) : setinfoshow(true);
+                    }}
+                    style={{ width: "94%", float: "left", height: "auto" }}
+                  >
+                    {infoshow ? <FaAngleDown /> : <FaAngleUp />} Addtional Info{" "}
+                  </div>
+                  <TiDeleteOutline
+                    style={{ float: "right", marginLeft: 3, cursor: "pointer" }}
+                  />
+                  {addinfoLock ? (
+                    <BsLockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setaddinfoLock(false);
+                      }}
+                    />
+                  ) : (
+                    <BsUnlockFill
+                      size="16"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        setaddinfoLock(true);
+                      }}
+                    />
+                  )}
+                </div>
+                {infoshow ? (
+                  <div className="personalInfo">
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>
+                        User Name :{" "}
+                      </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>
+                        First Name :{" "}
+                      </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>
+                        Last Name :{" "}
+                      </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>
+                        Date of Birth :
+                      </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>Email : </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <div style={{ width: 150, float: "left" }}>
+                        Address :{" "}
+                      </div>
+                      <div style={{ width: 150, float: "left" }}>
+                        Rajasekhar
+                      </div>
+                      <div style={{ clear: "both" }}></div>
+                    </p>
+                    <p>
+                      <button>+Add</button>
+                    </p>
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : null}

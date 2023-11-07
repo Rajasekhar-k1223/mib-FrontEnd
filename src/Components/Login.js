@@ -61,24 +61,23 @@ export default function Login() {
         // this.setState({ articleId: response.data.id })
         // console.log(response);
         // return false;
-        {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("userId", response.data.userId);
-          localStorage.setItem("userName", response.data.userName);
-          if (response.status === 200) {
-            setUser(response.data);
-            navigation("/userpage", { socket: socket });
-          } else {
-            // alert(response.data.error);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("userName", response.data.userName);
+        localStorage.setItem("mibemail", response.data.mibemail);
+        if (response.status === 200) {
+          setUser(response.data);
+          navigation("/userpage", { socket: socket });
+        } else {
+          // alert(response.data.error);
 
-            setTimeout(() => {
-              seterrorhide(false);
-              seterror("");
-            }, 4000);
-            seterrorhide(true);
-            seterror(response.data.error + " Your Enter wrong credentials");
-            setsubmitData(false);
-          }
+          setTimeout(() => {
+            seterrorhide(false);
+            seterror("");
+          }, 4000);
+          seterrorhide(true);
+          seterror(response.data.error + " Your Enter wrong credentials");
+          setsubmitData(false);
         }
       })
       .catch((error) => {

@@ -374,6 +374,7 @@ export default function Feeds() {
 
       //console.log(Files);
     }
+    console.log(incommingFiles);
     setfiles(incommingFiles);
   };
   useEffect(() => {
@@ -537,6 +538,7 @@ export default function Feeds() {
       page: uniqueChars[uniqueChars.length - 1],
       SetLimit: limitRecords,
     };
+    console.log(userToken);
     await axios
       .post(`${config.url}/api/feeds`, AccessDetails, {
         headers: {
@@ -544,7 +546,7 @@ export default function Feeds() {
         },
       })
       .then((response) => {
-        //  console.log(response);
+        console.log(response);
         if (response.data.data.length > 0) {
           // console.log(response);
           const resp = JSON.parse(JSON.stringify(response.data.data));
@@ -763,40 +765,52 @@ export default function Feeds() {
   }
   const submitFeed = async () => {
     console.log(ip);
-    const newfeed = {
-      userName: "Rajassehjar",
-    };
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
+    const email = localStorage.getItem("mibemail");
+    alert(email);
     const formData = new FormData();
-    formData.append("data", newfeed);
+    formData.append("data", userName);
     // Alert.alert(title);
     // Alert.alert(description);
     // return false;
     // console.log(files);
     // console.log(formData);
-    console.log(Files.file);
-    Files.forEach((image, i) => {
-      //console.log(image);
-      //console.log(Platform.OS);
-      //return false;
+    console.log(files.length);
+    if (files.length > 0) {
+      files.forEach((image, i) => {
+        //console.log(image);
+        //console.log(Platform.OS);
+        //return false;
+        formData.append("userId", userId);
+        //  formData.append("title", title);
+        formData.append("userName", userName);
+        formData.append("email", email);
+        formData.append("description", inputStr);
+        formData.append("ipaddress", ip);
+        formData.append("type", image.type);
+        formData.append("uploadImage[]", image);
+        //   {
+        //   ...image,
+        //   uri: image.name,
+        //   // Platform.OS === "android"
+        //   //   ? image.uri
+        //   //   : image.uri.replace("file://", ""),
+        //   name: `image-${i}`,
+        //   type: image.type, // it may be necessary in Android.
+        // });
+      });
+    } else {
       formData.append("userId", userId);
       //  formData.append("title", title);
       formData.append("userName", userName);
+      formData.append("email", email);
+      formData.append("ipaddress", ip);
       formData.append("description", inputStr);
       formData.append("type", image.type);
       formData.append("uploadImage[]", image);
-      //   {
-      //   ...image,
-      //   uri: image.name,
-      //   // Platform.OS === "android"
-      //   //   ? image.uri
-      //   //   : image.uri.replace("file://", ""),
-      //   name: `image-${i}`,
-      //   type: image.type, // it may be necessary in Android.
-      // });
-    });
+    }
     // console.log(formData);
     //console.log(Files);
     // return false;
@@ -816,6 +830,7 @@ export default function Feeds() {
     //   },
     // );
     //  console.log(object);
+    console.log(formData);
     await axios({
       url: config.url + "/api/NewFeed",
       method: "POST",
@@ -951,9 +966,6 @@ export default function Feeds() {
     });
     return typeof element === "undefined" ? false : true;
   };
-  {
-    console.log(AllFeeds);
-  }
   const feedStatusView = (id) => {
     console.log(id);
   };
@@ -1400,22 +1412,33 @@ export default function Feeds() {
             justifyContent: "space-between",
           }}
         >
-          <IconButton
-            aria-label="add to favorites"
-            style={{ position: "absolute" }}
+          <div
+            style={{
+              marginLeft: 0,
+              cursor: "pointer",
+              width: "25px",
+              height: "21px",
+              position: "relative",
+              // left: "0.9rem",
+            }}
           >
-            <AiFillHeart
-              size={12}
-              // style={{ marginLeft: 5 }}
-              className={item.checkingLike ? "heart" : "unlikeheart"}
-              onClick={() => {
-                item.checkingLike
-                  ? dislikenewFeed(item.feedId)
-                  : likenewFeed(item.feedId);
-              }}
-            />
-          </IconButton>
-          <span className="feedLikesCount">{item.likes}</span>
+            <IconButton
+              aria-label="add to favorites"
+              style={{ position: "absolute" }}
+            >
+              <AiFillHeart
+                size={12}
+                // style={{ marginLeft: 5 }}
+                className={item.checkingLike ? "heart" : "unlikeheart"}
+                onClick={() => {
+                  item.checkingLike
+                    ? dislikenewFeed(item.feedId)
+                    : likenewFeed(item.feedId);
+                }}
+              />
+            </IconButton>
+            <sup className="feedLikesCount">{item.likes}</sup>
+          </div>
           <div
             style={{
               marginLeft: 0,
@@ -1526,37 +1549,47 @@ export default function Feeds() {
               }}
             />
           </Badge>
-
-          <FaShareSquare
-            size={14}
+          <div
             style={{
-              // marginLeft: 30,
+              marginLeft: "15px",
               cursor: "pointer",
+              width: "25px",
+              height: "21px",
+              position: "relative",
+              // left: "0.9rem",
             }}
-            onClick={() => {
-              shareopen(item.feedId);
-            }}
-          />
-          <div style={{ position: "absolute" }}>
-            {item.sharefeedcheck ? (
-              ShareFeed ? (
-                <div
-                  style={{
-                    position: "relative",
-                    width: "15rem",
-                    height: "15rem",
-                    background: "rgb(255, 255, 255)",
-                    boxShadow: "0px 0px 5px",
-                    top: "5rem",
-                    borderRadius: "5px",
-                    marginLeft: "9rem",
-                    zIndex: "999999999",
-                  }}
-                >
-                  {item.feedId}
-                </div>
-              ) : null
-            ) : null}
+          >
+            <FaShareSquare
+              size={14}
+              style={{
+                // marginLeft: 30,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                shareopen(item.feedId);
+              }}
+            />
+            <div style={{ position: "absolute" }}>
+              {item.sharefeedcheck ? (
+                ShareFeed ? (
+                  <sup
+                    style={{
+                      position: "relative",
+                      width: "15rem",
+                      height: "15rem",
+                      background: "rgb(255, 255, 255)",
+                      boxShadow: "0px 0px 5px",
+                      top: "5rem",
+                      borderRadius: "5px",
+                      marginLeft: "9rem",
+                      zIndex: "999999999",
+                    }}
+                  >
+                    {item.feedId}
+                  </sup>
+                ) : null
+              ) : null}
+            </div>
           </div>
           <BsInfoCircle
             size={14}

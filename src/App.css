@@ -39,7 +39,7 @@
   /* margin-top: 10rem;
   margin-left: 10rem; */
 }
-.video{
+.video {
   text-align: center;
 }
 .caller {
@@ -1132,7 +1132,7 @@ header > .headerNavBar {
   font-size: 11px;
   position: relative;
   right: -20px;
-  bottom: 8px;
+  /* bottom: 8px; */
 }
 
 .react-input-emoji--input {
@@ -1174,8 +1174,8 @@ header > .headerNavBar {
   bottom: 0;
   right: 25px;
   border-radius: 5px;
-  margin:2rem;
-  padding:1rem;
+  margin: 2rem;
+  padding: 1rem;
 }
 .notification_call_user {
   width: 65px;
@@ -1216,18 +1216,17 @@ header > .headerNavBar {
   cursor: pointer;
 }
 
-
-.rejected_icon{
+.rejected_icon {
   position: absolute;
-    /* width: 65px; */
-    bottom: 0;
-    text-align: center;
-    /* align-items: center; */
-    /* margin: auto; */
-    left: 0;
-    right: 0;
+  /* width: 65px; */
+  bottom: 0;
+  text-align: center;
+  /* align-items: center; */
+  /* margin: auto; */
+  left: 0;
+  right: 0;
 }
-.rejected_icon > img{
+.rejected_icon > img {
   width: 15%;
   border-radius: 4rem;
 }

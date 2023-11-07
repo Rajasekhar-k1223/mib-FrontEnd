@@ -239,6 +239,9 @@ export default function ChatBoxComponent(props) {
     socket.emit("room:join", { emailId: email, roomId });
   };
   useEffect(() => {
+    socket.on("room:join", () => {
+      alert("room");
+    });
     socket.on("room:join", handleRoomJoined);
     return () => {
       socket.off("room:join", handleRoomJoined);
