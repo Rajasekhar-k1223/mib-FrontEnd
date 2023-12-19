@@ -84,7 +84,7 @@ export default function FriendsList({ socket }) {
   //   console.log(ChatcontentView);
   // };
   // const socket = io.connect("http://localhost:" + config.socket);
-  useEffect(async () => {
+  useEffect(() => {
     // const script = document.createElement("script");
     // script.src =
     //   "https://rawgit.com/mervick/emojionearea/master/dist/emojionearea.js";
@@ -129,7 +129,9 @@ export default function FriendsList({ socket }) {
       .get(`${config.url}/api/getFriendsList`, AccessDetails)
       .then(async (res) => {
         const friends = [];
-        //   console.log(res.data.data[0]);
+           console.log(res.data.data[0]);
+           const friends_List_len = await res.data.data[0].friends_list;
+           if(friends_List_len > 0){
         await res.data.data[0].friends_list.map(async (item) => {
           //    console.log(item);
           const AccessDetailsUser = {
@@ -173,6 +175,7 @@ export default function FriendsList({ socket }) {
           //     //console.log(res.data.data[0].userName);
           //   });
         });
+      }
         const frdsListN = await res.data.data[0].friends_list;
         // socket.emit("FrdsonLine", { loginId: userId, userList: frdsListN });
         //  console.log(friendsCount);

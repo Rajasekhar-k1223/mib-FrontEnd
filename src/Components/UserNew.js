@@ -18,35 +18,35 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { makeStyles, styled } from "@mui/styles";
+// import { makeStyles, styled } from "@mui/styles";
 import axios from "axios";
 import { config } from "../Config";
 import { useNavigate } from "react-router-dom";
-const useStyles = makeStyles((theme) => ({
-  input: {
-    "&.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root": {
-      lineHeight: "0.9rem",
-    },
-    "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-      textAlign: "right",
-    },
-    "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-      textAlign: "right",
-    },
+// const useStyles = makeStyles((theme) => ({
+//   input: {
+//     "&.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root": {
+//       lineHeight: "0.9rem",
+//     },
+//     "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+//       textAlign: "right",
+//     },
+//     "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+//       textAlign: "right",
+//     },
 
-    "& .css-1kty9di-MuiFormLabel-root-MuiInputLabel-root": {
-      transformOrigin: "top left",
-      left: "auto",
-      right: 8,
-    },
+//     "& .css-1kty9di-MuiFormLabel-root-MuiInputLabel-root": {
+//       transformOrigin: "top left",
+//       left: "auto",
+//       right: 8,
+//     },
 
-    "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
-      left: "auto",
-      right: 20,
-      lineHeight: "0.8rem",
-    },
-  },
-}));
+//     "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
+//       left: "auto",
+//       right: 20,
+//       lineHeight: "0.8rem",
+//     },
+//   },
+// }));
 export default function UserNew() {
   const [username, setusername] = useState("");
   const [firstname, setfirstname] = useState("");
@@ -270,7 +270,7 @@ export default function UserNew() {
                   paddingTop: 0,
                   textAlign: "left",
                 }}
-                className={useStyles.input}
+                // className={useStyles.input}
                 // onKeyDown={(event) => {
                 //   return event.keyCode === 13 ? LoginAccount() : null;
                 // }}

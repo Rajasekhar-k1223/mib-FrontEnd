@@ -1,12 +1,13 @@
 import { ListItem } from "@mui/material";
-import Interweave from "interweave";
-import UrlMatcher from "interweave/lib/matchers/Url";
-import HashtagMatcher from "interweave/lib/matchers/Hashtag";
+import {Interweave} from "interweave";
+import { UrlMatcher,HashtagMatcher } from 'interweave-autolink';
+// import UrlMatcher from "interweave/lib/matchers/Url";
+// import HashtagMatcher from "interweave/lib/matchers/Hashtag";
 import React, { useState, useEffect } from "react";
 import FriendsList from "./FriendsList";
 import Header from "./Header";
 import axios from "axios";
-
+import { config } from "../Config";
 export default function EmailSystem() {
   const [EmailContent, setEmailContent] = useState([]);
   const [mailContentShow, setmailContentShow] = useState(false);
@@ -14,7 +15,7 @@ export default function EmailSystem() {
   const [MailMessagesSubject, setMailMessagesSubject] = useState([]);
   useEffect(() => {
     axios
-      .get("http://192.168.10.60:8000/api/getAllEMessages")
+      .get(`${config.url}/api/getAllEMessages`)
       .then((response) => {
         console.log(response.data);
         if (MailMessagesSubject.length < 1) {

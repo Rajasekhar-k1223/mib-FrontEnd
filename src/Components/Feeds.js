@@ -82,16 +82,16 @@ import { GiCancel } from "react-icons/gi";
 import ReactPlayer from "react-player";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 var FormData = require("form-data");
 // var fs = require("fs");
 // var encode = require("encode-uri");
 // var createObjectURL = require("create-object-url");
-const Map = ReactMapboxGl({
-  accessToken:
-    "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A",
-});
+// const Map = ReactMapboxGl({
+//   accessToken:
+//     "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A",
+// });
 function SimpleDialog(props) {
   //alert(props);
   const { onClose, selectedValue, open } = props;
@@ -263,7 +263,8 @@ export default function Feeds() {
   const titleRef = useRef();
   const cancelFileUpload = useRef(null);
   const userId = localStorage.getItem("userId");
-  const [openFileSelector, { filesContent, loading, errors, plainFiles }] =
+  // const [openFileSelector, { filesContent, loading, errors, plainFiles }] =
+  const { filesContent, loading, errors, plainFiles } =
     useFilePicker({
       multiple: true,
       readAs: "DataURL", // availible formats: "Text" | "BinaryString" | "ArrayBuffer" | "DataURL"
@@ -477,13 +478,14 @@ export default function Feeds() {
         const y = item.settingsFeed
           ? { ...item, settingsFeed: false }
           : { ...item, settingsFeed: true };
-        console.log(y);
+        //console.log(y);
         return y;
       } else {
-        // const y = item.emojismileAdd
-        //   ? { ...item, emojismileAdd: de }
-        //   : { ...item, emojismileAdd: false };
-        return item;
+        const y = item.settingsFeed
+          ? { ...item, settingsFeed: false }
+          : { ...item, settingsFeed: false };
+        console.log(y);
+        return y;
       }
     });
     setTimeout(() => {
@@ -491,6 +493,7 @@ export default function Feeds() {
     }, 1000);
   };
   const Settings = (id) => {
+    alert(id);
     //setsettingFeed(true);
 
     // return (
@@ -505,6 +508,7 @@ export default function Feeds() {
     //   </Modal>
     // );
     // console.log(AllFeeds);
+    // 06-12-2023 comment
     const resp_with_like = AllFeeds.map((item, key) => {
       if (item.feedId === id) {
         // console.log(item.feedId);
@@ -539,12 +543,16 @@ export default function Feeds() {
       SetLimit: limitRecords,
     };
     console.log(userToken);
+    let configData = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${config.url}/api/feeds`,
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    };
     await axios
-      .post(`${config.url}/api/feeds`, AccessDetails, {
-        headers: {
-          Authorization: "Bearer " + userToken,
-        },
-      })
+      .request(configData)
       .then((response) => {
         console.log(response);
         if (response.data.data.length > 0) {
@@ -769,7 +777,6 @@ export default function Feeds() {
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
     const email = localStorage.getItem("mibemail");
-    alert(email);
     const formData = new FormData();
     formData.append("data", userName);
     // Alert.alert(title);
@@ -777,9 +784,9 @@ export default function Feeds() {
     // return false;
     // console.log(files);
     // console.log(formData);
-    console.log(files.length);
-    if (files.length > 0) {
-      files.forEach((image, i) => {
+    console.log(Files.length);
+    if (Files.length > 0) {
+      Files.forEach((image, i) => {
         //console.log(image);
         //console.log(Platform.OS);
         //return false;
@@ -979,7 +986,12 @@ export default function Feeds() {
     return (
       <Card
         key={key}
-        style={{ width: window.width / 4, margin: 5, float: "left" }}
+        style={{
+          width: window.width / 4,
+          margin: 5,
+          float: "left",
+          position: "relative",
+        }}
         className="feedCard"
       >
         {item.uploadImage.length > 0 ? (
@@ -1047,13 +1059,7 @@ export default function Feeds() {
                               </video>
                             ) : (
                               <img
-                                src={
-                                  config.url +
-                                  "/storage/images/" +
-                                  imgItem.uri +
-                                  "." +
-                                  filetype
-                                }
+                                src={imgItem.path}
                                 //src={imgItem.path}
                                 onLoad={({ target: img }) => {
                                   const { offsetHeight, offsetWidth } = img;
@@ -1117,13 +1123,7 @@ export default function Feeds() {
                               </video>
                             ) : (
                               <img
-                                src={
-                                  config.url +
-                                  "/storage/images/" +
-                                  imgItem.uri +
-                                  "." +
-                                  filetype
-                                }
+                                src={imgItem.path}
                                 //src={imgItem.path}
                                 onLoad={({ target: img }) => {
                                   const { offsetHeight, offsetWidth } = img;
@@ -1165,13 +1165,7 @@ export default function Feeds() {
                           {typefile == "video" ? (
                             <video style={{ width: "100%" }} controls>
                               <source
-                                src={
-                                  config.url +
-                                  "/storage/images/" +
-                                  imgItem.uri +
-                                  "." +
-                                  filetype
-                                }
+                                src={imgItem.path}
                                 //src={imgItem.path}
                                 type="video/mp4"
                               />
@@ -1225,13 +1219,7 @@ export default function Feeds() {
                           {typefile == "video" ? (
                             <video style={{ width: "100%" }} controls>
                               <source
-                                src={
-                                  config.url +
-                                  "/storage/images/" +
-                                  imgItem.uri +
-                                  "." +
-                                  filetype
-                                }
+                                src={imgItem.path}
                                 //src={imgItem.path}
                                 type="video/mp4"
                               />
@@ -1342,17 +1330,17 @@ export default function Feeds() {
           }
           subheaderTypographyProps={{ fontSize: 10 }}
           title={item.userName || item.username}
-          subheader={
-            new Date(item.CreatedAt).toLocaleString() ||
-            new Date(item.created_at).toLocaleString()
-          }
+          subheader={new Date(item.created_at).toLocaleString()}
         />
         {item.settingsFeed ? (
-          <SimpleDialog
-            selectedValue={item.feedId}
-            open={item.settingsFeed}
-            onClose={settingClose}
-          />
+          // <SimpleDialog
+          //   selectedValue={item.feedId}
+          //   open={item.settingsFeed}
+          //   onClose={settingClose}
+          // />
+          <div style={{ position: "absolute", right: "0px", top: "0px" }}>
+            Settings
+          </div>
         ) : null}
 
         {/* <CardContent style={{ paddingBottom: 5 }}>

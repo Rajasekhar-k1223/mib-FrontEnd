@@ -22,7 +22,8 @@ import gifsrc2 from "../assets/images/dazzle-team-celebrating-success-of-a-work-
 import CircularProgress from "@mui/material/CircularProgress";
 import { io } from "socket.io-client";
 import { useSocket } from "../Components/context/SocketProvider";
-const axios = require("axios").default;
+import axios from "axios";
+//const axios = require("axios").default;
 
 export default function Login() {
   const navigation = useNavigate();
@@ -55,9 +56,8 @@ export default function Login() {
       email: username,
       password: password,
     };
-    axios
-      .post(config.url + "/api/login", userInfo)
-      .then((response) => {
+    console.log(userInfo)
+    axios.post(config.url + "/api/login", userInfo).then((response) => {
         // this.setState({ articleId: response.data.id })
         // console.log(response);
         // return false;
