@@ -172,7 +172,7 @@ export default function About() {
       <Card
         key={key}
         style={{ width: "250px", margin: 5, float: "left" }}
-        className="feedCard"
+        className="frdCard"
       >
         <CardMedia style={{ height: 150 }}>
           <img

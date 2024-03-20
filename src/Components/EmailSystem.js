@@ -4,7 +4,7 @@ import { UrlMatcher,HashtagMatcher } from 'interweave-autolink';
 // import UrlMatcher from "interweave/lib/matchers/Url";
 // import HashtagMatcher from "interweave/lib/matchers/Hashtag";
 import React, { useState, useEffect } from "react";
-import FriendsList from "./FriendsList";
+import FriendsList from "./friends/FriendsList";
 import Header from "./Header";
 import axios from "axios";
 import { config } from "../Config";
@@ -155,9 +155,9 @@ export default function EmailSystem() {
             ) : null}
           </div>
         </div>
-        <div className="friendsListSection">
+        {/* <div className="friendsListSection">
           <FriendsList />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,0 +1,30 @@
+.autoAdjustingGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust column width as needed */
+    grid-auto-rows: auto; /* Auto-adjusting height */
+    gap: 10px; /* Adjust gap between grid items */
+  }
+  .mib-fed-setins{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: #fff;
+    width: 10rem;
+    height: 12rem;
+    padding: 0.5rem 0rem;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3rem #000;
+    z-index: 9999;
+  }
+  .mib-fed-setins > div{
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid steelblue;
+    width: 90%;
+    margin: 5px auto;
+    font-size: small;
+}
+.mib-fed-setins > div:hover{
+    box-shadow: 0px 0px 5px steelblue;
+    cursor: pointer;
+}

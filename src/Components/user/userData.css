@@ -1,0 +1,56 @@
+.userInfoSideMenu{
+    width: 14rem; height: 92vh; position: fixed; top: 60px; background: darkslategrey; left: 0px; border-right: 1px solid yellow;
+}
+.userInfoData{
+    width: 65%;
+    height: 92vh;
+    position: fixed;
+    top: 60px;
+    background: #efefef6e;
+    left: 16%;
+    padding: 1rem;
+    border-right: 1px solid yellow;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.userProfileImg-normal{
+    object-Fit: cover;
+                width: 35px;
+                height: 35px;
+                background: #fff;
+                border-radius: 2rem;
+                position: relative;
+                left: 1rem;
+                bottom: 4rem;
+}
+.userProfileImg-edit{
+    object-fit: cover;
+    width: 6rem;
+    height: auto;
+    background: rgb(255, 255, 255);
+    border-radius: 3rem;
+    position: relative;
+    left: 1rem;
+    bottom: 12rem;
+}
+.profileEditBtn{
+    object-Fit: cover;
+                background: rgb(255, 255, 255);
+                border-radius: 2rem;
+                position: relative;
+                float: right;
+                bottom: 1.5rem;
+                margin-right: 1rem;
+                box-shadow: 0px 0px 5px #000;
+                cursor: pointer;
+}
+.bannerImgUpload{
+    position: relative;
+    bottom: 12rem;
+    left: 40vw;
+}
+.profileImgUpload{
+    position: relative;
+    bottom: 14rem;
+    left: 9rem;
+}

@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
-import BannerBack from "../assets/images/avatarbanner.jpg";
+import BannerBack from "../../assets/images/avatarbanner.jpg";
 import Button from "@mui/material/Button";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import Avatar from "../assets/images/preview.png";
+import Avatar from "../../assets/images/preview.png";
 import EditIcon from "@mui/icons-material/Edit";
 import SendIcon from "@mui/icons-material/Send";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-import { config } from "../Config";
+import { config } from "../../Config";
 import { io } from "socket.io-client";
 export default function FriendView({ userIdData, socket }) {
   const userToken = localStorage.getItem("token");
@@ -44,6 +44,16 @@ export default function FriendView({ userIdData, socket }) {
         from: userIdData,
       },
     };
+
+    await axios
+      .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
+      .then((res) => {
+        console.log(res.data);
+        setUserDetailsAfterGet(res.data.data[0]);
+      });
+    
+  };
+  const getFrdReqCheck = async ()=>{
     const AccessDetailsUserCheck = {
       headers: {
         Authorization: "Bearer " + userToken,
@@ -54,24 +64,15 @@ export default function FriendView({ userIdData, socket }) {
         to: userIdData,
       },
     };
-    //   console.log(AccessDetailsUser);
     await axios
-      .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
-      .then((res) => {
-        console.log(res.data);
-        setUserDetailsAfterGet(res.data.data[0]);
-      });
-    await axios
-      .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
-      .then((res) => {
-        console.log(res.data.data.length);
-        setFriendRequest(res.data.data.length);
-        const checkDAtList =
-          res.data.data.length > 0 ? res.data.data[0] : res.data.data.length;
-        console.log(checkDAtList);
-        setcheckFriendRequest(...checkFriendRequest, checkDAtList);
-      });
-  };
+    .get(`${config.url}/api/FriendRequestFromCheck`, AccessDetailsUserCheck)
+    .then((res) => {
+      setFriendRequest(res.data.data.length);
+      const checkDAtList =
+        res.data.data.length > 0 ? res.data.data[0] : res.data.data.length;
+      setcheckFriendRequest(...checkFriendRequest, checkDAtList);
+    });
+  }
   const drag = (event) => {
     const boundingBox = dragRef.current;
 
@@ -142,6 +143,7 @@ export default function FriendView({ userIdData, socket }) {
       to: parseInt(requestId),
       status: "request",
     };
+    console.log(friendDetails)
     const requestfriend = await axios.post(
       `${config.url}/api/FriendRequestFrom`,
       friendDetails,
@@ -152,7 +154,7 @@ export default function FriendView({ userIdData, socket }) {
       }
     );
     // requestfriend.then((response) => {
-    console.log(requestfriend);
+    // console.log(requestfriend);
     // });
   };
   useEffect(() => {
@@ -160,6 +162,7 @@ export default function FriendView({ userIdData, socket }) {
     if (!hasBeenCalled) {
       // Perform your logic for the first function call here
       console.log("First useEffect call");
+      getFrdReqCheck()
       getUserDetails();
       setHasBeenCalled(true);
     } else {
@@ -193,7 +196,6 @@ export default function FriendView({ userIdData, socket }) {
     <>
       <div className="FriendBanner dragscroll" ref={dragAreaRef}>
         {/* <div className="FriendBannerHeaderBackground"></div> */}
-        {console.log(UserDetailsAfterGet)}
         {session === true ? (
           <img
             src={UserDetailsAfterGet.bannerImage}
@@ -253,7 +255,7 @@ export default function FriendView({ userIdData, socket }) {
           )
         ) : (
           <div className="followingButton">
-            {console.log(checkFriendRequest)}
+            {/* {console.log(checkFriendRequest)} */}
             {FriendRequest > 0 ? (
               checkFriendRequest.status === "request" ? (
                 "Request Waiting"

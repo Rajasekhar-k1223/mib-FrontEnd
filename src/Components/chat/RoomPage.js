@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { useSocket } from "../Socket";
+import { useSocket } from "../../Socket";
 // import { usePeer } from "./Peer";
-import peer from "../service/peer";
+import peer from "../../service/peer";
 // import { off } from "process";
 import ReactPlayer from "react-player";
 

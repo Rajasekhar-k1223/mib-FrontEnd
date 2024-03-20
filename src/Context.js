@@ -1,10 +1,10 @@
 import React, { createContext, useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
-
+import {config} from "./Config";
 const SocketContext = createContext();
 
-const socket = io("https://socketmib.in");
+const socket = io(config.socketIp);
 
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);

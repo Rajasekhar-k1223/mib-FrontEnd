@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import FriendsList from "./FriendsList";
-import Header from "./Header";
-import image from "../assets/images/avatar.png";
+import FriendsList from "../friends/FriendsList";
+import Header from "../Header";
+import image from "../../assets/images/avatar.png";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import GroupsIcon from "@mui/icons-material/Groups";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import VideoChatIcon from "@mui/icons-material/VideoChat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import tickView from "../assets/images/tickview.png";
-import ticknotView from "../assets/images/ticknotview.png";
+import tickView from "../../assets/images/tickview.png";
+import ticknotView from "../../assets/images/ticknotview.png";
 import CallIcon from "@mui/icons-material/Call";
 import InputEmoji from "react-input-emoji";
 export default function ChatList() {

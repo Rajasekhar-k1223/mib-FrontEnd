@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useContext } from "react";
 import { io } from "socket.io-client";
-
+import {config} from "./../../Config";
 const SocketContext = createContext(null);
 
 export const useSocket = () => {
@@ -9,7 +9,7 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("https://socketmib.in"), []);
+  const socket = useMemo(() => io(config.socketIp), []);
 
   return (
     <SocketContext.Provider value={socket}>

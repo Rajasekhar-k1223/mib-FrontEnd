@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,useParams  } from "react-router-dom";
 import { Base64 } from "js-base64";
-import Header from "./Header";
+import Header from "../Header";
 import FriendsList from "./FriendsList";
 import FriendView from "./FriendView";
 export default function Friend({ socket }) {
+  let { name } = useParams();
   const [Dragable, setDragable] = useState("pointer");
   const changingHeaderDragble = () => {
     setDragable("all-scroll");
   };
   const navigation = useNavigate();
   const uselocation = useLocation().search;
-  const name = new URLSearchParams(uselocation).get("name");
+  // const name = new URLSearchParams(uselocation).get("name");
+
   const userData = Base64.decode(Base64.decode(name));
   console.log("Friend View");
   return (
@@ -33,9 +35,9 @@ export default function Friend({ socket }) {
         >
           <FriendView userIdData={userData} socket={socket} />
         </div>
-        <div className="friendsListSection">
+        {/* <div className="friendsListSection">
           <FriendsList />
-        </div>
+        </div> */}
       </div>
     </>
   );

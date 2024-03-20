@@ -14,14 +14,16 @@ import "./assets/fonts/PT_Sans/PTSans-Bold.ttf";
 // }
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <>
+  {/* // <React.StrictMode> */}
     <BrowserRouter>
       <SocketProvider>
         <App />
       </SocketProvider>
     </BrowserRouter>
-  </React.StrictMode>
-  // document.getElementById("root")
+  {/* // </React.StrictMode> */}
+  </>
+   //document.getElementById("root")
 );
 // ReactDOM.render(
 //   <React.StrictMode>

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "./context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 export default function GetCallRequest({ data }) {
   const navigate = useNavigate();
   const socket = useSocket();

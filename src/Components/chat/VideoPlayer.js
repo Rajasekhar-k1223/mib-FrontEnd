@@ -1,5 +1,5 @@
 import { Grid, Box, Heading } from "@chakra-ui/react";
-import { SocketContext } from "../Context";
+import { SocketContext } from "../../Context";
 import { useContext } from "react";
 
 const VideoPlayer = () => {

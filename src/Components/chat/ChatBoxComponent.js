@@ -10,13 +10,14 @@ import React, {
 } from "react";
 //import MessagesList from "./MessagesList";
 import InputEmoji from "react-input-emoji";
-import { config } from "../Config";
+import userImg from "../../assets/images/avatar.png";
+import { config } from "../../Config";
 import axios from "axios";
-import image from "../assets/images/avatar.png";
+import image from "../../assets/images/avatar.png";
 import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
 import { IoIosVideocam, IoMdCall } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -26,8 +27,8 @@ import { io } from "socket.io-client";
 import VideoCalling from "./VideoCalling";
 import { FiPhoneOff } from "react-icons/fi";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { SocketContext } from "../Context";
-import { useSocket } from "./context/SocketProvider";
+import { SocketContext } from "../../Context";
+import { useSocket } from "../context/SocketProvider";
 // import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const MessagesList = forwardRef((props, ref) => {
@@ -52,12 +53,6 @@ const MessagesList = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     addMsgToList(text, fridId, date) {
       const current = new Date();
-      // const date = `${current.getDate()}/${
-      //   current.getMonth() + 1
-      // }/${current.getFullYear()}`;
-      //   console.log("child function 1 called");
-      console.log(text);
-      console.log(fridId);
       const messageNew = {
         friendId: fridId,
         from: userId,
@@ -65,7 +60,6 @@ const MessagesList = forwardRef((props, ref) => {
         to: fridId,
         created_at: date,
       };
-      console.log(messagesTotalList);
       bottom.current?.scrollIntoView({
         behavior: "smooth",
         block: "nearest",
@@ -73,57 +67,32 @@ const MessagesList = forwardRef((props, ref) => {
       });
       setmessagesTotalList([...messagesTotalList, messageNew]);
     },
-    // childFunction2() {
-    //   console.log("child function 2 called");
-    // },
   }));
   useEffect(() => {
     getMsgs(FrdId);
   }, []);
   const getMsgs = async (FrdId) => {
-    console.log(AccessDetails);
     const r = await axios.get(
       `${config.url}/api/GetMessagesFromFriends`,
       AccessDetails
     );
-    console.log("r.data", r);
     const sorted_r = r.data;
-
     const msgResponse = sorted_r.data.map((ele) => {
       const y = { ...ele, friendId: FrdId };
       return y;
     });
     setmessagesTotalList(...messagesTotalList, msgResponse);
     setisLoaded(true);
-    // scrollToBottom();
-    console.log(msgResponse);
-    // bottom.current?.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "nearest",
-    //   inline: "start",
-    // });
-    // window.scrollTo(0, document.querySelector(".messagesView").scrollHeight);
   };
 
   return (
     <div>
+      {console.log(messagesTotalList)}
       {isLoaded ? (
         messagesTotalList.map((messages, index) => {
           return (
             <div key={index}>
-              {/* <img
-                src={image}
-                style={{
-                  width: "18px",
-                  border: "4px solid #fff",
-                  borderRadius: "3rem",
-                  position: "relative",
-                  // left: messages.from == userId ? "9px" : "-9px",
-                  bottom: "0px",
-                  float: messages.from == userId ? "right" : "left",
-                }}
-              /> */}
-              <div className={messages.from == userId ? "sender" : "receiver"}>
+              <div className={parseInt(messages.from) === parseInt(userId) ? "sender" : "receiver"}>
                 <div
                   style={{
                     float: "revert",
@@ -134,22 +103,18 @@ const MessagesList = forwardRef((props, ref) => {
                 >
                   {messages.message}
                 </div>
-                {messages.from == userId ? (
+                {parseInt(messages.from) === parseInt(userId) ? (
                   <span style={{ fontSize: 8, float: "right" }}>
-                    {/* {new Date(messages.created_at).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })} */}
                     {new Date(messages.created_at).toLocaleTimeString(
-                      navigator.language,
+                      [],
                       { hour: "2-digit", minute: "2-digit" }
                     )}
                   </span>
                 ) : (
-                  <span style={{ fontSize: 8, marginLeft: "1rem" }}>
+                  <span style={{ fontSize: 8, float:"right" }}>
                     {new Date(
                       Date.parse(messages.created_at)
-                    ).toLocaleTimeString()}
+                    ).toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}
                   </span>
                 )}
               </div>
@@ -197,40 +162,26 @@ const MessagesList = forwardRef((props, ref) => {
   );
 });
 
-export default function ChatBoxComponent(props) {
-  const item = props;
-  console.log(item);
-  //let socket = item.socket;
+export default function ChatBoxComponent({data,index,checkingClosePopUp}) {
+  const [text, setText] = useState("");
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const [VideoCalling, setVideoCalling] = useState(false);
+  const [clickCall, setclickCall] = useState(false);
+  // console.log(data)
+  const item = data;
   const socket = useSocket();
-  console.log(socket);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const email = localStorage.getItem("userName");
   const navigate = useNavigate();
-  //const [email,setEmail] = useState();
-  const [text, setText] = useState("");
-  const [showTopBtn, setShowTopBtn] = useState(false);
-  const [VideoCalling, setVideoCalling] = useState(false);
   const childRef = useRef(null);
   const mesRef = useRef(null);
   const listInnerRef = useRef();
   const navigation = useNavigate();
-  const [clickCall, setclickCall] = useState(false);
-  // const {
-  //   me,
-  //   callAccepted,
-  //   name,
-  //   setName,
-  //   callEnded,
-  //   leaveCall,
-  //   callUser
-  // } = useContext(SocketContext);
   const [roomId, setroomId] = useState();
 
   const handleRoomJoined = useCallback(
     ({ roomId }) => {
-      alert(roomId);
-      //    socket.emit("join-room",{emailId:email,roomId})
       navigate(`/room/${roomId}`);
     },
     [navigate]
@@ -248,26 +199,17 @@ export default function ChatBoxComponent(props) {
     };
   }, [handleRoomJoined, socket]);
   useEffect(() => {
-    // window.addEventListener("scroll", () => {
-    //   if (window.scrollY > 400) {
-    //     setShowTopBtn(true);
-    //   } else {
-    //     setShowTopBtn(false);
-    //   }
-    // });
     socket.on("CallAcceptanceSendercheck", (response) => {
       console.log(response);
       alert(response);
     });
   }, [socket]);
 
-  //   const handleClick = () => {
-  //     childRef.current.childFunction1();
-
-  //     childRef.current.childFunction2();
-  //   };
   const checkingClose = (item) => {
-    console.log(item);
+
+    console.log(`chat-${item.userId}`);
+    // document.getElementById(`chat-${item.userId}`).remove()
+    checkingClosePopUp(item);
     //   var array = [...PopupChatBoxByUser]; // make a separate copy of the array
     //   var arrayFriends = [...friendslistChat]; // make a separate copy of the array
     //   var index = array.indexOf(item);
@@ -289,7 +231,7 @@ export default function ChatBoxComponent(props) {
     //console.log(messageList);
     // let ip_address = config.socketIp;
     // let socket_port = config.socket;
-    let socket = io("https://socketmib.in");
+    let socket = io(config.socketIp);
     let messageData = {
       // headers: {
       //   Authorization: "Bearer " + token,
@@ -299,6 +241,8 @@ export default function ChatBoxComponent(props) {
       from: userId,
       to: fridId,
     };
+    console.log(messageData)
+    console.log(socket)
     socket.emit("sendChatToServer", messageData);
     socket.on("sendChatToClient", (message) => {
       // console.log(message);
@@ -359,14 +303,17 @@ export default function ChatBoxComponent(props) {
   return (
     <>
       <div
-        className={"chatbox chat-" + item.data.userId}
+        className={"chatbox chat-" + item.userId}
+        id={"chat-"+item.userId}
         style={{
-          right: 13 * (item.index + 1) + item.index + item.index + "rem",
+          right: 13 * (index + 1) + index + index + "rem",
         }}
-        key={item.index}
+        key={index}
       >
+        {/* {console.log(item)} */}
         <div className="chat-Header">
-          <div className="chat-Header-title">{item.data.userName}</div>
+        {console.log(item)}
+          <div className="chat-Header-title">{item.profile_pic === undefined? <img src={userImg} />:<img src={item.profile_pic}/>}{item.userName}</div>
           <div
             style={{
               width: "7%",
@@ -409,7 +356,7 @@ export default function ChatBoxComponent(props) {
                   borderRadius: "0px 0px 5px 0px",
                 }}
               >
-                <IoIosVideocam onClick={() => VideoCall(item.data)} size={15} />
+                <IoIosVideocam onClick={() => VideoCall(item)} size={15} />
               </div>
               <div
                 style={{
@@ -451,7 +398,7 @@ export default function ChatBoxComponent(props) {
           </div>
         </div>
         <div
-          className={"chat-body chatAddMessage-" + item.data.userId}
+          className={"chat-body chatAddMessage-" + item.userId}
           //   style={{ scrollBehavior: scrollBar ? "smooth" : "scroll" }}
         >
           {/* {item.data.userId} */}
@@ -459,7 +406,7 @@ export default function ChatBoxComponent(props) {
           <MessagesList
             className="icon-position icon-style messagesView"
             //  onClick={goToTop}
-            frdid={item.data.userId}
+            frdid={item.userId}
             ref={childRef}
           />
           {/* )} */}
@@ -473,7 +420,7 @@ export default function ChatBoxComponent(props) {
               onChange={setText}
               cleanOnEnter
               onEnter={() => {
-                handleOnEnter(text, item.data.userId);
+                handleOnEnter(text, item.userId);
               }}
               fontSize="12px"
               placeholder="Type a message"
@@ -481,7 +428,7 @@ export default function ChatBoxComponent(props) {
           </div>
         </div>
       </div>
-      {VideoCalling ? <Video data={item.data.userId} /> : null}
+      {VideoCalling ? <Video data={item.userId} /> : null}
       {/* <div style={{ position: "absolute" }}>
         {VideoCalling ? <VideoCalling /> : null}
       </div> */}

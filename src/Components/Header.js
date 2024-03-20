@@ -30,7 +30,7 @@ import { io } from "socket.io-client";
 import { useSocket } from "./context/SocketProvider";
 export default function Headers() {
   const socket = useSocket();
-  console.log(socket);
+  // console.log(socket);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [Searchbar, setSearchbar] = useState("none");
   const [inputWith, setinputWith] = useState(0);
@@ -95,7 +95,7 @@ export default function Headers() {
     await axios
       .get(`${config.url}/api/CheckLisFriends`, AccessDetailsUserCheck)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         //const requestList = res.data.data.map(([item]) => ({ item }));
         //console.log(requestList);
         setFrdsNotificationList(res.data.data);
@@ -116,7 +116,7 @@ export default function Headers() {
     await axios
       .get(`${config.url}/api/CheckListNotification`, AccessDetailsUserCheck)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         //const requestList = res.data.data.map(([item]) => ({ item }));
         //console.log(requestList);
         setNotificationList(res.data.data);
@@ -132,7 +132,7 @@ export default function Headers() {
   const selectFriendView = (name) => {
     const appName = Base64.encodeURI(Base64.encodeURI(name));
     //navigation("/" + type + ":?name=" + appName);
-    navigation("/friend:?name=" + appName);
+    navigation("/friend/"+appName);
   };
   const checkinguri = (url) => {
     // console.log(url);
@@ -151,11 +151,11 @@ export default function Headers() {
   };
   const viewProfile = (name) => {
     const appName = Base64.encodeURI(Base64.encodeURI(name));
-    navigation("/friend:?name=" + appName);
+    navigation("/friend/" + appName);
   };
-  const checkingFriendsList = async (e) => {
+  const checkingFriendsListHeader = async (e) => {
     setsearchValue(e.target.value);
-    console.log(searchValue);
+    // console.log(searchValue);
     const AccessDetailsUser = {
       headers: {
         Authorization: "Bearer " + userToken,
@@ -180,7 +180,7 @@ export default function Headers() {
         const userList = response.data.data.filter(function (person) {
           return person.userId !== parseInt(userId);
         });
-        console.log(userList);
+        // console.log(userList);
         setlistofusers(userList);
       });
   };
@@ -210,7 +210,7 @@ export default function Headers() {
             //   setsearchValue(e.target.value);
             //   console.log(searchValue);
             // }}
-            onChange={checkingFriendsList}
+            onChange={checkingFriendsListHeader}
           />
 
           <div className="searchFriednsList">

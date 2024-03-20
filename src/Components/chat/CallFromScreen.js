@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
 import { Navigation } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
@@ -22,18 +22,20 @@ import { useLocation } from "react-router-dom";
 // import Peer, { config } from "simple-peer";
 import Peer from "simple-peer";
 import io from "socket.io-client";
-import { config } from "../Config";
+import { config } from "../../Config";
 // const socket = io.connect("http://localhost" + config.socket + "");
-export default function VideoCalling({ socket }) {
+export default function CallFromScreen({socket, callAccept, data }) {
   // const location = useLocation();
-  const { userData } = 32;
+  // const { userData } = 32
 
-  const navigation = useNavigate();
+  // const navigation = useNavigate();
+  const loginuser = localStorage.getItem("userId");
+  const loginuserName = localStorage.getItem("userName");
   const [CallingSysten, setCallingSysten] = useState(true);
   const [AcceptCall, setAcceptCall] = useState(false);
   const [addUserView, setaddUserView] = useState(false);
   const [mute, setmute] = useState(true);
-  const [me, setMe] = useState("");
+  const [me, setMe] = useState(parseInt(loginuser));
   const [stream, setStream] = useState();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState("");
@@ -41,7 +43,7 @@ export default function VideoCalling({ socket }) {
   const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(loginuserName);
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -53,20 +55,26 @@ export default function VideoCalling({ socket }) {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
+      socket.on("callUser", (data) => {
+        console.log(data)
+        setReceivingCall(true);
+        setCaller(data.from);
+        setName(data.name);
+        setCallerSignal(data.signal);
+      });
 
     // socket.on("RequestUser", (id) => {
     //   setMe(id);
     // });
-    callfriend(userData);
+    console.log(data.userData.userId)
+    console.log(data.userData)
+    callAccept === true ? answerCall() : callfriend(data.userData.userId)
+    //callfriend(userData);
 
-    socket.on("callUser", (data) => {
-      setReceivingCall(true);
-      setCaller(data.from);
-      setName(data.name);
-      setCallerSignal(data.signal);
-    });
+ 
   }, []);
   const callfriend = (id) => {
+ 
     //let socket = io(ip_address + ":" + socket_port);
     // socket.emit("sendChatToServer", text);
     // console.log(text);
@@ -75,7 +83,7 @@ export default function VideoCalling({ socket }) {
     console.log(id);
     socket.emit("JoinServer", id);
     console.log(socket);
-    callUser(socket.id);
+    callUser(id);
   };
   const callUser = (id) => {
     console.log(id);
@@ -84,6 +92,7 @@ export default function VideoCalling({ socket }) {
       trickle: false,
       stream: stream,
     });
+    console.log(peer)
     peer.on("signal", (data) => {
       socket.emit("callUser", {
         userToCall: id,
@@ -93,32 +102,34 @@ export default function VideoCalling({ socket }) {
       });
     });
     peer.on("stream", (stream) => {
+      console.log(stream)
       userVideo.current.srcObject = stream;
     });
     socket.on("callAccepted", (signal) => {
       setCallAccepted(true);
+      console.log(signal)
       peer.signal(signal);
     });
-
+console.log(peer)
     connectionRef.current = peer;
   };
 
   const answerCall = () => {
-    setCallAccepted(true);
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream,
-    });
-    peer.on("signal", (data) => {
-      socket.emit("answerCall", { signal: data, to: caller });
-    });
-    peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
-    });
+    // setCallAccepted(true);
+    // const peer = new Peer({
+    //   initiator: false,
+    //   trickle: false,
+    //   stream: stream,
+    // });
+    // peer.on("signal", (data) => {
+    //   socket.emit("answerCall", { signal: data, to: caller });
+    // });
+    // peer.on("stream", (stream) => {
+    //   userVideo.current.srcObject = stream;
+    // });
 
-    peer.signal(callerSignal);
-    connectionRef.current = peer;
+    // peer.signal(callerSignal);
+    // connectionRef.current = peer;
   };
 
   const leaveCall = () => {
@@ -263,12 +274,7 @@ export default function VideoCalling({ socket }) {
         {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1> */}
         <div
           className="container"
-          style={{
-            overflow: "hidden",
-            background: "#000",
-            position: "absolute",
-            zIndex: 999999,
-          }}
+          style={{ overflow: "hidden", background: "#000",position: "absolute",zIndex: 999999}}
         >
           <div className="video-containercall">
             <div className="video">

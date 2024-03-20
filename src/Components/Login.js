@@ -50,10 +50,10 @@ export default function Login() {
     console.log(localStorage.getItem("userName"));
     socket?.emit("newUser", localStorage.getItem("userId"));
   }, [socket, user]);
-  const LoginAccount = () => {
+  const LoginAccount = async () => {
     setsubmitData(true);
     const userInfo = {
-      email: username,
+      user: username,
       password: password,
     };
     console.log(userInfo)
@@ -61,13 +61,16 @@ export default function Login() {
         // this.setState({ articleId: response.data.id })
         // console.log(response);
         // return false;
+        console.log(response.data)
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
         localStorage.setItem("userName", response.data.userName);
         localStorage.setItem("mibemail", response.data.mibemail);
         if (response.status === 200) {
           setUser(response.data);
-          navigation("/userpage", { socket: socket });
+          console.log(response)
+          navigation("/userpage");
+          console.log(response)
         } else {
           // alert(response.data.error);
 

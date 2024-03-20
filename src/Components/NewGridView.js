@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FriendsList from "./FriendsList";
+import FriendsList from "./friends/FriendsList";
 import Header from "./Header";
 import image from "../assets/images/avatar.png";
 import Box from "@mui/material/Box";
@@ -68,7 +68,7 @@ export default function NewGridView() {
           <div className="FeedsSections">
             {/* <Feeds /> */}
             <div>
-              <AlbumLoad />
+              {/* <AlbumLoad /> */}
               <RegNewApp props={AppsList} />
 
               <div
@@ -81,9 +81,9 @@ export default function NewGridView() {
               </div>
             </div>
           </div>
-          <div className="friendsListSection">
+          {/* <div className="friendsListSection">
             <FriendsList />
-          </div>
+          </div> */}
         </div>
       </div>
       {addnewApp ? (

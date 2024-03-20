@@ -4,9 +4,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
-import background from "../assets/images/backgroundLogin.jpg";
-import social from "../assets/images/5551.jpg";
-import mails from "../assets/images/64666.jpg";
+import background from "../../assets/images/backgroundLogin.jpg";
+import social from "../../assets/images/5551.jpg";
+import mails from "../../assets/images/64666.jpg";
 export default function PasswordForgot() {
   const [username, setusername] = useState("");
   return (

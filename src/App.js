@@ -6,36 +6,37 @@ import Login from "./Components/Login";
 import About from "./Components/About";
 import Userpage from "./Components/Userpage";
 import EmailSystem from "./Components/EmailSystem";
-import Settings from "./Components/Settings";
-import Profile from "./Components/Profile";
-import FriendsView from "./Components/FriendsView";
+import Settings from "./Components/user/Settings";
+import Profile from "./Components/user/Profile";
+import FriendsView from "./Components/friends/FriendsView";
 import NewGridView from "./Components/NewGridView";
 import Header from "./Components/Header";
 import { useEffect, useState } from "react";
-import VideoCalling from "./Components/VideoCalling";
+import VideoCalling from "./Components/chat/VideoCalling";
 import BlogViewPage from "./Components/BlogViewPage";
 import AppViewPage from "./Components/AppViewPage";
 import UserNew from "./Components/UserNew";
-import PasswordForgot from "./Components/PasswordForgot";
-import Friend from "./Components/Friend";
-import ChatList from "./Components/ChatList";
+import PasswordForgot from "./Components/user/PasswordForgot";
+import Friend from "./Components/friends/Friend";
+import ChatList from "./Components/chat/ChatList";
 import GetNotifications from "./Components/GetNotifications";
 import { config } from "./Config";
 import { io } from "socket.io-client";
-import GetCallRequest from "./Components/GetCallRequest";
-import FriendsList from "./Components/FriendsList";
-import CallConnected from "./Components/CallConnected";
-import GetCallRequestFrom from "./Components/GetCallRequestFrom";
-import CalltoScreen from "./Components/CalltoScreen";
-import CallFromScreen from "./Components/CallFromScreen";
+import GetCallRequest from "./Components/chat/GetCallRequest";
+import FriendsList from "./Components/friends/FriendsList";
+import CallConnected from "./Components/chat/CallConnected";
+import GetCallRequestFrom from "./Components/chat/GetCallRequestFrom";
+import CalltoScreen from "./Components/chat/CalltoScreen";
+import CallFromScreen from "./Components/chat/CallFromScreen";
 import Peer from "simple-peer";
-import VideoPlayer from "./Components/VideoPlayer";
+import VideoPlayer from "./Components/chat/VideoPlayer";
 import Notifications from "./Components/Notifications";
 import { SocketContext } from "./Context";
-import RoomPage from "./Components/RoomPage";
-import Room from "./Components/Room";
-import { PeerProvider } from "./Components/Peer";
+import RoomPage from "./Components/chat/RoomPage";
+import Room from "./Components/chat/Room";
+import { PeerProvider } from "./Components/chat/Peer";
 import { useSocket } from "./Components/context/SocketProvider";
+// import Userpage from "./Components/Userpage";
 //import { useSocket } from "./Socket";
 // import { initializeApp } from "firebase/app";
 
@@ -241,7 +242,7 @@ function App() {
         <Route exact path="/signup" element={<UserNew />} />
         <Route exact path="/blog:appName" element={<BlogViewPage />} />
         <Route exact path="/page:appName" element={<AppViewPage />} />
-        <Route exact path="/friend:friendName" element={<Friend />} />
+        <Route exact path="/friend/:name" element={<Friend />} />
         <Route path="/room/:roomid" element={<Room />} />
       </Routes>
       {/* </PeerProvider> */}

@@ -1,6 +1,6 @@
 import React from "react";
-import FriendsList from "./FriendsList";
-import Header from "./Header";
+import FriendsList from "../friends/FriendsList";
+import Header from "../Header";
 
 export default function Settings() {
   return (
@@ -9,9 +9,9 @@ export default function Settings() {
         <Header />
         <div className="MainSection">
           <div className="FeedsSections">{/* <Feeds /> */}</div>
-          <div className="friendsListSection">
+          {/* <div className="friendsListSection">
             <FriendsList />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
-import peer from "../service/peer";
+import peer from "../../service/peer";
 import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
 import { FaUserPlus } from "react-icons/fa";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsFillCameraVideoFill } from "react-icons/bs";
@@ -15,7 +15,7 @@ import { BiPhoneOff } from "react-icons/bi";
 import { FiShare } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useSocket } from "../Components/context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 import { PeerProvider } from "./Peer";
 
 const RoomPage = () => {

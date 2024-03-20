@@ -6,16 +6,17 @@ import {
   CardMedia,
 } from "@mui/material";
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
-import image from "../assets/images/avatar.png";
-import img1 from "../assets/images/background/1.jpg";
-import img2 from "../assets/images/background/2.jpg";
-import img3 from "../assets/images/background/3.jpg";
-import img4 from "../assets/images/background/4.jpg";
-import img5 from "../assets/images/background/5.jpg";
-import img6 from "../assets/images/background/6.jpg";
-import img7 from "../assets/images/background/7.jpg";
-import img8 from "../assets/images/background/8.jpg";
-import img9 from "../assets/images/background/9.jpg";
+import image from "../../assets/images/avatar.png";
+import img1 from "../../assets/images/background/1.jpg";
+import img2 from "../../assets/images/background/2.jpg";
+import img3 from "../../assets/images/background/3.jpg";
+import img4 from "../../assets/images/background/4.jpg";
+import img5 from "../../assets/images/background/5.jpg";
+import img6 from "../../assets/images/background/6.jpg";
+import img7 from "../../assets/images/background/7.jpg";
+import img8 from "../../assets/images/background/8.jpg";
+import img9 from "../../assets/images/background/9.jpg";
+import "./feeds.css"
 import { AiOutlineLike } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -36,7 +37,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
-import { config } from "../Config";
+import { config } from "../../Config";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
@@ -216,7 +217,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 const emails = ["username@gmail.com", "user02@gmail.com"];
-export default function Feeds() {
+export default function Feeds({bluroptions}) {
   const navigation = useNavigate();
   const [AllFeeds, setAllFeeds] = useState([]);
   const [pageNum, setpageNum] = useState([0]);
@@ -316,6 +317,8 @@ export default function Feeds() {
     setShowPicker(false);
   };
   const handleOpen = () => {
+    console.log("true");
+   // return false;
     setOpen(true);
   };
   const handleClose = () => {
@@ -377,7 +380,12 @@ export default function Feeds() {
     }
     console.log(incommingFiles);
     setfiles(incommingFiles);
+    console.log(files.length)
+    files.length > 6 ? showfileFlip():console.log("hello");
   };
+  const showfileFlip = () => {
+   
+  }
   useEffect(() => {
     getData();
     fetchImages();
@@ -425,6 +433,7 @@ export default function Feeds() {
         return item;
       }
     });
+    setAllFeeds(resp_with_like);
     const AccessDetails = {
       emojismileAdd: action,
       feedId: id,
@@ -435,7 +444,7 @@ export default function Feeds() {
       },
     });
 
-    setAllFeeds(resp_with_like);
+    
   };
   const handleOnEnter = (text, fridId) => {
     //console.log(messageList);
@@ -470,18 +479,19 @@ export default function Feeds() {
     //   </div>
     // );
   };
-  const settingClose = (id) => {
+  const settingClose = async (id) => {
     const resp_with_like = AllFeeds.map((item, key) => {
+
       if (item.feedId === id) {
         // console.log(item.feedId);
         // console.log(id);
-        const y = item.settingsFeed
+        const y = item.settingsFeed === true
           ? { ...item, settingsFeed: false }
           : { ...item, settingsFeed: true };
         //console.log(y);
         return y;
       } else {
-        const y = item.settingsFeed
+        const y = item.settingsFeed === true
           ? { ...item, settingsFeed: false }
           : { ...item, settingsFeed: false };
         console.log(y);
@@ -491,47 +501,38 @@ export default function Feeds() {
     setTimeout(() => {
       setAllFeeds(resp_with_like);
     }, 1000);
+    const AccessDetails = {
+      hide: true,
+      user_id: userId,
+      feedId: id,
+    };
+    await axios.post(`${config.url}/api/hideFeed`, AccessDetails, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
   };
   const Settings = (id) => {
-    alert(id);
-    //setsettingFeed(true);
-
-    // return (
-    //   <Modal
-    //     open={true}
-    //     onClose={handleClose}
-    //     aria-labelledby="modal-modal-title"
-    //     aria-describedby="modal-modal-description"
-    //     className="newFeedClass"
-    //   >
-    //     welcome to Setting Modal
-    //   </Modal>
-    // );
-    // console.log(AllFeeds);
-    // 06-12-2023 comment
     const resp_with_like = AllFeeds.map((item, key) => {
       if (item.feedId === id) {
-        // console.log(item.feedId);
-        // console.log(id);
         const y = item.settingsFeed
           ? { ...item, settingsFeed: false }
           : { ...item, settingsFeed: true };
-        console.log(y);
         return y;
       } else {
-        // const y = item.emojismileAdd
-        //   ? { ...item, emojismileAdd: de }
-        //   : { ...item, emojismileAdd: false };
-        return item;
+        const y = item.settingsFeed
+          ? { ...item, settingsFeed: false }
+          : { ...item, settingsFeed: false };
+        return y;
       }
     });
     setTimeout(() => {
       setAllFeeds(resp_with_like);
-    }, 1000);
+      // bluroptions(true)
+    }, 500);
   };
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    console.log(res.data);
     setIP(res.data.IPv4);
   };
   const fetchImages = async () => {
@@ -542,9 +543,9 @@ export default function Feeds() {
       page: uniqueChars[uniqueChars.length - 1],
       SetLimit: limitRecords,
     };
-    console.log(userToken);
+    // console.log(userToken);
     let configData = {
-      method: "post",
+      method: "get",
       maxBodyLength: Infinity,
       url: `${config.url}/api/feeds`,
       headers: {
@@ -676,6 +677,17 @@ export default function Feeds() {
       });
   };
   const likenewFeed = async (id) => {
+    const resp_with_like = AllFeeds.map((item, key) => {
+      if (item.feedId === id) {
+        const y = item.checkingLike
+          ? { ...item,  checkingLike: false }
+          : { ...item,  checkingLike: true };
+        return y;
+      } else {
+        return item;
+      }
+    });
+    setAllFeeds(resp_with_like);
     const AccessDetails = {
       feedId: id,
       UserID: userId,
@@ -687,29 +699,20 @@ export default function Feeds() {
         },
       })
       .then((response) => {
-        console.log(response);
-
         const resp_with_like = AllFeeds.map((item, key) => {
           if (item.feedId === id) {
-            console.log(item.checkingLike);
             const y = item.checkingLike
               ? { ...item, likes: response.data.data, checkingLike: false }
               : { ...item, likes: response.data.data, checkingLike: true };
-            console.log(y);
             return y;
           } else {
             return item;
           }
         });
-        console.log(resp_with_like);
         setTimeout(() => {
           setAllFeeds(resp_with_like);
         }, 1000);
-
-        console.log(AllFeeds);
       });
-
-    console.log(AllFeeds);
   };
   const emojiActionView = (id) => {
     const resp_with_like = AllFeeds.map((item, key) => {
@@ -973,6 +976,20 @@ export default function Feeds() {
     });
     return typeof element === "undefined" ? false : true;
   };
+  const hideFeed = (id)=>{
+    const resp_with_like = AllFeeds.map((item, key) => {
+    if (item.feedId === id) {
+      const y = { ...item, hide: true };
+      console.log(y);
+      return y;
+    } else {
+      return item;
+    }
+  });
+  setTimeout(() => {
+    setAllFeeds(resp_with_like);
+  }, 500);
+  }
   const feedStatusView = (id) => {
     console.log(id);
   };
@@ -984,6 +1001,7 @@ export default function Feeds() {
     //  console.log(chekcinglike2);
     // console.log(AllFeeds.length);
     return (
+      item.hide ? null:
       <Card
         key={key}
         style={{
@@ -1058,6 +1076,7 @@ export default function Feeds() {
                                 />
                               </video>
                             ) : (
+                              // eslint-disable-next-line jsx-a11y/alt-text
                               <img
                                 src={imgItem.path}
                                 //src={imgItem.path}
@@ -1122,12 +1141,12 @@ export default function Feeds() {
                                 />
                               </video>
                             ) : (
+                              // eslint-disable-next-line jsx-a11y/alt-text
                               <img
                                 src={imgItem.path}
                                 //src={imgItem.path}
                                 onLoad={({ target: img }) => {
                                   const { offsetHeight, offsetWidth } = img;
-                                  console.log(offsetHeight, offsetWidth);
                                   setoffsetWidth(offsetWidth);
                                   setoffsetHeight(offsetHeight);
                                 }}
@@ -1171,6 +1190,7 @@ export default function Feeds() {
                               />
                             </video>
                           ) : (
+                            // eslint-disable-next-line jsx-a11y/alt-text
                             <img
                               src={
                                 config.url +
@@ -1225,6 +1245,7 @@ export default function Feeds() {
                               />
                             </video>
                           ) : (
+                            // eslint-disable-next-line jsx-a11y/alt-text
                             <img
                               src={
                                 config.url +
@@ -1338,8 +1359,11 @@ export default function Feeds() {
           //   open={item.settingsFeed}
           //   onClose={settingClose}
           // />
-          <div style={{ position: "absolute", right: "0px", top: "0px" }}>
-            Settings
+          <div className="mib-fed-setins">
+            <div>View</div>
+            <div>Follow</div>
+            <div onClick={()=>{hideFeed(item.feedId)}}>Hide</div>
+            <div>Delete</div>
           </div>
         ) : null}
 
@@ -1405,7 +1429,7 @@ export default function Feeds() {
               marginLeft: 0,
               cursor: "pointer",
               width: "25px",
-              height: "21px",
+              height: "25px",
               position: "relative",
               // left: "0.9rem",
             }}
@@ -1415,7 +1439,7 @@ export default function Feeds() {
               style={{ position: "absolute" }}
             >
               <AiFillHeart
-                size={12}
+                size={14}
                 // style={{ marginLeft: 5 }}
                 className={item.checkingLike ? "heart" : "unlikeheart"}
                 onClick={() => {
@@ -1524,22 +1548,24 @@ export default function Feeds() {
               </div>
             </div>
           ) : null}
-          <Badge badgeContent={4}>
-            <BiComment
-              size={14}
-              style={{
-                // marginLeft: 30,
-                cursor: "pointer",
-              }}
-              onClick={() => {
+          <Badge badgeContent={100} onClick={() => {
                 handleOpen();
                 setfeedDetails(item);
               }}
+              style={{
+                marginTop: "8px",
+                cursor: "pointer",
+              }}
+              >
+            <BiComment
+              size={15}
+             
+             
             />
           </Badge>
           <div
             style={{
-              marginLeft: "15px",
+              marginLeft: "20px",
               cursor: "pointer",
               width: "25px",
               height: "21px",
@@ -1548,9 +1574,9 @@ export default function Feeds() {
             }}
           >
             <FaShareSquare
-              size={14}
+              size={16}
               style={{
-                // marginLeft: 30,
+                marginTop: "6px",
                 cursor: "pointer",
               }}
               onClick={() => {
@@ -1579,20 +1605,20 @@ export default function Feeds() {
               ) : null}
             </div>
           </div>
-          <BsInfoCircle
-            size={14}
-            // style={{ marginLeft: 35 }}
+          {/* <BsInfoCircle
+            size={16}
+            style={{ marginTop: "6px", }}
             onClick={() => {
               // console.log(item);
               //openTotalViewofFeed(item);
               handleOpen();
               setfeedDetails(item);
             }}
-          />
+          /> */}
           <ImEnlarge2
-            size={13}
+            size={14}
             style={{
-              // marginLeft: 35,
+              marginTop: "6px",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -1654,6 +1680,10 @@ export default function Feeds() {
       </div>
     </div>
   );
+  const updateParentState = (newState)=>{
+    console.log(newState);
+    setAllFeeds(newState)
+  }
   const project = () => {
     switch (emojismileAdd) {
       case "love":
@@ -1691,7 +1721,7 @@ export default function Feeds() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <FeedView props={feedDetails} />
+            <FeedView props={feedDetails} updateParentState={updateParentState} />
           </Box>
         </Modal>
 
@@ -1746,7 +1776,6 @@ export default function Feeds() {
                 borderRadius: "5px",
               }}
             >
-              {Progress}
               <LinearProgress variant="determinate" value={Progress} />
               <GiCancel
                 onClick={() => {
@@ -2184,6 +2213,25 @@ export default function Feeds() {
                         }}
                       ></Dropzone>
                     </div>
+                    <>
+                    {/* <div className="flipBg"></div> */}
+                    {/* <div className="showflipAlert">
+                      <div>Create like Album from your images</div>
+                      <div>
+                      <span className="flip-btn"><input type="radio" className="" name="album"/>Yes</span>
+                      <span className="flip-btn"><input type="radio" className="" name="album"/>No</span>
+                      </div>
+                      <div className="btn-list">
+                      <div className="preview-btn">
+                        Preview
+                      </div>
+                      <div className="preview-btn">
+                        Close
+                      </div>
+                      </div>
+                    </div> */}
+                    </>
+                    
                     {/* <div>
                     <button onClick={() => openFileSelector()}>
                       Select file{" "}
@@ -2296,6 +2344,7 @@ export default function Feeds() {
           }}
         ></div>
       ) : null}
+
     </div>
   );
 }

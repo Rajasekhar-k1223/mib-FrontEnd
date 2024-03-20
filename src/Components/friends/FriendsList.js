@@ -1,15 +1,15 @@
 import { Card, CardContent } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
-import image from "../assets/images/avatar.png";
-import emoji from "../assets/images/emojiIcon.jpg";
+import image from "../../assets/images/avatar.png";
+import emoji from "../../assets/images/emojiIcon.jpg";
 import { FiSettings } from "react-icons/fi";
 import InputEmoji from "react-input-emoji";
 import Picker from "emoji-picker-react";
 import { IoIosVideocam, IoMdCall } from "react-icons/io";
-import { config } from "../Config";
+import { config } from "../../Config";
 import axios from "axios";
-import YAssit from "../assets/images/yassit.gif";
-import ChatBoxComponent from "./ChatBoxComponent";
+import YAssit from "../../assets/images/yassit.gif";
+import ChatBoxComponent from "../chat/ChatBoxComponent";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import { styled } from "@mui/material/styles";
@@ -41,6 +41,7 @@ const OnlineBox = styled("div")({
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 // const client = new W3CWebSocket("ws://192.168.10.60:8000/laravel-websockets");
 export default function FriendsList({ socket }) {
+// alert("FriendsList")
   // window.$ = window.jQuery = require("jquery");
   // global.$ = global.jQuery = $;
   // client.onopen = () => {
@@ -84,6 +85,7 @@ export default function FriendsList({ socket }) {
   //   console.log(ChatcontentView);
   // };
   // const socket = io.connect("http://localhost:" + config.socket);
+ 
   useEffect(() => {
     // const script = document.createElement("script");
     // script.src =
@@ -105,7 +107,7 @@ export default function FriendsList({ socket }) {
     // return () => {
     //   document.removeEventListener("click", showEmojiContainer(0), true);
     // };
-  }, [socket]);
+  }, [friendslistChat, socket]);
   const checkingFriendsList = async () => {
     // console.log("object");
     // socket.on("LoginUserList", (users) => {
@@ -129,9 +131,9 @@ export default function FriendsList({ socket }) {
       .get(`${config.url}/api/getFriendsList`, AccessDetails)
       .then(async (res) => {
         const friends = [];
-           console.log(res.data.data[0]);
+          //  console.log(res.data.data[0]);
            const friends_List_len = await res.data.data[0].friends_list;
-           if(friends_List_len > 0){
+           if(friends_List_len.length > 0){
         await res.data.data[0].friends_list.map(async (item) => {
           //    console.log(item);
           const AccessDetailsUser = {
@@ -147,13 +149,11 @@ export default function FriendsList({ socket }) {
           await axios
             .get(`${config.url}/api/getFriendDetails`, AccessDetailsUser)
             .then(async (res) => {
-              //        console.log(res.data);
               //       console.log(res.data.data[0]);
               setfriendsCount((friendsCount) => [
                 ...friendsCount,
                 res.data.data[0],
               ]);
-              //        console.log(friendsCount);
               //  setfriendsCount([...friendsCount, res.data.data[0]]);
               friends.push(res.data.data[0]);
               //console.log(res.data.data[0]);
@@ -279,21 +279,26 @@ export default function FriendsList({ socket }) {
     //   const y = { ...el, like: false };
     //   return y;
     // });
-
-    setfriendslistChat([...friendslistChat, item]);
-    console.log(friendslistChat);
+    // console.log(friendslistChat.filter(friend => friend.userId === item.userId))
+    
+    // console.log(updatestatefriendsList)
+    // setTimeout(() => {console.log(friendslistChat)},1000)
+    
+    
+    // console.log(friendslistChat);
     if (
       friendslistChat.find((itemx) => itemx.userId === item.userId) !==
       undefined
     ) {
-      //console.log("item exist");
+      console.log("item exist");
     } else {
-      //console.log("Not exist item");
+      console.log("Not exist item");
       //  this.state.Question.push(Qobj);
-      PopupChatBoxByUser.push(item);
+      const updatestatefriendsList = [...friendslistChat, item]
+      const updatePopupChatBoxByUser = [...PopupChatBoxByUser, item]
+      setfriendslistChat(updatestatefriendsList);
+      setPopupChatBoxByUser(updatePopupChatBoxByUser);
     }
-
-    console.log(PopupChatBoxByUser);
     //setfriendslistChat([...new Set([...friendslistChat, name])]);
     //console.log(friendslistChat);
 
@@ -346,21 +351,25 @@ export default function FriendsList({ socket }) {
     //       const y = { ...ele, friendId: item.userId };
     //       return y;
     //     });
+    if(item.userName === 'Assist'){
 
-    const r = await axios.get(
-      `${config.url}/api/GetMessagesFromFriends`,
-      AccessDetails
-    );
-    console.log("r.data", r);
-    const sorted_r = r.data;
-
-    const respone = sorted_r.data.map((ele) => {
-      const y = { ...ele, friendId: item.userId };
-      return y;
-    });
-
-    console.log("Sttr", messageList);
-    console.log("--->", respone);
+    }else{
+      const r = await axios.get(
+        `${config.url}/api/GetMessagesFromFriends`,
+        AccessDetails
+      );
+      // console.log("r.data", r);
+      const sorted_r = r.data;
+  
+      const respone = sorted_r.data.map((ele) => {
+        const y = { ...ele, friendId: item.userId };
+        return y;
+      });
+  
+    }
+   
+    // console.log("Sttr", messageList);
+    // console.log("--->", respone);
     // setmessageList([...messageList, respone]);
 
     setisLoaded(true);
@@ -375,27 +384,29 @@ export default function FriendsList({ socket }) {
   const chatMessageBoxfield = (e) => {
     setChatcontentView(e.target.textContent);
   };
-  const checkingClose = (item) => {
-    console.log(item);
+  const checkingClosePopUp = (item) => {
+    console.log(friendslistChat)
+    const checkusers = friendslistChat.filter(friend => friend.userId !== item.userId)
     var array = [...PopupChatBoxByUser]; // make a separate copy of the array
     var arrayFriends = [...friendslistChat]; // make a separate copy of the array
     var index = array.indexOf(item);
     var indexFriends = arrayFriends.indexOf(item);
-    console.log(index);
     if (index !== -1) {
-      console.log(index);
       array.splice(index, 1);
       arrayFriends.splice(indexFriends, 1);
-      console.log(array);
+      console.log(array)
+      setfriendslistChat(arrayFriends);
       setTimeout(() => {
         setPopupChatBoxByUser(array);
-        setfriendslistChat(arrayFriends);
+        // setfriendslistChat(arrayFriends);
+        // setfriendslistChat(friendslistChat => friendslistChat.filter((data)=> data.id != item.userId ))
       }, 10);
+      console.log(friendslistChat);
     }
 
-    setTimeout(() => {
-      console.log(PopupChatBoxByUser);
-    }, 20);
+    // setTimeout(() => {
+    //   console.log(PopupChatBoxByUser);
+    // }, 20);
   };
   const showEmojiContainer = (id) => {
     console.log(id);
@@ -496,8 +507,11 @@ export default function FriendsList({ socket }) {
         style={{ position: "relative" }} //key={index} // onMouseOut={() => { //   setListIndex(undefined); // }}
       >
         <Card
-          className="feedCard"
+          className="frindCard"
           style={{ marginBottom: 2 }} // key={index} // onMouseOver={() => //   listIndex === index //     ? setListIndex(undefined) //     : setListIndex(index) // } // onMouseOut={() => { //   setListIndex(undefined); // }} // onClick={() => { //   showChatBox(item, index); // }}
+          onClick={() => {
+            showChatBox({"userName":"Assist",userId:0},"");
+          }}
         >
           <CardContent
             style={{ padding: 10, fontSize: "14px", fontFamily: "monospace" }}
@@ -555,7 +569,9 @@ export default function FriendsList({ socket }) {
 
         )} */}
       </div>
-      {friendsCount.map((item, index) => {
+      {friendsCount.filter((friends, index) => 
+    index === friendsCount.findIndex(obj => JSON.stringify(obj) === JSON.stringify(friends))
+).map((item, index) => {
         return (
           // <div key={index}>{item.userName}</div>
           <div
@@ -566,7 +582,7 @@ export default function FriendsList({ socket }) {
             }}
           >
             <Card
-              className="feedCard"
+              className="frindCard"
               style={{ marginBottom: 4 }}
               key={index}
               onMouseOver={() =>
@@ -621,7 +637,7 @@ export default function FriendsList({ socket }) {
       })}
       <div>
         {PopupChatBoxByUser.map((item, index) => {
-          return <ChatBoxComponent data={item} index={index} />;
+          return <ChatBoxComponent data={item} index={index} checkingClosePopUp={checkingClosePopUp} />;
         })}
       </div>
       {/* <Card className="feedCard" style={{ marginBottom: 2 }}>

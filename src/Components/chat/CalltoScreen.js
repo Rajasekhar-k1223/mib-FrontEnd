@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
 import { Navigation } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
@@ -22,7 +22,7 @@ import { useLocation } from "react-router-dom";
 // import Peer, { config } from "simple-peer";
 import Peer from "simple-peer";
 import io from "socket.io-client";
-import { config } from "../Config";
+import { config } from "../../Config";
 function CalltoScreen({socket, callAccept, data }) {
     // const navigation = useNavigate();
     console.log(data)

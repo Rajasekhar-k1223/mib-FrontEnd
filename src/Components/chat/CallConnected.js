@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
-import { Navigation } from "@mui/icons-material";
+import Peer from "simple-peer";
 import { useNavigate } from "react-router-dom";
+import ReactAudioPlayer from "react-audio-player";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
+import { Navigation } from "@mui/icons-material";
 import { FaUserPlus } from "react-icons/fa";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
@@ -18,36 +19,24 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import { useLocation } from "react-router-dom";
-// import Peer, { config } from "simple-peer";
-import Peer from "simple-peer";
-import io from "socket.io-client";
-import { config } from "../Config";
-// const socket = io.connect("http://localhost" + config.socket + "");
-export default function CallFromScreen({socket, callAccept, data }) {
-  // const location = useLocation();
-  // const { userData } = 32
-
-  // const navigation = useNavigate();
-  const loginuser = localStorage.getItem("userId");
-  const loginuserName = localStorage.getItem("userName");
+function CallConnected({ socket, callAccept, data }) {
+  console.log(data);
   const [CallingSysten, setCallingSysten] = useState(true);
   const [AcceptCall, setAcceptCall] = useState(false);
   const [addUserView, setaddUserView] = useState(false);
   const [mute, setmute] = useState(true);
-  const [me, setMe] = useState(parseInt(loginuser));
+  const [me, setMe] = useState("");
   const [stream, setStream] = useState();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState("");
   const [callerSignal, setCallerSignal] = useState();
-  const [callAccepted, setCallAccepted] = useState(false);
+  const [callAccepted, setCallAccepted] = useState(callAccept);
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
-  const [name, setName] = useState(loginuserName);
+  const [name, setName] = useState("");
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
-
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -55,35 +44,35 @@ export default function CallFromScreen({socket, callAccept, data }) {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
-      socket.on("callUser", (data) => {
-        console.log(data)
-        setReceivingCall(true);
-        setCaller(data.from);
-        setName(data.name);
-        setCallerSignal(data.signal);
-      });
 
     // socket.on("RequestUser", (id) => {
     //   setMe(id);
     // });
-    console.log(data.userData.userId)
-    console.log(data.userData)
-    callAccept === true ? answerCall() : callfriend(data.userData.userId)
-    //callfriend(userData);
+    callAccept === true ? answerCall() : callfriend(data.userData.userId) ;
 
- 
-  }, []);
+    socket.on("callUser", (data) => {
+      setReceivingCall(true);
+      setCaller(data.from);
+      setName(data.name);
+      setCallerSignal(data.signal);
+    });
+    setCallAccepted(callAccept);
+  }, [socket]);
   const callfriend = (id) => {
- 
     //let socket = io(ip_address + ":" + socket_port);
     // socket.emit("sendChatToServer", text);
     // console.log(text);
-    // console.log(socket);
-    // console.log(socket.id);
+   
+    console.log(socket);
+    console.log(socket.Socket);
     console.log(id);
     socket.emit("JoinServer", id);
     console.log(socket);
+    // console.log(socket.Socket.data)
     callUser(id);
+  };
+  const notstart = () => {
+    console.log(AcceptCall);
   };
   const callUser = (id) => {
     console.log(id);
@@ -92,7 +81,6 @@ export default function CallFromScreen({socket, callAccept, data }) {
       trickle: false,
       stream: stream,
     });
-    console.log(peer)
     peer.on("signal", (data) => {
       socket.emit("callUser", {
         userToCall: id,
@@ -102,34 +90,31 @@ export default function CallFromScreen({socket, callAccept, data }) {
       });
     });
     peer.on("stream", (stream) => {
-      console.log(stream)
       userVideo.current.srcObject = stream;
     });
     socket.on("callAccepted", (signal) => {
       setCallAccepted(true);
-      console.log(signal)
       peer.signal(signal);
     });
-console.log(peer)
+
     connectionRef.current = peer;
   };
-
   const answerCall = () => {
-    // setCallAccepted(true);
-    // const peer = new Peer({
-    //   initiator: false,
-    //   trickle: false,
-    //   stream: stream,
-    // });
-    // peer.on("signal", (data) => {
-    //   socket.emit("answerCall", { signal: data, to: caller });
-    // });
-    // peer.on("stream", (stream) => {
-    //   userVideo.current.srcObject = stream;
-    // });
+    setCallAccepted(true);
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      socket.emit("answerCall", { signal: data, to: caller });
+    });
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
 
-    // peer.signal(callerSignal);
-    // connectionRef.current = peer;
+    peer.signal(callerSignal);
+    connectionRef.current = peer;
   };
 
   const leaveCall = () => {
@@ -137,7 +122,7 @@ console.log(peer)
     connectionRef.current.destroy();
   };
   return (
-    <div>
+    <div style={{ position: "relative", zIndex: 9999 }}>
       {/* <ReactAudioPlayer
         src={RingTone}
         autoPlay
@@ -274,7 +259,7 @@ console.log(peer)
         {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1> */}
         <div
           className="container"
-          style={{ overflow: "hidden", background: "#000",position: "absolute",zIndex: 999999}}
+          style={{ overflow: "hidden", background: "#000" }}
         >
           <div className="video-containercall">
             <div className="video">
@@ -284,12 +269,17 @@ console.log(peer)
                   muted
                   ref={myVideo}
                   autoPlay
-                  style={{ width: "100vw", height: "100vh" }}
+                  // style={{ width: "100vw", height: "100vh" }}
                 />
               )}
             </div>
             <div className="video">
-              {callAccepted && !callEnded ? (
+              {/* {callAccepted && !callEnded ? ( */}
+              {console.log(callAccepted)}
+              {console.log(myVideo)}
+              {console.log(userVideo)}
+              {console.log(stream)}
+              {callAccepted ? (
                 <video
                   playsInline
                   ref={userVideo}
@@ -298,6 +288,9 @@ console.log(peer)
                 />
               ) : null}
             </div>
+          </div>
+          <div className="rejected_icon">
+            <img src={Rejected} />
           </div>
           {/* <div className="myId">
             <TextField
@@ -346,7 +339,7 @@ console.log(peer)
               {idToCall}
             </div>
           </div> */}
-          <div>
+          {/* <div>
             {receivingCall && !callAccepted ? (
               <div className="caller">
                 <h1>{name} is calling...</h1>
@@ -359,9 +352,11 @@ console.log(peer)
                 </Button>
               </div>
             ) : null}
-          </div>
+          </div> */}
         </div>
       </>
     </div>
   );
 }
+
+export default CallConnected;

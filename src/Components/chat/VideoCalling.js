@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import Peer from "simple-peer";
-import { useNavigate } from "react-router-dom";
 import ReactAudioPlayer from "react-audio-player";
-import Accept from "../assets/images/Accept_1.gif";
-import Rejected from "../assets/images/Rejected_1.gif";
-import RingTone from "../assets/audio/beam_me_up.mp3";
+import Accept from "../../assets/images/Accept_1.gif";
+import Rejected from "../../assets/images/Rejected_1.gif";
+import RingTone from "../../assets/audio/beam_me_up.mp3";
 import { Navigation } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
 import { BsRecordCircleFill } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
@@ -19,8 +18,17 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-function CallConnected({ socket, callAccept, data }) {
-  console.log(data);
+import { useLocation } from "react-router-dom";
+// import Peer, { config } from "simple-peer";
+import Peer from "simple-peer";
+import io from "socket.io-client";
+import { config } from "../../Config";
+// const socket = io.connect("http://localhost" + config.socket + "");
+export default function VideoCalling({ socket }) {
+  // const location = useLocation();
+  const { userData } = 32;
+
+  const navigation = useNavigate();
   const [CallingSysten, setCallingSysten] = useState(true);
   const [AcceptCall, setAcceptCall] = useState(false);
   const [addUserView, setaddUserView] = useState(false);
@@ -30,13 +38,14 @@ function CallConnected({ socket, callAccept, data }) {
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState("");
   const [callerSignal, setCallerSignal] = useState();
-  const [callAccepted, setCallAccepted] = useState(callAccept);
+  const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState("");
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
+
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -48,7 +57,7 @@ function CallConnected({ socket, callAccept, data }) {
     // socket.on("RequestUser", (id) => {
     //   setMe(id);
     // });
-    callAccept === true ? answerCall() : callfriend(data.userData.userId) ;
+    callfriend(userData);
 
     socket.on("callUser", (data) => {
       setReceivingCall(true);
@@ -56,23 +65,17 @@ function CallConnected({ socket, callAccept, data }) {
       setName(data.name);
       setCallerSignal(data.signal);
     });
-    setCallAccepted(callAccept);
-  }, [socket]);
+  }, []);
   const callfriend = (id) => {
     //let socket = io(ip_address + ":" + socket_port);
     // socket.emit("sendChatToServer", text);
     // console.log(text);
-   
-    console.log(socket);
-    console.log(socket.Socket);
+    // console.log(socket);
+    // console.log(socket.id);
     console.log(id);
     socket.emit("JoinServer", id);
     console.log(socket);
-    // console.log(socket.Socket.data)
-    callUser(id);
-  };
-  const notstart = () => {
-    console.log(AcceptCall);
+    callUser(socket.id);
   };
   const callUser = (id) => {
     console.log(id);
@@ -99,6 +102,7 @@ function CallConnected({ socket, callAccept, data }) {
 
     connectionRef.current = peer;
   };
+
   const answerCall = () => {
     setCallAccepted(true);
     const peer = new Peer({
@@ -122,7 +126,7 @@ function CallConnected({ socket, callAccept, data }) {
     connectionRef.current.destroy();
   };
   return (
-    <div style={{ position: "relative", zIndex: 9999 }}>
+    <div>
       {/* <ReactAudioPlayer
         src={RingTone}
         autoPlay
@@ -259,7 +263,12 @@ function CallConnected({ socket, callAccept, data }) {
         {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1> */}
         <div
           className="container"
-          style={{ overflow: "hidden", background: "#000" }}
+          style={{
+            overflow: "hidden",
+            background: "#000",
+            position: "absolute",
+            zIndex: 999999,
+          }}
         >
           <div className="video-containercall">
             <div className="video">
@@ -269,17 +278,12 @@ function CallConnected({ socket, callAccept, data }) {
                   muted
                   ref={myVideo}
                   autoPlay
-                  // style={{ width: "100vw", height: "100vh" }}
+                  style={{ width: "100vw", height: "100vh" }}
                 />
               )}
             </div>
             <div className="video">
-              {/* {callAccepted && !callEnded ? ( */}
-              {console.log(callAccepted)}
-              {console.log(myVideo)}
-              {console.log(userVideo)}
-              {console.log(stream)}
-              {callAccepted ? (
+              {callAccepted && !callEnded ? (
                 <video
                   playsInline
                   ref={userVideo}
@@ -288,9 +292,6 @@ function CallConnected({ socket, callAccept, data }) {
                 />
               ) : null}
             </div>
-          </div>
-          <div className="rejected_icon">
-            <img src={Rejected} />
           </div>
           {/* <div className="myId">
             <TextField
@@ -339,7 +340,7 @@ function CallConnected({ socket, callAccept, data }) {
               {idToCall}
             </div>
           </div> */}
-          {/* <div>
+          <div>
             {receivingCall && !callAccepted ? (
               <div className="caller">
                 <h1>{name} is calling...</h1>
@@ -352,11 +353,9 @@ function CallConnected({ socket, callAccept, data }) {
                 </Button>
               </div>
             ) : null}
-          </div> */}
+          </div>
         </div>
       </>
     </div>
   );
 }
-
-export default CallConnected;
